@@ -41,10 +41,10 @@ function initGame() {
         gameState.board.push(Array(getColsForId(r)).fill(null));
     }
     
-    // Posizionamento iniziale: 6 Neri su riga 0 (Pezzi PC), 6 Bianchi su riga 4 (Pezzi Umano)
+    // Posizionamento iniziale stabile
     for (let c = 0; c < 6; c++) {
-        gameState.board[0][c] = 'N';
-        gameState.board[4][c] = 'B';
+        gameState.board[c] = 'N'; // Riga 0 (Rossi)
+        gameState.board[c] = 'B'; // Riga 4 (Ori)
     }
     
     gameState.currentPlayer = 'B';
@@ -89,7 +89,7 @@ function checkGlobalCaptures() {
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 4)
-// Calcolo Mosse Mappato su Dimensioni Variabili e Combo a Zigzag
+// Calcolo Mosse Mappato su Dimensioni Variabili e Generatore Scenari Combo
 // ============================================================================
 
 function getPieceMoves(board, r, c, playerLastMove) {
@@ -138,14 +138,13 @@ function getPieceMoves(board, r, c, playerLastMove) {
 function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveRef) {
     let results = [];
     
-    function simulate(currentBoard, r, c, accumulatedCaptures) {
+    function simulate(currentBoard, r, c, stepByStepMoves) {
         let moves = getPieceMoves(currentBoard, r, c, lastMoveRef);
         let captureMoves = moves.filter(m => m.isCapture);
         
         if (captureMoves.length === 0) {
             let generatedBoards = [];
             const pieceCount = countLivePieces(currentBoard, player);
-            
             const isMeta = (player === 'B' && r === 0 && startR !== 0) || 
                            (player === 'N' && r === 4 && startR !== 4);
                            
@@ -157,7 +156,8 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
                             resBoard[br][bc] = player;
                             generatedBoards.push({
                                 board: resBoard,
-                                lastMove: { fromR: startR, fromC: startC, toR: r, toC: c }
+                                lastMove: { fromR: startR, fromC: startC, toR: r, toC: c },
+                                steps: [...stepByStepMoves]
                             });
                         }
                     }
@@ -165,7 +165,8 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
             } else {
                 generatedBoards.push({
                     board: currentBoard.map(row => [...row]),
-                    lastMove: { fromR: startR, fromC: startC, toR: r, toC: c }
+                    lastMove: { fromR: startR, fromC: startC, toR: r, toC: c },
+                    steps: [...stepByStepMoves]
                 });
             }
             results.push(...generatedBoards);
@@ -178,16 +179,16 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
             nextBoard[cap.toR][cap.toC] = player;
             nextBoard[cap.fromR][cap.fromC] = null;
             
-            simulate(nextBoard, cap.toR, cap.toC, accumulatedCaptures + 1);
+            simulate(nextBoard, cap.toR, cap.toC, [...stepByStepMoves, cap]);
         }
     }
     
-    simulate(initialBoard.map(row => [...row]), startR, startC, 0);
+    simulate(initialBoard.map(row => [...row]), startR, startC, []);
     return results;
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 4)
-// IA Cautelativa Integrata su Righe Variabili e Scelta della Risurrezione
+// IA Cautelativa Deterministica a Scenario Predittivo
 // ============================================================================
 
 function evaluateBoard(board) {
@@ -240,12 +241,11 @@ function makeCPUMove() {
                             let placed = false;
                             
                             if (!inAdvantage) {
-                                // Sotto-riga protetta del PC: riga 3 (che ha 5 colonne!)
-                                for (let bc = 0; bc < 5; bc++) {
-                                    if (nextBoard[3][bc] === null) {
+                                for (let bc = 0; bc < getColsForId(3); bc++) {
+                                    if (nextBoard[bc] === null) {
                                         let resBoard = nextBoard.map(row => [...row]);
-                                        resBoard[3][bc] = 'N';
-                                        cpuScenarios.push({ board: resBoard, lastMove: m });
+                                        resBoard[bc] = 'N';
+                                        cpuScenarios.push({ board: resBoard, lastMove: m, steps: [m] });
                                         placed = true; break;
                                     }
                                 }
@@ -256,7 +256,7 @@ function makeCPUMove() {
                                         if (nextBoard[br][bc] === null) {
                                             let resBoard = nextBoard.map(row => [...row]);
                                             resBoard[br][bc] = 'N';
-                                            cpuScenarios.push({ board: resBoard, lastMove: m });
+                                            cpuScenarios.push({ board: resBoard, lastMove: m, steps: [m] });
                                             placed = true; break;
                                         }
                                     }
@@ -264,7 +264,7 @@ function makeCPUMove() {
                                 }
                             }
                         } else {
-                            cpuScenarios.push({ board: nextBoard, lastMove: m });
+                            cpuScenarios.push({ board: nextBoard, lastMove: m, steps: [m] });
                         }
                     }
                 }
@@ -323,19 +323,11 @@ function makeCPUMove() {
         }
     }
     
-    gameState.board = bestScenario.board;
-    gameState.lastMoves.N = bestScenario.lastMove;
-    
-    if (checkVictoryConditions()) return;
-    
-    gameState.currentPlayer = 'B';
-    checkGlobalCaptures();
-    renderBoard();
-    updateUI();
+    executeAnimateCPUSteps(bestScenario.steps, bestScenario.board, bestScenario.lastMove);
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 4)
-// Renderizzatore della Sequenza Cromatica Forzata e Input Mobile-First
+// Renderizzatore Temporizzato, Gestione dei Salti ed Eventi di Gioco Mobile-First
 // ============================================================================
 
 function renderBoard() {
@@ -343,9 +335,9 @@ function renderBoard() {
     if (!boardDiv) return;
     boardDiv.innerHTML = '';
     
-    // Sequenze rigide richieste: 1 = Scuro, 2 = Medio, 3 = Chiaro
-    const rowEvenPattern =; // Fila da 6 (Scuro, Medio, Chiaro...)
-    const rowOddPattern  =;    // Fila da 5 (Chiaro, Scuro, Medio...)
+    // NOTA: Ricordati di riempire queste due righe a mano alla riga dell'errore su VS Code!
+    const rowEvenPattern =[1, 2, 3, 1, 2, 3]; 
+    const rowOddPattern  =[3, 1, 2, 3, 1];    
     
     for (let r = 0; r < ROWS; r++) {
         const rowDiv = document.createElement('div');
@@ -356,8 +348,6 @@ function renderBoard() {
         
         for (let c = 0; c < cols; c++) {
             const cellDiv = document.createElement('div');
-            
-            // Estrae il colore esatto forzato dallo schema manuale
             const colorIndex = currentPattern[c];
             
             cellDiv.className = `hex-cell color-${colorIndex}`;
@@ -376,8 +366,17 @@ function renderBoard() {
                 const pieceDiv = document.createElement('div');
                 pieceDiv.className = `piece ${piece === 'B' ? 'white' : 'black'}`;
                 
+                // 🛡️ CORRETTO E SELETTIVO: Se c'è l'obbligo globale, spegne l'alone di turno sulle altre pedine
                 if (gameState.currentPlayer === piece && !gameState.resurrectionPending) {
-                    pieceDiv.classList.add('active-turn');
+                    if (gameState.mustCapture && piece === 'B') {
+                        const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
+                        if (pMoves.some(m => m.isCapture)) {
+                            pieceDiv.classList.add('can-capture'); // Accende SOLO quelle obbligate
+                        }
+                        // Se NON può mangiare, la classe "active-turn" non viene applicata (rimane spenta)
+                    } else {
+                        pieceDiv.classList.add('active-turn'); // Turno normale senza obblighi
+                    }
                 }
                 cellDiv.appendChild(pieceDiv);
             }
@@ -387,6 +386,36 @@ function renderBoard() {
         }
         boardDiv.appendChild(rowDiv);
     }
+}
+
+function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
+    let index = 0;
+    
+    function nextStep() {
+        if (index < steps.length) {
+            let m = steps[index];
+            if (m.isCapture) {
+                gameState.board[m.capturedR][m.capturedC] = null;
+            }
+            gameState.board[m.toR][m.toC] = 'N';
+            gameState.board[m.fromR][m.fromC] = null;
+            
+            renderBoard();
+            index++;
+            setTimeout(nextStep, 550);
+        } else {
+            gameState.board = finalBoard;
+            gameState.lastMoves.N = finalLastMove;
+            
+            if (checkVictoryConditions()) return;
+            
+            gameState.currentPlayer = 'B';
+            checkGlobalCaptures();
+            renderBoard();
+            updateUI();
+        }
+    }
+    nextStep();
 }
 
 function handleCellClick(r, c) {
@@ -466,11 +495,11 @@ function checkVictoryConditions() {
     
     let bOnFront = 0, nOnFront = 0;
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[0][c] === 'N') nOnFront++;
-        if (gameState.board[4][c] === 'B') bOnFront++;
+        if (gameState.board[c] === 'N') nOnFront++; 
+        if (gameState.board[c] === 'B') bOnFront++; 
     }
-    if (bOnFront === bCount && bCount > 0) { endGame('B'); return true; }
-    if (nOnFront === nCount && nCount > 0) { endGame('N'); return true; }
+    if (bOnFront === 6) { endGame('B'); return true; }
+    if (nOnFront === 6) { endGame('N'); return true; }
     
     return false;
 }
@@ -489,7 +518,7 @@ function updateUI() {
     
     if (gameState.currentPlayer) {
         document.getElementById('turn-indicator').innerText = 
-            gameState.currentPlayer === 'B' ? "Turno dell'Umano (Bianchi)" : "Calcolo IA (Neri)...";
+            gameState.currentPlayer === 'B' ? "Turno dell'Umano (Oro)" : "Calcolo IA (Rossi)...";
     }
 }
 

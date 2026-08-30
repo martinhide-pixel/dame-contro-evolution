@@ -1,3 +1,14 @@
+/* ============================================================================
+   DAME CONTRO EVOLUTION - STYLE.CSS DEFINITIVO
+   Effetto Pietra Foto Reale, Pedine Oro vs Rosso (Senza Aloni Esterni di Turno)
+   ============================================================================ */
+
+:root {
+    --hex-w: 64px;
+    --hex-h: 74px;
+    --row-offset: -18px;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,7 +18,9 @@
 }
 
 body {
-    background: radial-gradient(circle, #161623 0%, #0a0a10 100%);
+    background: 
+        linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.4) 100%),
+        radial-gradient(circle at 50% 30%, #1b264f 0%, #111625 60%, #080a10 100%);
     color: #e0d4be;
     font-family: 'Cinzel', serif;
     min-height: 100vh;
@@ -32,24 +45,24 @@ header h1 {
     font-weight: 900;
     letter-spacing: 3px;
     color: #dfb76c;
-    text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
 }
 
 .subtitle {
     font-size: 1rem;
     letter-spacing: 5px;
-    color: #a8a8a8;
+    color: #8c9bb3;
     margin-bottom: 15px;
 }
 
 #status-panel {
-    background: rgba(15, 15, 25, 0.85);
+    background: rgba(12, 17, 34, 0.85);
     border: 2px solid #dfb76c;
     border-radius: 8px;
     padding: 10px 20px;
     width: 100%;
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 0 10px rgba(27, 38, 79, 0.5);
 }
 
 #turn-indicator {
@@ -57,47 +70,52 @@ header h1 {
     font-weight: bold;
     margin-bottom: 5px;
     color: #fff;
+    text-shadow: 0 0 5px rgba(255,255,255,0.3);
 }
 
 #scoreboard {
     font-size: 0.9rem;
-    color: #ccc;
+    color: #a3b2cc;
 }
 
+/* Sfondo interno plancia in acciaio brunito e metallo spazzolato */
 #board-container {
     width: 100%;
-    background: linear-gradient(135deg, #2d1f10 0%, #171008 100%);
+    max-width: 440px;
+    background: 
+        linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.5) 100%),
+        repeating-linear-gradient(45deg, #252830 0px, #2a2d36 2px, #1e2026 4px);
     border: 5px ridge #dfb76c;
     border-radius: 14px;
-    padding: 35px 15px;
+    padding: 40px 10px;
     box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 12px 30px rgba(0,0,0,0.8);
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 #hex-board {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    width: 100%;
+    gap: 4px;
+    width: auto;
 }
 
 .hex-row {
     display: flex;
     justify-content: center;
-    margin-top: -15px; 
+    margin-top: var(--row-offset);
 }
 
 .hex-row:first-child {
     margin-top: 0;
 }
 
+/* LA CORNICE ACCIAIO 3D DEL TASSELLO */
 .hex-cell {
-    width: 13.6vw;
-    height: 15.6vw;
-    max-width: 65px;
-    max-height: 75px;
+    width: var(--hex-w);
+    height: var(--hex-h);
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     margin: 0 2px;
     display: flex;
@@ -105,80 +123,104 @@ header h1 {
     align-items: center;
     cursor: pointer;
     position: relative;
-    transition: filter 0.2s, transform 0.2s;
-    /* Strato metallico di base comune a tutte le celle */
+    transition: filter 0.15s, transform 0.1s;
+    background: linear-gradient(180deg, #9e9e9e 0%, #757575 15%, #424242 85%, #212121 100%);
+    filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.85));
+}
+
+/* CUORE IN PIETRA CON ANCORAGGIO FIXED ANTI-PIASTRELLATURA */
+.hex-cell::after {
+    content: "";
+    position: absolute;
+    top: 3px; left: 3px;
+    width: calc(var(--hex-w) - 6px);
+    height: calc(var(--hex-h) - 6px);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    z-index: 2;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+    background-attachment: fixed !important;
 }
 
-/* 🎨 FINITURA LEGNO NOBILE + RIFLESSO METALLICO SPAZZOLATO */
-/* Colore 1: Legno di Noce Chiaro Satinato */
-.hex-cell.color-1 {
-    background: 
-        linear-gradient(80deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.2) 100%),
-        repeating-linear-gradient(90deg, #6d4c41 0px, #5d4037 4px, #7d5748 8px);
-    border: 1px solid rgba(255,255,255,0.1);
+/* MATERIALITÀ IN PIETRA STAMPA 3D A 15° */
+.hex-cell.color-1::after {
+    background-image: 
+        linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%),
+        repeating-linear-gradient(15deg, #1c1d22 0px, #141518 2px, #23252a 4px);
 }
 
-/* Colore 2: Legno d'Ebano con Riflessi Acciaio Bruno */
-.hex-cell.color-2 {
-    background: 
-        linear-gradient(80deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 100%),
-        repeating-linear-gradient(90deg, #3e2723 0px, #271714 6px, #4e342e 12px);
-    border: 1px solid rgba(255,255,255,0.05);
+.hex-cell.color-2::after {
+    background-image: 
+        linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.3) 100%),
+        repeating-linear-gradient(15deg, #5c626b 0px, #51565e 3px, #69707a 6px);
 }
 
-/* Colore 3: Legno Titanio / Oliva Brunito Metallizzato */
-.hex-cell.color-3 {
-    background: 
-        linear-gradient(80deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 35%, rgba(0,0,0,0.4) 100%),
-        repeating-linear-gradient(90deg, #263238 0px, #1a2327 5px, #37474f 10px);
-    border: 1px solid rgba(255,255,255,0.08);
+.hex-cell.color-3::after {
+    background-image: 
+        linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.15) 100%),
+        repeating-linear-gradient(15deg, #e1e5ed 0px, #d2d7e0 3px, #edf1f7 6px);
 }
 
-/* Effetti di luce al passaggio e selezione */
 .hex-cell:hover {
-    filter: brightness(1.15);
+    filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.85)) brightness(1.15);
 }
 
 .hex-cell.selectable {
-    filter: brightness(1.3) contrast(1.1);
-    transform: scale(1.03);
+    filter: drop-shadow(0px 2px 1px rgba(0, 0, 0, 0.9)) brightness(1.2);
+    transform: translateY(2px);
 }
 
 .hex-cell.highlight-target {
+    background: linear-gradient(180deg, #aeffae 0%, #2e7d32 100%) !important;
+}
+.hex-cell.highlight-target::after {
     background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%) !important;
-    filter: brightness(1.2) drop-shadow(0 0 5px #2e7d32);
+    background-attachment: scroll !important;
 }
 
-/* Pedine Araldiche Spesse */
+/* PEDINE CIRCOLARI PERFETTE SFERICHE */
 .piece {
-    width: 68%;
-    height: 68%;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     box-shadow: 0 5px 8px rgba(0,0,0,0.7), inset 0 -4px 6px rgba(0,0,0,0.4);
     position: relative;
-    z-index: 10;
+    z-index: 10; 
 }
 
+/* Pedina Umano in Oro Araldico Satinato */
 .piece.white {
-    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cfcfcf 60%, #9e9e9e 100%);
+    background: radial-gradient(circle at 35% 35%, #ffe082 0%, #ca9b30 65%, #6d4c0f 100%);
     border: 2px solid #dfb76c;
 }
 
+/* Pedina PC in Rosso Rubino Metallico */
 .piece.black {
-    background: radial-gradient(circle at 35% 35%, #494949 0%, #1c1c1c 65%, #050505 100%);
-    border: 2px solid #616161;
+    background: radial-gradient(circle at 35% 35%, #e53935 0%, #b71c1c 65%, #4a0000 100%);
+    border: 2px solid #d32f2f;
 }
 
+/* 🔄 ALONE DIETRO RIMOSSO COMPLETAMENTE: Ora il turno standard modifica dolcemente la luminosità interna */
 .piece.active-turn {
     transform: translateZ(0);
     will-change: filter;
-    animation: pulseGlow 1.4s infinite alternate;
+    animation: pulseGlowNormal 1.4s infinite alternate ease-in-out;
 }
 
-@keyframes pulseGlow {
-    0% { filter: brightness(1) drop-shadow(0 0 3px #dfb76c); }
-    100% { filter: brightness(1.25) drop-shadow(0 0 9px #dfb76c); }
+@keyframes pulseGlowNormal {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.22); }
+}
+
+/* 🟥 ALONE DIETRO RIMOSSO COMPLETAMENTE: Il segnale visivo obbligatorio pulsa solo di colore interno */
+.piece.can-capture {
+    transform: translateZ(0);
+    will-change: filter;
+    animation: pulseGlowCapture 0.7s infinite alternate ease-in-out !important;
+}
+
+@keyframes pulseGlowCapture {
+    0% { filter: brightness(0.9) contrast(1.1); }
+    100% { filter: brightness(1.4) contrast(1.3) saturate(1.4); }
 }
 
 #controls {
@@ -203,4 +245,12 @@ button {
 
 button:hover {
     background: linear-gradient(135deg, #a68348 0%, #6f552b 100%);
+}
+
+@media (max-width: 440px) {
+    #board-container { padding: 25px 5px; }
+    #hex-board { transform: scale(0.82); transform-origin: center center; }
+}
+@media (max-width: 370px) {
+    #hex-board { transform: scale(0.72); }
 }
