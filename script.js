@@ -41,7 +41,7 @@ function initGame() {
         gameState.board.push(Array(getColsForId(r)).fill(null));
     }
     
-    // CORRETTO E BLINDATO: Assegnazione bidimensionale esatta riga/colonna [0][c] e [4][c]
+    // Posizionamento iniziale stabile bidimensionale [riga][colonna]
     for (let c = 0; c < 6; c++) {
         gameState.board[0][c] = 'N'; // 6 Rossi posizionati stabilmente sulla riga 0
         gameState.board[4][c] = 'B'; // 6 Ori posizionati stabilmente sulla riga 4
@@ -188,19 +188,30 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 4)
-// IA Cautelativa Deterministica a Scenario Predittivo
+// IA Cautelativa ed Euristica di Risurrezione Strategica
 // ============================================================================
 
+// AGGIORNATO: Matrice di valutazione riscritta per spingere l'IA a usare la Risurrezione
 function evaluateBoard(board) {
     let score = 0;
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (board[r][c] === 'N') {
-                score += 100;
-                score += (r * 15);
+                score += 100; // Valore base pedina PC
+                
+                // STRATEGIA: Penalizza leggermente le pedine PC bloccate sulla riga di Meta (riga 4)
+                if (r === 4) {
+                    score += 15; // Massimo avanzamento territoriale ma ridotto rispetto a prima
+                } else {
+                    score += (r * 25); // Premia fortemente la spinta territoriale attiva (es. riga 3)
+                }
             } else if (board[r][c] === 'B') {
-                score -= 100;
-                score -= ((4 - r) * 15);
+                score -= 100; // Valore base pedina Umano
+                if (r === 0) {
+                    score -= 15;
+                } else {
+                    score -= ((4 - r) * 25);
+                }
             }
         }
     }
@@ -237,30 +248,15 @@ function makeCPUMove() {
                         
                         const isMeta = (m.toR === 4 && m.fromR !== 4);
                         if (isMeta && countLivePieces(nextBoard, 'N') < MAX_PIECES) {
-                            let inAdvantage = evaluateBoard(nextBoard) >= 0;
-                            let placed = false;
-                            
-                            if (!inAdvantage) {
-                                for (let bc = 0; bc < getColsForId(3); bc++) {
-                                    if (nextBoard[3][bc] === null) { // CORRETTO: [3][bc] bidimensionale
+                            // STRATEGIA: Genera scenari di risurrezione simulando TUTTE le caselle vuote
+                            // L'IA valuterà matematicamente quale casella di rinascita disturba di più l'Umano
+                            for (let br = 0; br < ROWS; br++) {
+                                for (let bc = 0; bc < getColsForId(br); bc++) {
+                                    if (nextBoard[br][bc] === null) {
                                         let resBoard = nextBoard.map(row => [...row]);
-                                        resBoard[3][bc] = 'N';
+                                        resBoard[br][bc] = 'N';
                                         cpuScenarios.push({ board: resBoard, lastMove: m, steps: [m] });
-                                        placed = true; break;
                                     }
-                                }
-                            }
-                            if (!placed) {
-                                for (let br = 0; br < ROWS; br++) {
-                                    for (let bc = 0; bc < getColsForId(br); bc++) {
-                                        if (nextBoard[br][bc] === null) {
-                                            let resBoard = nextBoard.map(row => [...row]);
-                                            resBoard[br][bc] = 'N';
-                                            cpuScenarios.push({ board: resBoard, lastMove: m, steps: [m] });
-                                            placed = true; break;
-                                        }
-                                    }
-                                    if (placed) break;
                                 }
                             }
                         } else {
@@ -492,22 +488,14 @@ function checkVictoryConditions() {
     if (nCount === 0) { endGame('B'); return true; }
     
     let bOnFront = 0, nOnFront = 0;
-    // CORRETTO E BLINDATO: Verifica bidimensionale esatta [riga][colonna] per le linee di meta finali
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[4][c] === 'N') nOnFront++; // Riga 4 indiciata al pixel per PC
-        if (gameState.board[0][c] === 'B') bOnFront++; // Riga 0 indiciata al pixel per Umano
+        if (gameState.board[4][c] === 'N') nOnFront++; 
+        if (gameState.board[0][c] === 'B') bOnFront++; 
     }
     if (bOnFront === 6) { endGame('B'); return true; }
     if (nOnFront === 6) { endGame('N'); return true; }
     
     return false;
-}
-
-function endGame(winner) {
-    document.getElementById('turn-indicator').innerText = 
-        winner === 'B' ? "TRIONFO! L'Umano domina la plancia" : "SCONFITTA! L'IA ha preso il controllo";
-    gameState.currentPlayer = null;
-    renderBoard();
 }
 
 function updateUI() {
