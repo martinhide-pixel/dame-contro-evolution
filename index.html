@@ -3,45 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dame Contro</title>
+    <title>Dame Contro Evolution</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cinzel:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <!-- Logo medievale al posto del titolo testuale -->
-    <div id="logo-container">
-        <img src="logo.png" id="game-logo" alt="Dame Contro Logo">
-    </div>
-    
-    <div id="controls-panel">
-        <div class="menu-box">
-            <label for="game-mode">Partita: </label>
-            <select id="game-mode">
-                <option value="pvp">Umano vs Umano</option>
-                <option value="pvc_2">Umano vs PC - Facile</option>
-                <option value="pvc_4">Umano vs PC - Difficile</option>
-                <option value="pvc_6" selected>Umano vs PC - Estremo</option>
-            </select>
-        </div>
-    </div>
-    
     <div id="game-container">
-        <div id="left-panel">
-            <div id="board-container">
-                <div id="board"></div>
-                <div id="victory-screen" class="hidden">
-                    <div id="victory-text">VITTORIA!</div>
-                </div>
+        <header>
+            <h1>DAME CONTRO</h1>
+            <div class="subtitle">EVOLUTION</div>
+        </header>
+
+        <div id="status-panel">
+            <div id="turn-indicator">Inizializzazione...</div>
+            <div id="scoreboard">
+                <span>Bianchi (Umano): <b id="score-human">6</b></span> | 
+                <span>Neri (PC): <b id="score-cpu">6</b></span>
             </div>
-            <button id="reset-btn">Ricomincia da Capo</button>
         </div>
 
-        <div id="log-panel">
-            <h3>Avvisi di Gioco</h3>
-            <div id="log-box">Benvenuto a Dame Contro! Il Bianco inizia.</div>
+        <div id="board-container">
+            <div id="hex-board"></div>
+        </div>
+
+        <div id="controls">
+            <button id="btn-restart" onclick="initGame()">Ricomincia Partita</button>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>

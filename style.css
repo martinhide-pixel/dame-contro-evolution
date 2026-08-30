@@ -1,345 +1,206 @@
-:root {
-    /* Dimensioni di default per PC */
-    --board-size: 400px;
-    --cell-size: 80px;
-}
-
-/* Blocca l'intera pagina per evitare scorrimenti sia verticali che orizzontali */
-html, body {
-    width: 100%;
-    height: 100%;
-    height: 100dvh;
+* {
+    box-sizing: border-box;
     margin: 0;
-    padding: 10px;
-    box-sizing: border-box;
-    overflow: hidden;
-    font-family: 'Cinzel', 'Georgia', serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #2b221a; 
-    background-image: radial-gradient(circle, #3d2f25 0%, #1a1411 100%);
-    -webkit-user-select: none;
+    padding: 0;
     user-select: none;
+    -webkit-user-select: none;
 }
 
-/* Gestione del logo responsivo */
-#logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 100%;
-    max-width: var(--board-size);
-}
-
-#game-logo {
-    height: 150px; /* Altezza raddoppiata per PC */
-    width: auto;
-    object-fit: contain;
-    filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
-}
-
-#controls-panel {
-    display: flex;
-    gap: 10px;
-    margin: 5px 0 10px 0;
-    width: 100%;
-    max-width: var(--board-size);
-}
-
-.menu-box {
-    background: #4a3625; 
-    border: 2px solid #8c6645;
-    padding: 5px 15px;
-    border-radius: 4px;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
-    font-weight: bold;
-    color: #f5eccd;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    justify-content: center;
-    box-sizing: border-box;
-}
-
-.menu-box label {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.menu-box select {
-    padding: 4px 8px;
-    font-size: 0.85rem;
+body {
+    background: radial-gradient(circle, #161623 0%, #0a0a10 100%);
+    color: #e0d4be;
     font-family: 'Cinzel', serif;
-    font-weight: bold;
-    background-color: #2b1d11;
-    color: #dfb76c;
-    border: 1px solid #8c6645;
-    border-radius: 3px;
-    cursor: pointer;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
 }
 
 #game-container {
-    display: flex;
-    flex-direction: row; 
-    gap: 20px;
-    align-items: flex-start;
-    justify-content: center;
     width: 100%;
-    max-width: 700px;
-}
-
-#left-panel {
+    max-width: 500px;
+    padding: 15px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: var(--board-size);
 }
 
-/* Cornice legno esterna a spessore protetto per evitare di tagliare i Bianchi */
+header h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #dfb76c;
+    text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+.subtitle {
+    font-size: 1rem;
+    letter-spacing: 5px;
+    color: #a8a8a8;
+    margin-bottom: 15px;
+}
+
+#status-panel {
+    background: rgba(15, 15, 25, 0.85);
+    border: 2px solid #dfb76c;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+#turn-indicator {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+#scoreboard {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
 #board-container {
-    position: relative;
-    width: var(--board-size);
-    height: var(--board-size);
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 
-        0 0 0 8px #543922, 
-        0 0 0 10px #362211, 
-        inset 0 0 15px rgba(0, 0, 0, 0.7),
-        0 10px 20px rgba(0, 0, 0, 0.6);
-}
-
-#board {
-    display: grid;
-    grid-template-columns: repeat(5, var(--cell-size));
-    grid-template-rows: repeat(5, var(--cell-size));
     width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    background-color: #362211;
-}
-
-#victory-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(26, 17, 11, 0.95); 
-    box-sizing: border-box;
+    background: linear-gradient(135deg, #2d1f10 0%, #171008 100%);
+    border: 5px ridge #dfb76c;
+    border-radius: 14px;
+    padding: 35px 15px;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 12px 30px rgba(0,0,0,0.8);
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#hex-board {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.hex-row {
+    display: flex;
+    justify-content: center;
+    margin-top: -15px; 
+}
+
+.hex-row:first-child {
+    margin-top: 0;
+}
+
+.hex-cell {
+    width: 13.6vw;
+    height: 15.6vw;
+    max-width: 65px;
+    max-height: 75px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    margin: 0 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    transition: filter 0.2s, transform 0.2s;
+    /* Strato metallico di base comune a tutte le celle */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+/* 🎨 FINITURA LEGNO NOBILE + RIFLESSO METALLICO SPAZZOLATO */
+/* Colore 1: Legno di Noce Chiaro Satinato */
+.hex-cell.color-1 {
+    background: 
+        linear-gradient(80deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.2) 100%),
+        repeating-linear-gradient(90deg, #6d4c41 0px, #5d4037 4px, #7d5748 8px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Colore 2: Legno d'Ebano con Riflessi Acciaio Bruno */
+.hex-cell.color-2 {
+    background: 
+        linear-gradient(80deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 100%),
+        repeating-linear-gradient(90deg, #3e2723 0px, #271714 6px, #4e342e 12px);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Colore 3: Legno Titanio / Oliva Brunito Metallizzato */
+.hex-cell.color-3 {
+    background: 
+        linear-gradient(80deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 35%, rgba(0,0,0,0.4) 100%),
+        repeating-linear-gradient(90deg, #263238 0px, #1a2327 5px, #37474f 10px);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Effetti di luce al passaggio e selezione */
+.hex-cell:hover {
+    filter: brightness(1.15);
+}
+
+.hex-cell.selectable {
+    filter: brightness(1.3) contrast(1.1);
+    transform: scale(1.03);
+}
+
+.hex-cell.highlight-target {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%) !important;
+    filter: brightness(1.2) drop-shadow(0 0 5px #2e7d32);
+}
+
+/* Pedine Araldiche Spesse */
+.piece {
+    width: 68%;
+    height: 68%;
+    border-radius: 50%;
+    box-shadow: 0 5px 8px rgba(0,0,0,0.7), inset 0 -4px 6px rgba(0,0,0,0.4);
+    position: relative;
     z-index: 10;
 }
 
-#victory-text {
-    color: #dfb76c; 
-    font-size: 1.4rem;
-    font-weight: bold;
-    text-align: center;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
-    padding: 15px;
-    font-family: 'Cinzel Decorative', serif;
-    letter-spacing: 1px;
-    line-height: 2.2rem;
-    border-top: 2px double #dfb76c;
-    border-bottom: 2px double #dfb76c;
+.piece.white {
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cfcfcf 60%, #9e9e9e 100%);
+    border: 2px solid #dfb76c;
 }
 
-.hidden {
-    display: none !important;
+.piece.black {
+    background: radial-gradient(circle at 35% 35%, #494949 0%, #1c1c1c 65%, #050505 100%);
+    border: 2px solid #616161;
 }
 
-.cell {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.cell.chiara { 
-    background-color: #d2b48c; 
-    background-image: linear-gradient(135deg, #dfc4a1 0%, #c4a27a 100%);
-    box-shadow: inset 1px 1px 2px rgba(255,255,255,0.3), inset -1px -1px 2px rgba(0,0,0,0.1);
-}
-.cell.scura { 
-    background-color: #5c4033; 
-    background-image: linear-gradient(135deg, #6e4d3c 0%, #462e24 100%);
-    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.4);
-}
-
-.cell.selected { 
-    background-image: linear-gradient(135deg, #ffd700 0%, #b8860b 100%) !important;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-}
-.cell.highlight { 
-    background-image: linear-gradient(135deg, #a3c1ad 0%, #2e5a44 100%) !important; 
-    opacity: 0.85;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
-}
-.cell.forbidden { 
-    background-image: linear-gradient(135deg, #cd5c5c 0%, #7f1d1d 100%) !important; 
-    opacity: 0.85; 
-    cursor: not-allowed;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
-}
-
-.dama {
-    width: calc(var(--cell-size) * 0.72);
-    height: calc(var(--cell-size) * 0.72);
-    border-radius: 50%;
-    box-sizing: border-box;
-    position: relative;
-    transition: box-shadow 0.3s ease;
-    /* Forza l'accelerazione hardware per sbloccare l'alone su smartphone */
+.piece.active-turn {
     transform: translateZ(0);
-    will-change: box-shadow;
+    will-change: filter;
+    animation: pulseGlow 1.4s infinite alternate;
 }
 
-.dama.B {
-    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #d1d5db 45%, #9ca3af 80%, #4b5563 100%);
-    border: 3px solid #e5e7eb;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 2px 3px rgba(255,255,255,0.8);
+@keyframes pulseGlow {
+    0% { filter: brightness(1) drop-shadow(0 0 3px #dfb76c); }
+    100% { filter: brightness(1.25) drop-shadow(0 0 9px #dfb76c); }
 }
 
-.dama.N {
-    background: radial-gradient(circle at 35% 35%, #4b5563 0%, #1f2937 45%, #111827 80%, #030712 100%);
-    border: 3px solid #374151;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,255,255,0.2);
-}
-
-/* ALONE DI TURNO BIANCO (Fornito di accelerazione grafica per smartphone) */
-.active-turn-B {
-    animation: pulse-glow-B 2s infinite ease-in-out;
-}
-@keyframes pulse-glow-B {
-    0% { box-shadow: 0 0 4px #dfb76c, 0 4px 6px rgba(0,0,0,0.6); }
-    50% { box-shadow: 0 0 20px #dfb76c, 0 4px 6px rgba(0,0,0,0.6); }
-    100% { box-shadow: 0 0 4px #dfb76c, 0 4px 6px rgba(0,0,0,0.6); }
-}
-
-/* ALONE DI TURNO NERO (PC) */
-.active-turn-N {
-    animation: pulse-glow-N 2s infinite ease-in-out;
-}
-@keyframes pulse-glow-N {
-    0% { box-shadow: 0 0 4px #e74c3c, 0 4px 6px rgba(0,0,0,0.7); }
-    50% { box-shadow: 0 0 20px #e74c3c, 0 4px 6px rgba(0,0,0,0.7); }
-    100% { box-shadow: 0 0 4px #e74c3c, 0 4px 6px rgba(0,0,0,0.7); }
-}
-
-.mandatory-attacker {
-    box-shadow: 0 0 0 4px #d97706, 0 4px 8px rgba(0,0,0,0.6) !important;
-    animation: pulse-scale 1.5s infinite ease-in-out;
-}
-@keyframes pulse-scale {
-    0% { transform: scale(1) translateZ(0); }
-    50% { transform: scale(1.05) translateZ(0); }
-    100% { transform: scale(1) translateZ(0); }
-}
-
-#log-panel {
-    width: var(--board-size);
-    box-sizing: border-box;
-    background-color: #f2e6ce;
-    background-image: radial-gradient(circle at 50% 50%, #fcf5e3 0%, #eae0ca 100%);
-    border: 3px solid #8c6645;
-    border-radius: 4px;
-    padding: 6px;
-    box-shadow: inset 0 0 10px rgba(43,34,26,0.2), 0 4px 10px rgba(0,0,0,0.4);
-    display: flex;
-    flex-direction: column;
-}
-
-#log-panel h3 {
-    margin-top: 0;
-    margin-bottom: 4px;
-    color: #4a3625;
-    border-bottom: 2px double #8c6645;
-    padding-bottom: 2px;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: center;
-}
-
-#log-box {
-    height: 40px; 
-    overflow: hidden;
-    font-size: 0.85rem;
-    line-height: 1.3rem;
-    color: #2b1d11;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column-reverse; 
-}
-
-.log-entry {
-    margin-bottom: 2px;
-    padding-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
-}
-
-.log-entry.alert-msg { color: #b45309; } 
-.log-entry.victory-msg { color: #15803d; } 
-
-#reset-btn {
-    margin-top: 8px;
-    margin-bottom: 0;
-    padding: 10px 20px;
-    font-size: 0.9rem;
-    font-family: 'Cinzel', serif;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #dfb76c;
-    background-color: #4a3625;
-    background-image: linear-gradient(135deg, #5c4033 0%, #362211 100%);
-    border: 2px solid #8c6645;
-    border-radius: 4px;
-    cursor: pointer;
+#controls {
+    margin-top: 20px;
     width: 100%;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.1);
 }
 
-#reset-btn:hover {
-    background-image: linear-gradient(135deg, #6e4d3c 0%, #462e24 100%);
-    color: #f5eccd;
+button {
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(135deg, #8a6d3b 0%, #5a4522 100%);
+    border: 2px solid #dfb76c;
+    color: #fff;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    width: 100%;
+    transition: background 0.3s;
 }
 
-/* MEDIA QUERY PER SMARTPHONE */
-@media (max-width: 768px) {
-    :root {
-        --board-size: 76vw; 
-        --cell-size: calc(76vw / 5);
-    }
-    
-    #game-logo {
-        height: 120px;
-    }
-
-    #game-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    #log-panel {
-        width: var(--board-size);
-    }
+button:hover {
+    background: linear-gradient(135deg, #a68348 0%, #6f552b 100%);
 }

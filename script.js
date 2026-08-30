@@ -1,438 +1,496 @@
-// =========================================================================
-// PARTE 1 DI 4: CONFIGURAZIONI, STATO DI GIOCO E RENDERING DELLA SCACCHIERA
-// =========================================================================
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 4)
+// Geometria a Righe Alternate (6,5,6,5,6), Pattern Manuale a 3 Colori e Stato
+// ============================================================================
 
-const boardElement = document.getElementById('board');
-const resetBtn = document.getElementById('reset-btn');
-const gameModeSelect = document.getElementById('game-mode');
-const logBox = document.getElementById('log-box');
-const victoryScreen = document.getElementById('victory-screen');
-const victoryText = document.getElementById('victory-text');
+const ROWS = 5;
+const MAX_PIECES = 6;
 
-let board = [
-    ['N', 'N', 'N', 'N', 'N'],
-    [null, null, null, null, null],
-    [null, null, null, null, null],
-    [null, null, null, null, null],
-    ['B', 'B', 'B', 'B', 'B']
-];
+// Ritorna il numero corretto di colonne per una determinata riga (0-indexed)
+function getColsForId(r) {
+    return (r % 2 === 0) ? 6 : 5; // Righe 0, 2, 4 -> 6 colonne | Righe 1, 3 -> 5 colonne
+}
 
-let currentPlayer = 'B'; 
-let selectedPiece = null; 
-let isMultiJumpPhase = false; 
-let isRevivalPhase = false; 
-
-let gameMode = gameModeSelect.value === 'pvp' ? 'pvp' : 'pvc';
-let aiDepth = 2; // Forzato a 2 turni deterministici completi
-
-let lastMoves = { 'B': null, 'N': null };
-
-const DIRECTIONS = [];
-for (let x = -1; x <= 1; x++) {
-    for (let y = -1; y <= 1; y++) {
-        if (x !== 0 || y !== 0) DIRECTIONS.push([x, y]);
+// Calcola i vicini in una griglia esagonale a nido d'ape compatta (Righe alternate 6 e 5)
+function getNeighborCoords(r, c, dir) {
+    const isRowOf5 = (r % 2 !== 0);
+    switch(dir) {
+        case 0: return isRowOf5 ? {r: r - 1, c: c}     : {r: r - 1, c: c - 1}; // Alto-Sx
+        case 1: return isRowOf5 ? {r: r - 1, c: c + 1} : {r: r - 1, c: c};     // Alto-Dx
+        case 2: return {r: r,     c: c + 1};                                // Destra
+        case 3: return isRowOf5 ? {r: r + 1, c: c + 1} : {r: r + 1, c: c};     // Basso-Dx
+        case 4: return isRowOf5 ? {r: r + 1, c: c}     : {r: r + 1, c: c - 1}; // Basso-Sx
+        case 5: return {r: r,     c: c - 1};                                // Sinistra
+        default: return null;
     }
 }
 
-function countPieces(player, virtualBoard = board) {
+let gameState = {
+    board: [], // Array di array a lunghezza variabile (6, 5, 6, 5, 6)
+    currentPlayer: 'B',
+    lastMoves: { B: null, N: null },
+    resurrectionPending: false,
+    selectedPiece: null,
+    validTargets: [],
+    mustCapture: false
+};
+
+function initGame() {
+    gameState.board = [];
+    for (let r = 0; r < ROWS; r++) {
+        gameState.board.push(Array(getColsForId(r)).fill(null));
+    }
+    
+    // Posizionamento iniziale: 6 Neri su riga 0 (Pezzi PC), 6 Bianchi su riga 4 (Pezzi Umano)
+    for (let c = 0; c < 6; c++) {
+        gameState.board[0][c] = 'N';
+        gameState.board[4][c] = 'B';
+    }
+    
+    gameState.currentPlayer = 'B';
+    gameState.lastMoves = { B: null, N: null };
+    gameState.resurrectionPending = false;
+    gameState.selectedPiece = null;
+    gameState.validTargets = [];
+    
+    checkGlobalCaptures();
+    renderBoard();
+    updateUI();
+}
+
+function isValidCoord(r, c) {
+    if (r < 0 || r >= ROWS) return false;
+    return c >= 0 && c < getColsForId(r);
+}
+
+function countLivePieces(board, player) {
     let count = 0;
-    for (let r = 0; r < 5; r++) {
-        for (let c = 0; c < 5; c++) {
-            if (virtualBoard[r][c] === player) count++;
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (board[r][c] === player) count++;
         }
     }
     return count;
 }
 
-function cloneBoard(matrix) {
-    return matrix.map(row => [...row]);
-}
-
-function addLog(text, type = 'normal') {
-    logBox.innerHTML = ''; 
-    const entry = document.createElement('div');
-    entry.classList.add('log-entry');
-    if (type === 'alert') entry.classList.add('alert-msg');
-    if (type === 'victory') entry.classList.add('victory-msg');
-    entry.textContent = text;
-    logBox.appendChild(entry);
-}
-
-function createBoard() {
-    boardElement.innerHTML = '';
-    const allMandatoryJumps = isRevivalPhase ? [] : getAllMandatoryJumps(currentPlayer, board);
-    const hasToJump = allMandatoryJumps.length > 0;
-
-    if (!isMultiJumpPhase && !isRevivalPhase && checkVictory()) return;
-
-    const myLastMove = lastMoves[currentPlayer];
-
-    for (let r = 0; r < 5; r++) {
-        for (let c = 0; c < 5; c++) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
-            cell.classList.add((r + c) % 2 === 0 ? 'chiara' : 'scura');
-            cell.dataset.row = r; cell.dataset.col = c;
-
-            if (board[r][c]) {
-                const dama = document.createElement('div');
-                dama.classList.add('dama', board[r][c]);
-                if (board[r][c] === currentPlayer && !hasToJump) {
-                    dama.classList.add(currentPlayer === 'B' ? 'active-turn-B' : 'active-turn-N');
-                }
-                if (hasToJump && board[r][c] === currentPlayer) {
-                    if (allMandatoryJumps.some(j => j.fromR === r && j.fromC === c)) dama.classList.add('mandatory-attacker');
-                }
-                cell.appendChild(dama);
-            }
-
-            if (myLastMove && !hasToJump && !isRevivalPhase && !(gameMode === 'pvc' && currentPlayer === 'N')) {
-                if (selectedPiece && myLastMove.toRow === selectedPiece.row && myLastMove.toCol === selectedPiece.col) {
-                    if (r === myLastMove.fromRow && c === myLastMove.fromCol) cell.classList.add('forbidden');
+function checkGlobalCaptures() {
+    gameState.mustCapture = false;
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (gameState.board[r][c] === gameState.currentPlayer) {
+                const moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves[gameState.currentPlayer]);
+                if (moves.some(m => m.isCapture)) {
+                    gameState.mustCapture = true;
+                    return;
                 }
             }
-            if (isRevivalPhase && board[r][c] === null) cell.classList.add('highlight');
-            if (selectedPiece && r === selectedPiece.row && c === selectedPiece.col) cell.classList.add('selected');
-
-            cell.addEventListener('click', (e) => onCellClick(e, hasToJump, allMandatoryJumps));
-            boardElement.appendChild(cell);
-        }
-    }
-
-    if (selectedPiece && !isRevivalPhase) {
-        highlightMovesForPiece(selectedPiece.row, selectedPiece.col, hasToJump, commissionsForPiece(selectedPiece.row, selectedPiece.col, allMandatoryJumps));
-    }
-
-    if (gameMode === 'pvc' && currentPlayer === 'N' && !isMultiJumpPhase) {
-        if (isRevivalPhase) {
-            setTimeout(executeComputerRevival, 600);
-        } else {
-            setTimeout(makeDeterministicComputerMove, 300);
         }
     }
 }
-// =========================================================================
-// PARTE 2 DI 4: INTERAZIONE UTENTE E LOGICA DEI SPOSTAMENTI REALI
-// =========================================================================
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 4)
+// Calcolo Mosse Mappato su Dimensioni Variabili e Combo a Zigzag
+// ============================================================================
 
-function onCellClick(e, hasToJump, allMandatoryJumps) {
-    if (gameMode === 'pvc' && currentPlayer === 'N') return;
-    const cell = e.currentTarget;
-    const r = parseInt(cell.dataset.row); const c = parseInt(cell.dataset.col);
-
-    if (cell.classList.contains('forbidden')) {
-        addLog("Mossa vietata! Non puoi tornare sulla casella rossa.", "alert"); return;
-    }
-    if (isRevivalPhase) {
-        if (cell.classList.contains('highlight')) {
-            board[r][c] = currentPlayer; isRevivalPhase = false;
-            addLog("Schierata una pedina risorta."); endTurn();
-        }
-        return;
-    }
-    if (isMultiJumpPhase) {
-        if (cell.classList.contains('highlight')) executeJump(selectedPiece.row, selectedPiece.col, r, c);
-        return;
-    }
-    if (board[r][c] === currentPlayer) {
-        if (hasToJump && !allMandatoryJumps.some(j => j.fromR === r && j.fromC === c)) {
-            addLog("Obbligo di attacco! Seleziona un pezzo cerchiato.", "alert"); return;
-        }
-        selectedPiece = { row: r, col: c }; createBoard(); return;
-    }
-    if (selectedPiece && cell.classList.contains('highlight')) {
-        if (hasToJump) executeJump(selectedPiece.row, selectedPiece.col, r, c);
-        else executeNormalMove(selectedPiece.row, selectedPiece.col, r, c);
-    }
-}
-
-function commissionsForPiece(r, c, allJumps) {
-    return allJumps.filter(j => j.fromR === r && j.fromC === c);
-}
-
-function highlightMovesForPiece(r, c, hasToJump, pieceJumps) {
-    document.querySelectorAll('.cell').forEach(el => el.classList.remove('highlight', 'forbidden'));
-    if (hasToJump) {
-        pieceJumps.forEach(j => {
-            document.querySelector(`[data-row='${j.toR}'][data-col='${j.toC}']`).classList.add('highlight');
-        });
-    } else {
-        const myLastMove = lastMoves[currentPlayer];
-        const isSamePiece = myLastMove && myLastMove.toRow === r && myLastMove.toCol === c;
-        DIRECTIONS.forEach(([dr, dc]) => {
-            const nr = r + dr; const nc = c + dc;
-            if (nr >= 0 && nr < 5 && nc >= 0 && nc < 5 && board[nr][nc] === null) {
-                if (isSamePiece && myLastMove.fromRow === nr && myLastMove.fromCol === nc) {
-                    document.querySelector(`[data-row='${nr}'][data-col='${nc}']`).classList.add('forbidden');
-                } else {
-                    document.querySelector(`[data-row='${nr}'][data-col='${nc}']`).classList.add('highlight');
+function getPieceMoves(board, r, c, playerLastMove) {
+    const player = board[r][c];
+    if (!player) return [];
+    
+    let captures = [];
+    let normals = [];
+    
+    for (let d = 0; d < 6; d++) {
+        const neighbor = getNeighborCoords(r, c, d);
+        if (!neighbor || !isValidCoord(neighbor.r, neighbor.c)) continue;
+        
+        const opponent = (player === 'B') ? 'N' : 'B';
+        
+        if (board[neighbor.r][neighbor.c] === opponent) {
+            const landing = getNeighborCoords(neighbor.r, neighbor.c, d);
+            if (landing && isValidCoord(landing.r, landing.c) && board[landing.r][landing.c] === null) {
+                captures.push({
+                    fromR: r, fromC: c,
+                    toR: landing.r, toC: landing.c,
+                    isCapture: true,
+                    capturedR: neighbor.r, capturedC: neighbor.c
+                });
+            }
+        } else if (board[neighbor.r][neighbor.c] === null) {
+            let violatesMelina = false;
+            if (playerLastMove) {
+                if (neighbor.r === playerLastMove.fromR && neighbor.c === playerLastMove.fromC &&
+                    r === playerLastMove.toR && c === playerLastMove.toC) {
+                    violatesMelina = true;
                 }
             }
-        });
-    }
-}
-
-function executeNormalMove(fromR, fromC, toR, toC) {
-    board[toR][toC] = currentPlayer; board[fromR][fromC] = null;
-    lastMoves[currentPlayer] = { fromRow: fromR, fromCol: fromC, toRow: toR, toCol: toC };
-    addLog(`Mossa effettuata dal giocatore ${currentPlayer === 'B' ? 'Bianco' : 'Nero'}.`);
-    if (checkEndLineTrigger(fromR, toR, toC)) return;
-    endTurn();
-}
-
-function executeJump(fromR, fromC, toR, toC) {
-    const midR = Math.floor((parseInt(fromR) + parseInt(toR)) / 2);
-    const midC = Math.floor((parseInt(fromC) + parseInt(toC)) / 2);
-    board[midR][midC] = null;
-    board[toR][toC] = currentPlayer; board[fromR][fromC] = null;
-    addLog("Pedina avversaria catturata!", "alert");
-    selectedPiece = { row: toR, col: toC };
-
-    const nextJumps = getAllMandatoryJumps(currentPlayer, board).filter(j => j.fromR === toR && j.fromC === toC);
-    if (nextJumps.length > 0) {
-        isMultiJumpPhase = true;
-        if (gameMode === 'pvc' && currentPlayer === 'N') {
-            createBoard();
-            setTimeout(() => {
-                const nextJump = nextJumps.shift();
-                executeJump(nextJump.fromR, nextJump.fromC, nextJump.toR, nextJump.toC);
-            }, 800);
-        } else {
-            addLog("Mangiata multipla attiva! Continua l'attacco.", "alert"); createBoard();
-        }
-    } else {
-        isMultiJumpPhase = false;
-        if (checkEndLineTrigger(fromR, toR, toC)) return;
-        lastMoves[currentPlayer] = null; endTurn();
-    }
-}
-// =========================================================================
-// PARTE 3 DI 4: REGOLE DI FINE LINEA, VITTORIA E SPOSTAMENTO DELLE RISURREZIONI
-// =========================================================================
-
-function getAllMandatoryJumps(player, virtualBoard) {
-    const jumps = []; const opponent = player === 'B' ? 'N' : 'B';
-    for (let r = 0; r < 5; r++) {
-        for (let c = 0; c < 5; c++) {
-            if (virtualBoard[r][c] === player) {
-                DIRECTIONS.forEach(([dr, dc]) => {
-                    const enemyR = r + dr; const enemyC = c + dc;
-                    const landR = r + (dr * 2); const landC = c + (dc * 2);
-                    if (landR >= 0 && landR < 5 && landC >= 0 && landC < 5) {
-                        if (virtualBoard[enemyR][enemyC] === opponent && virtualBoard[landR][landC] === null) {
-                            jumps.push({ fromR: r, fromC: c, toR: landR, toC: landC });
-                        }
-                    }
+            if (!violatesMelina) {
+                normals.push({
+                    fromR: r, fromC: c,
+                    toR: neighbor.r, toC: neighbor.c,
+                    isCapture: false
                 });
             }
         }
     }
-    return jumps;
+    return captures.length > 0 ? captures : normals;
 }
 
-function checkEndLineTrigger(fromR, toR, toC) {
-    const targetLine = currentPlayer === 'B' ? 0 : 4;
-    if (parseInt(toR) === targetLine && parseInt(fromR) !== targetLine) {
-        let alive = countPieces(currentPlayer, board);
-        if (alive < 5) {
-            isRevivalPhase = true;
-            addLog("Meta! Scegli dove far risorgere una pedina eliminata.", "alert");
-            createBoard();
-            return true;
+function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveRef) {
+    let results = [];
+    
+    function simulate(currentBoard, r, c, accumulatedCaptures) {
+        let moves = getPieceMoves(currentBoard, r, c, lastMoveRef);
+        let captureMoves = moves.filter(m => m.isCapture);
+        
+        if (captureMoves.length === 0) {
+            let generatedBoards = [];
+            const pieceCount = countLivePieces(currentBoard, player);
+            
+            const isMeta = (player === 'B' && r === 0 && startR !== 0) || 
+                           (player === 'N' && r === 4 && startR !== 4);
+                           
+            if (isMeta && pieceCount < MAX_PIECES) {
+                for (let br = 0; br < ROWS; br++) {
+                    for (let bc = 0; bc < getColsForId(br); bc++) {
+                        if (currentBoard[br][bc] === null) {
+                            let resBoard = currentBoard.map(row => [...row]);
+                            resBoard[br][bc] = player;
+                            generatedBoards.push({
+                                board: resBoard,
+                                lastMove: { fromR: startR, fromC: startC, toR: r, toC: c }
+                            });
+                        }
+                    }
+                }
+            } else {
+                generatedBoards.push({
+                    board: currentBoard.map(row => [...row]),
+                    lastMove: { fromR: startR, fromC: startC, toR: r, toC: c }
+                });
+            }
+            results.push(...generatedBoards);
+            return;
+        }
+        
+        for (let cap of captureMoves) {
+            let nextBoard = currentBoard.map(row => [...row]);
+            nextBoard[cap.capturedR][cap.capturedC] = null;
+            nextBoard[cap.toR][cap.toC] = player;
+            nextBoard[cap.fromR][cap.fromC] = null;
+            
+            simulate(nextBoard, cap.toR, cap.toC, accumulatedCaptures + 1);
         }
     }
-    return false;
+    
+    simulate(initialBoard.map(row => [...row]), startR, startC, 0);
+    return results;
+}
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 4)
+// IA Cautelativa Integrata su Righe Variabili e Scelta della Risurrezione
+// ============================================================================
+
+function evaluateBoard(board) {
+    let score = 0;
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (board[r][c] === 'N') {
+                score += 100;
+                score += (r * 15);
+            } else if (board[r][c] === 'B') {
+                score -= 100;
+                score -= ((4 - r) * 15);
+            }
+        }
+    }
+    return score;
 }
 
-function endTurn() {
-    selectedPiece = null;
-    currentPlayer = currentPlayer === 'B' ? 'N' : 'B';
-    createBoard();
+function makeCPUMove() {
+    let cpuScenarios = [];
+    let hasCaptures = false;
+    
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (gameState.board[r][c] === 'N') {
+                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
+                if (moves.some(m => m.isCapture)) hasCaptures = true;
+            }
+        }
+    }
+    
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (gameState.board[r][c] === 'N') {
+                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
+                if (hasCaptures) moves = moves.filter(m => m.isCapture);
+                
+                for (let m of moves) {
+                    if (m.isCapture) {
+                        let combos = getBoardsAfterFullCombo(gameState.board, r, c, 'N', gameState.lastMoves.N);
+                        cpuScenarios.push(...combos);
+                    } else {
+                        let nextBoard = gameState.board.map(row => [...row]);
+                        nextBoard[m.toR][m.toC] = 'N';
+                        nextBoard[m.fromR][m.fromC] = null;
+                        
+                        const isMeta = (m.toR === 4 && m.fromR !== 4);
+                        if (isMeta && countLivePieces(nextBoard, 'N') < MAX_PIECES) {
+                            let inAdvantage = evaluateBoard(nextBoard) >= 0;
+                            let placed = false;
+                            
+                            if (!inAdvantage) {
+                                // Sotto-riga protetta del PC: riga 3 (che ha 5 colonne!)
+                                for (let bc = 0; bc < 5; bc++) {
+                                    if (nextBoard[3][bc] === null) {
+                                        let resBoard = nextBoard.map(row => [...row]);
+                                        resBoard[3][bc] = 'N';
+                                        cpuScenarios.push({ board: resBoard, lastMove: m });
+                                        placed = true; break;
+                                    }
+                                }
+                            }
+                            if (!placed) {
+                                for (let br = 0; br < ROWS; br++) {
+                                    for (let bc = 0; bc < getColsForId(br); bc++) {
+                                        if (nextBoard[br][bc] === null) {
+                                            let resBoard = nextBoard.map(row => [...row]);
+                                            resBoard[br][bc] = 'N';
+                                            cpuScenarios.push({ board: resBoard, lastMove: m });
+                                            placed = true; break;
+                                        }
+                                    }
+                                    if (placed) break;
+                                }
+                            }
+                        } else {
+                            cpuScenarios.push({ board: nextBoard, lastMove: m });
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    if (cpuScenarios.length === 0) {
+        endGame('B');
+        return;
+    }
+    
+    let bestScore = -Infinity;
+    let bestScenario = null;
+    
+    for (let scenario of cpuScenarios) {
+        let humanMoves = [];
+        let hHasCaptures = false;
+        
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < getColsForId(r); c++) {
+                if (scenario.board[r][c] === 'B') {
+                    let mvs = getPieceMoves(scenario.board, r, c, scenario.lastMove);
+                    if (mvs.some(m => m.isCapture)) hHasCaptures = true;
+                }
+            }
+        }
+        
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < getColsForId(r); c++) {
+                if (scenario.board[r][c] === 'B') {
+                    let mvs = getPieceMoves(scenario.board, r, c, scenario.lastMove);
+                    if (hHasCaptures) mvs = mvs.filter(m => m.isCapture);
+                    humanMoves.push(...mvs);
+                }
+            }
+        }
+        
+        let worstHumanScore = Infinity;
+        if (humanMoves.length === 0) {
+            worstHumanScore = evaluateBoard(scenario.board) + 500;
+        } else {
+            for (let hm of humanMoves) {
+                let tempBoard = scenario.board.map(row => [...row]);
+                if (hm.isCapture) tempBoard[hm.capturedR][hm.capturedC] = null;
+                tempBoard[hm.toR][hm.toC] = 'B';
+                tempBoard[hm.fromR][hm.fromC] = null;
+                let scr = evaluateBoard(tempBoard);
+                if (scr < worstHumanScore) worstHumanScore = scr;
+            }
+        }
+        
+        if (worstHumanScore > bestScore || bestScenario === null) {
+            bestScore = worstHumanScore;
+            bestScenario = scenario;
+        }
+    }
+    
+    gameState.board = bestScenario.board;
+    gameState.lastMoves.N = bestScenario.lastMove;
+    
+    if (checkVictoryConditions()) return;
+    
+    gameState.currentPlayer = 'B';
+    checkGlobalCaptures();
+    renderBoard();
+    updateUI();
+}
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 4)
+// Renderizzatore della Sequenza Cromatica Forzata e Input Mobile-First
+// ============================================================================
+
+function renderBoard() {
+    const boardDiv = document.getElementById('hex-board');
+    if (!boardDiv) return;
+    boardDiv.innerHTML = '';
+    
+    // Sequenze rigide richieste: 1 = Scuro, 2 = Medio, 3 = Chiaro
+    const rowEvenPattern =; // Fila da 6 (Scuro, Medio, Chiaro...)
+    const rowOddPattern  =;    // Fila da 5 (Chiaro, Scuro, Medio...)
+    
+    for (let r = 0; r < ROWS; r++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = `hex-row ${r % 2 !== 0 ? 'odd' : 'even'}`;
+        
+        const cols = getColsForId(r);
+        const currentPattern = (r % 2 === 0) ? rowEvenPattern : rowOddPattern;
+        
+        for (let c = 0; c < cols; c++) {
+            const cellDiv = document.createElement('div');
+            
+            // Estrae il colore esatto forzato dallo schema manuale
+            const colorIndex = currentPattern[c];
+            
+            cellDiv.className = `hex-cell color-${colorIndex}`;
+            cellDiv.dataset.row = r;
+            cellDiv.dataset.col = c;
+            
+            if (gameState.selectedPiece && gameState.selectedPiece.r === r && gameState.selectedPiece.c === c) {
+                cellDiv.classList.add('selectable');
+            }
+            if (gameState.validTargets.some(t => t.toR === r && t.toC === c)) {
+                cellDiv.classList.add('highlight-target');
+            }
+            
+            const piece = gameState.board[r][c];
+            if (piece) {
+                const pieceDiv = document.createElement('div');
+                pieceDiv.className = `piece ${piece === 'B' ? 'white' : 'black'}`;
+                
+                if (gameState.currentPlayer === piece && !gameState.resurrectionPending) {
+                    pieceDiv.classList.add('active-turn');
+                }
+                cellDiv.appendChild(pieceDiv);
+            }
+            
+            cellDiv.addEventListener('click', () => handleCellClick(r, c));
+            rowDiv.appendChild(cellDiv);
+        }
+        boardDiv.appendChild(rowDiv);
+    }
 }
 
-function checkVictory() {
-    const bCount = countPieces('B', board); const nCount = countPieces('N', board);
-    if (bCount === 0) { showVictory("IL NERO DOMINA IL TABELLONE!"); return true; }
-    if (nCount === 0) { showVictory("IL BIANCO HA STERMINATO L'AVVERSARIO!"); return true; }
+function handleCellClick(r, c) {
+    if (gameState.currentPlayer !== 'B') return;
+    
+    if (gameState.resurrectionPending) {
+        if (gameState.board[r][c] === null) {
+            gameState.board[r][c] = 'B';
+            gameState.resurrectionPending = false;
+            if (checkVictoryConditions()) return;
+            executeTurnPassToCPU();
+        }
+        return;
+    }
+    
+    if (gameState.board[r][c] === 'B') {
+        const moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
+        if (gameState.mustCapture && !moves.some(m => m.isCapture)) return;
+        
+        gameState.selectedPiece = { r, c };
+        gameState.validTargets = gameState.mustCapture ? moves.filter(m => m.isCapture) : moves;
+        renderBoard();
+        return;
+    }
+    
+    const targetMove = gameState.validTargets.find(t => t.toR === r && t.toC === c);
+    if (targetMove) {
+        const startR = gameState.selectedPiece.r;
+        if (targetMove.isCapture) {
+            gameState.board[targetMove.capturedR][targetMove.capturedC] = null;
+        }
+        
+        gameState.board[r][c] = 'B';
+        gameState.board[targetMove.fromR][targetMove.fromC] = null;
+        gameState.lastMoves.B = targetMove;
+        
+        if (targetMove.isCapture) {
+            const nextMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
+            if (nextMoves.some(m => m.isCapture)) {
+                gameState.selectedPiece = { r, c };
+                gameState.validTargets = nextMoves.filter(m => m.isCapture);
+                renderBoard();
+                return;
+            }
+        }
+        
+        const isMeta = (r === 0 && startR !== 0);
+        if (isMeta && countLivePieces(gameState.board, 'B') < MAX_PIECES) {
+            gameState.resurrectionPending = true;
+            gameState.selectedPiece = null;
+            gameState.validTargets = [];
+            renderBoard();
+            document.getElementById('turn-indicator').innerText = "RISURREZIONE! Scegli un esagono vuoto";
+            return;
+        }
+        
+        if (checkVictoryConditions()) return;
+        executeTurnPassToCPU();
+    }
+}
 
+function executeTurnPassToCPU() {
+    gameState.selectedPiece = null;
+    gameState.validTargets = [];
+    gameState.currentPlayer = 'N';
+    renderBoard();
+    updateUI();
+    setTimeout(makeCPUMove, 600);
+}
+
+function checkVictoryConditions() {
+    const bCount = countLivePieces(gameState.board, 'B');
+    const nCount = countLivePieces(gameState.board, 'N');
+    
+    if (bCount === 0) { endGame('N'); return true; }
+    if (nCount === 0) { endGame('B'); return true; }
+    
     let bOnFront = 0, nOnFront = 0;
-    for (let c = 0; c < 5; c++) { if (board[c] === 'B') bOnFront++; if (board[c] === 'N') nOnFront++; }
-    if (bOnFront === 5) { showVictory("IL BIANCO HA OCCUPATO IL FRONTE!"); return true; }
-    if (nOnFront === 5) { showVictory("IL NERO HA OCCUPATO IL FRONTE!"); return true; }
-
-    if (getAllValidMoves(currentPlayer, board, lastMoves[currentPlayer]).length === 0) {
-        const winner = currentPlayer === 'B' ? 'NERO' : 'BIANCO';
-        showVictory(`SBARRAMENTO COMPLETO! VINCE IL ${winner}`); return true;
+    for (let c = 0; c < 6; c++) {
+        if (gameState.board[0][c] === 'N') nOnFront++;
+        if (gameState.board[4][c] === 'B') bOnFront++;
     }
+    if (bOnFront === bCount && bCount > 0) { endGame('B'); return true; }
+    if (nOnFront === nCount && nCount > 0) { endGame('N'); return true; }
+    
     return false;
 }
 
-function showVictory(text) {
-    victoryText.textContent = text; victoryScreen.classList.remove('hidden');
+function endGame(winner) {
+    document.getElementById('turn-indicator').innerText = 
+        winner === 'B' ? "TRIONFO! L'Umano domina la plancia" : "SCONFITTA! L'IA ha preso il controllo";
+    gameState.currentPlayer = null;
+    renderBoard();
 }
 
-function executeComputerRevival() {
-    if (!isRevivalPhase || currentPlayer !== 'N') return;
-    let bestR = 0; let bestC = 0; let bestScore = -Infinity;
-
-    for (let r = 0; r < 5; r++) {
-        for (let c = 0; c < 5; c++) {
-            if (board[r][c] === null) {
-                let testB = cloneBoard(board); testB[r][c] = 'N';
-                let score = evaluateRevivalStrategicScore(testB, r, c, 'N');
-                if (score > bestScore) { bestScore = score; bestR = r; bestC = c; }
-            }
-        }
+function updateUI() {
+    if (gameState.resurrectionPending) return;
+    document.getElementById('score-human').innerText = countLivePieces(gameState.board, 'B');
+    document.getElementById('score-cpu').innerText = countLivePieces(gameState.board, 'N');
+    
+    if (gameState.currentPlayer) {
+        document.getElementById('turn-indicator').innerText = 
+            gameState.currentPlayer === 'B' ? "Turno dell'Umano (Bianchi)" : "Calcolo IA (Neri)...";
     }
-    board[bestR][bestC] = 'N'; isRevivalPhase = false;
-    addLog(`Il PC risuscita una pedina in posizione [${bestR + 1}, ${bestC + 1}].`);
-    endTurn();
-}
-// =========================================================================
-// PARTE 4 DI 4: SIMULATORE COMPLETO DI SCENARI ED EVENTI DI SISTEMA
-// =========================================================================
-
-function getAllValidMoves(player, virtualBoard, lastMove) {
-    const jumps = getAllMandatoryJumps(player, virtualBoard);
-    if (jumps.length > 0) return jumps.map(j => ({ ...j, isJump: true }));
-    const moves = [];
-    for (let r = 0; r < 5; r++) {
-        for (let c = 0; c < 5; c++) {
-            if (virtualBoard[r][c] === player) {
-                const isSamePiece = lastMove && parseInt(lastMove.toRow) === r && parseInt(lastMove.toCol) === c;
-                DIRECTIONS.forEach(([dr, dc]) => {
-                    const nr = r + dr; const nc = c + dc;
-                    if (nr >= 0 && nr < 5 && nc >= 0 && nc < 5 && virtualBoard[nr][nc] === null) {
-                        if (!(isSamePiece && parseInt(lastMove.fromRow) === nr && parseInt(lastMove.fromCol) === nc)) {
-                            moves.push({ fromR: r, fromC: c, toR: nr, toC: nc, isJump: false });
-                        }
-                    }
-                });
-            }
-        }
-    }
-    return moves;
 }
 
-// SIMULATORE REALE DI COMBO A ZIGZAG SUI VIRTUAL BOARD
-function getBoardsAfterFullCombo(player, move, vBoard) {
-    let tempBoard = cloneBoard(vBoard);
-    if (move.isJump) tempBoard[Math.floor((move.fromR + move.toR)/2)][Math.floor((move.fromC + move.toC)/2)] = null;
-    tempBoard[move.toR][move.toC] = player; tempBoard[move.fromR][move.fromC] = null;
-
-    let targetLine = player === 'B' ? 0 : 4;
-    // Controllo Meta di rinfianco
-    if (move.toR === targetLine && move.fromR !== targetLine && countPieces(player, tempBoard) < 5) {
-        let revivalBoards = [];
-        for (let r=0; r<5; r++) {
-            for (let c=0; c<5; c++) {
-                if (tempBoard[r][c] === null) { let rb = cloneBoard(tempBoard); rb[r][c] = player; revivalBoards.push(rb); }
-            }
-        }
-        return revivalBoards;
-    }
-
-    let subJumps = getAllMandatoryJumps(player, tempBoard).filter(j => j.fromR === move.toR && j.fromC === move.toC);
-    if (subJumps.length > 0) {
-        let comboBoards = [];
-        for (let sj of subJumps) { comboBoards = comboBoards.concat(getBoardsAfterFullCombo(player, { ...sj, isJump: true }, tempBoard)); }
-        return comboBoards;
-    }
-    return [tempBoard];
-}
-
-function makeDeterministicComputerMove() {
-    const pcMoves = getAllValidMoves('N', board, lastMoves['N']);
-    if (pcMoves.length === 0) return;
-
-    let bestInitialMove = pcMoves[0]; let bestGlobalScore = -Infinity;
-
-    for (let pm of pcMoves) {
-        // TURNO 1 (PC): Genera tutti gli scenari reali post-mossa (incluse combo e risurrezioni del PC)
-        let boardsAfterPC = pm.isJump ? getBoardsAfterFullCombo('N', pm, board) : [];
-        if (!pm.isJump) {
-            let nb = cloneBoard(board); nb[pm.toR][pm.toC] = 'N'; nb[pm.fromR][pm.fromC] = null;
-            if (pm.toR === 4 && pm.fromR !== 4 && countPieces('N', nb) < 5) {
-                for (let r=0; r<5; r++) {
-                    for (let c=0; c<5; c++) { if (nb[r][c] === null) { let rb = cloneBoard(nb); rb[r][c] = 'N'; boardsAfterPC.push(rb); } }
-                }
-            } else { boardsAfterPC.push(nb); }
-        }
-
-        let worstScenarioScoreForPC = Infinity;
-
-        for (let bPC of boardsAfterPC) {
-            // TURNO 2 (UMANO): Genera tutte le possibili risposte reali dell'Umano su quella plancia
-            const huMoves = getAllValidMoves('B', bPC, lastMoves['B']);
-            if (huMoves.length === 0) {
-                let s = evaluateBoardStateAdvanced(bPC);
-                if (s < worstScenarioScoreForPC) worstScenarioScoreForPC = s; continue;
-            }
-
-            for (let hm of huMoves) {
-                let boardsAfterHU = hm.isJump ? getBoardsAfterFullCombo('B', hm, bPC) : [];
-                if (!hm.isJump) {
-                    let nh = cloneBoard(bPC); nh[hm.toR][hm.toC] = 'B'; nh[hm.fromR][hm.fromC] = null;
-                    if (hm.toR === 0 && hm.fromR !== 0 && countPieces('B', nh) < 5) {
-                        for (let r=0; r<5; r++) {
-                            for (let c=0; c<5; c++) { if (nh[r][c] === null) { let rb = cloneBoard(nh); rb[r][c] = 'B'; boardsAfterHU.push(rb); } }
-                        }
-                    } else { boardsAfterHU.push(nh); }
-                }
-
-                // Applica i 4 Pilastri sullo stato finale risultante
-                for (let bFinal of boardsAfterHU) {
-                    let score = evaluateBoardStateAdvanced(bFinal);
-                    if (score < worstScenarioScoreForPC) worstScenarioScoreForPC = score; // Identifica la risposta dell'Umano più dannosa
-                }
-            }
-        }
-
-        if (worstScenarioScoreForPC > bestGlobalScore) {
-            bestGlobalScore = worstScenarioScoreForPC; bestInitialMove = pm;
-        }
-    }
-
-    if (bestInitialMove.isJump) executeJump(bestInitialMove.fromR, bestInitialMove.fromC, bestInitialMove.toR, bestInitialMove.toC);
-    else executeNormalMove(bestInitialMove.fromR, bestInitialMove.fromC, bestInitialMove.toR, bestInitialMove.toC);
-}
-
-function evaluateRevivalStrategicScore(vBoard, r, c, player) {
-    const bCount = countPieces('B', vBoard); const nCount = countPieces('N', vBoard);
-    let baseScore = evaluateBoardStateAdvanced(vBoard);
-    let opponentJumps = getAllMandatoryJumps(player === 'N' ? 'B' : 'N', vBoard);
-    if (nCount >= bCount) {
-        if (opponentJumps.some(j => Math.floor((j.fromR + j.toR)/2) === r && Math.floor((j.fromC + j.toC)/2) === c)) baseScore += 5000;
-    } else {
-        if (r === (player === 'N' ? 3 : 1)) {
-            baseScore += 3000;
-            let isSafe = !opponentJumps.some(j => j.toR === r && j.toC === c) && !opponentJumps.some(j => Math.floor((j.fromR + j.toR)/2) === r && Math.floor((j.fromC + j.toC)/2) === c);
-            if (isSafe) baseScore += 4000; if (vBoard[r + (player === 'N' ? 1 : -1)][c] === null) baseScore += 2500;
-        }
-    }
-    return baseScore;
-}
-
-function evaluateBoardStateAdvanced(vBoard) {
-    const bCount = countPieces('B', vBoard); const nCount = countPieces('N', vBoard);
-    let materialScore = (nCount * 1000) - (bCount * 1000); let positionalScore = 0;
-    for (let r = 0; r < 5; r++) {
-        for (let c = 0; c < 5; c++) {
-            if (vBoard[r][c] === 'N') positionalScore += (r * 50);
-            else if (vBoard[r][c] === 'B') positionalScore -= ((4 - r) * 50);
-        }
-    }
-    return materialScore + positionalScore;
-}
-
-resetBtn.addEventListener('click', () => {
-    board = [['N', 'N', 'N', 'N', 'N'], [null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null], ['B', 'B', 'B', 'B', 'B']];
-    currentPlayer = 'B'; selectedPiece = null; isMultiJumpPhase = false; isRevivalPhase = false; lastMoves = { 'B': null, 'N': null };
-    victoryScreen.classList.add('hidden'); addLog("La partita è stata azzerata. Il Bianco muove per primo."); createBoard();
-});
-
-gameModeSelect.addEventListener('change', () => {
-    const val = gameModeSelect.value; if (val === 'pvp') gameMode = 'pvp'; else gameMode = 'pvc'; resetBtn.click();
-});
-
-createBoard();
+window.onload = initGame;
