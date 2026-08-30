@@ -41,10 +41,10 @@ function initGame() {
         gameState.board.push(Array(getColsForId(r)).fill(null));
     }
     
-    // Posizionamento iniziale stabile
+    // CORRETTO E BLINDATO: Assegnazione bidimensionale esatta riga/colonna [0][c] e [4][c]
     for (let c = 0; c < 6; c++) {
-        gameState.board[c] = 'N'; // Riga 0 (Rossi)
-        gameState.board[c] = 'B'; // Riga 4 (Ori)
+        gameState.board[0][c] = 'N'; // 6 Rossi posizionati stabilmente sulla riga 0
+        gameState.board[4][c] = 'B'; // 6 Ori posizionati stabilmente sulla riga 4
     }
     
     gameState.currentPlayer = 'B';
@@ -242,9 +242,9 @@ function makeCPUMove() {
                             
                             if (!inAdvantage) {
                                 for (let bc = 0; bc < getColsForId(3); bc++) {
-                                    if (nextBoard[bc] === null) {
+                                    if (nextBoard[3][bc] === null) { // CORRETTO: [3][bc] bidimensionale
                                         let resBoard = nextBoard.map(row => [...row]);
-                                        resBoard[bc] = 'N';
+                                        resBoard[3][bc] = 'N';
                                         cpuScenarios.push({ board: resBoard, lastMove: m, steps: [m] });
                                         placed = true; break;
                                     }
@@ -366,16 +366,14 @@ function renderBoard() {
                 const pieceDiv = document.createElement('div');
                 pieceDiv.className = `piece ${piece === 'B' ? 'white' : 'black'}`;
                 
-                // 🛡️ CORRETTO E SELETTIVO: Se c'è l'obbligo globale, spegne l'alone di turno sulle altre pedine
                 if (gameState.currentPlayer === piece && !gameState.resurrectionPending) {
                     if (gameState.mustCapture && piece === 'B') {
                         const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
                         if (pMoves.some(m => m.isCapture)) {
-                            pieceDiv.classList.add('can-capture'); // Accende SOLO quelle obbligate
+                            pieceDiv.classList.add('can-capture');
                         }
-                        // Se NON può mangiare, la classe "active-turn" non viene applicata (rimane spenta)
                     } else {
-                        pieceDiv.classList.add('active-turn'); // Turno normale senza obblighi
+                        pieceDiv.classList.add('active-turn');
                     }
                 }
                 cellDiv.appendChild(pieceDiv);
@@ -494,9 +492,10 @@ function checkVictoryConditions() {
     if (nCount === 0) { endGame('B'); return true; }
     
     let bOnFront = 0, nOnFront = 0;
+    // CORRETTO E BLINDATO: Verifica bidimensionale esatta [riga][colonna] per le linee di meta finali
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[c] === 'N') nOnFront++; 
-        if (gameState.board[c] === 'B') bOnFront++; 
+        if (gameState.board[4][c] === 'N') nOnFront++; // Riga 4 indiciata al pixel per PC
+        if (gameState.board[0][c] === 'B') bOnFront++; // Riga 0 indiciata al pixel per Umano
     }
     if (bOnFront === 6) { endGame('B'); return true; }
     if (nOnFront === 6) { endGame('N'); return true; }
