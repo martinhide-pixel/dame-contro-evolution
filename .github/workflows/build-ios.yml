@@ -1,7 +1,7 @@
 name: Build iOS App
 on:
   push:
-    branches: [ main, master ] # Si attiva in automatico quando fai push da GitGui
+    branches: [ main, master ]
 
 jobs:
   build:
@@ -16,12 +16,10 @@ jobs:
           node-version: 22
 
       - name: Install Dependencies
-        run: |
-          npm install
-          npm install @capacitor/cli @capacitor/core @capacitor/ios
+        run: npm install
 
       - name: Capacitor Sync
-        run: npx --package=@capacitor/cli cap sync ios
+        run: npx cap sync ios
 
       - name: Build Xcode Project (Unsigned)
         run: |
