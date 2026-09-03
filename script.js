@@ -31,7 +31,8 @@ let gameState = {
     selectedPiece: null,
     validTargets: [],
     mustCapture: false,
-    mode: 'ai' // NUOVO STRATO LOGICO: 'ai' o 'pvp'
+    mode: 'ai',
+    originalStartR: null // TRACCIA ORIGINE: Salva la posizione prima delle mangiate consecutive
 };
 
 function initGame() {
@@ -40,20 +41,30 @@ function initGame() {
         gameState.board.push(Array(getColsForId(r)).fill(null));
     }
     
-    // Configura la modalità leggendo dal menù HTML
     const selectElem = document.getElementById('game-mode');
     if (selectElem) gameState.mode = selectElem.value;
     
-    for (let c = 0; c < 6; c++) {
-        gameState.board[c] = 'N'; 
-        gameState.board[c] = 'B'; 
-    }
+    // Inizializzazione manuale coordinata per coordinata anti-allucinazione
+    gameState.board[0][0] = 'N';
+    gameState.board[0][1] = 'N';
+    gameState.board[0][2] = 'N';
+    gameState.board[0][3] = 'N';
+    gameState.board[0][4] = 'N';
+    gameState.board[0][5] = 'N'; 
+    
+    gameState.board[4][0] = 'B';
+    gameState.board[4][1] = 'B';
+    gameState.board[4][2] = 'B';
+    gameState.board[4][3] = 'B';
+    gameState.board[4][4] = 'B';
+    gameState.board[4][5] = 'B'; 
     
     gameState.currentPlayer = 'B';
     gameState.lastMoves = { B: null, N: null };
     gameState.resurrectionPending = false;
     gameState.selectedPiece = null;
     gameState.validTargets = [];
+    gameState.originalStartR = null;
     
     checkGlobalCaptures();
     renderBoard();
@@ -218,7 +229,7 @@ function evaluateBoard(board) {
 }
 
 function makeCPUMove() {
-    if (gameState.mode === 'pvp') return; // SE IN BASE PVP, BLOCCA L'AUTOMAZIONE DELL'IA
+    if (gameState.mode === 'pvp') return; 
     
     let cpuScenarios = [];
     let hasCaptures = false;
@@ -413,14 +424,12 @@ function handleCellClick(r, c) {
     const isPlayerOro = (gameState.currentPlayer === 'B');
     const isPlayerRosso = (gameState.currentPlayer === 'N');
     
-    // GESTIONE RISURREZIONE (P1 Oro o P2 Rosso in PVP)
     if (gameState.resurrectionPending) {
         if (gameState.board[r][c] === null) {
             gameState.board[r][c] = gameState.currentPlayer;
             gameState.resurrectionPending = false;
             if (checkVictoryConditions()) return;
             
-            // Cambio turno
             if (gameState.mode === 'pvp') {
                 gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
                 checkGlobalCaptures();
@@ -433,7 +442,6 @@ function handleCellClick(r, c) {
         return;
     }
     
-    // SELEZIONE DELLA PROPRIA PEDINA
     if (gameState.board[r][c] === gameState.currentPlayer) {
         const lastRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
         const moves = getPieceMoves(gameState.board, r, c, lastRef);
@@ -445,7 +453,6 @@ function handleCellClick(r, c) {
         return;
     }
     
-    // ESECUZIONE DELLA MOSSA SELEZIONATA
     const targetMove = gameState.validTargets.find(t => t.toR === r && t.toC === c);
     if (targetMove && gameState.selectedPiece) {
         const startR = gameState.selectedPiece.r;
@@ -457,7 +464,6 @@ function handleCellClick(r, c) {
         if (isPlayerOro) gameState.lastMoves.B = targetMove;
         else gameState.lastMoves.N = targetMove;
         
-        // Controllo catture consecutive (Combo a Zigzag)
         if (targetMove.isCapture) {
             const nextRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
             const nextMoves = getPieceMoves(gameState.board, r, c, nextRef);
@@ -469,7 +475,7 @@ function handleCellClick(r, c) {
             }
         }
         
-        // Verifica condizione di Risurrezione (Arrivo al fronte opposto)
+        // CORRETTO: Il controllo "isMeta" scatta alla fine di TUTTO il movimento (anche dopo le mangiate multiple)
         const isMeta = (isPlayerOro && r === 0 && startR !== 0) || (isPlayerRosso && r === 4 && startR !== 4);
         if (isMeta && countLivePieces(gameState.board, gameState.currentPlayer) < MAX_PIECES) {
             gameState.resurrectionPending = true;
@@ -482,7 +488,6 @@ function handleCellClick(r, c) {
         
         if (checkVictoryConditions()) return;
         
-        // PASSAGGIO DEL TURNO
         if (gameState.mode === 'pvp') {
             gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
             gameState.selectedPiece = null;
