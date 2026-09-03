@@ -6,33 +6,32 @@
 const ROWS = 5;
 const MAX_PIECES = 6;
 
-// Ritorna il numero corretto di colonne per una determinata riga (0-indexed)
 function getColsForId(r) {
-    return (r % 2 === 0) ? 6 : 5; // Righe 0, 2, 4 -> 6 colonne | Righe 1, 3 -> 5 colonne
+    return (r % 2 === 0) ? 6 : 5; 
 }
 
-// Calcola i vicini in una griglia esagonale a nido d'ape compatta (Righe alternate 6 e 5)
 function getNeighborCoords(r, c, dir) {
     const isRowOf5 = (r % 2 !== 0);
     switch(dir) {
-        case 0: return isRowOf5 ? {r: r - 1, c: c}     : {r: r - 1, c: c - 1}; // Alto-Sx
-        case 1: return isRowOf5 ? {r: r - 1, c: c + 1} : {r: r - 1, c: c};     // Alto-Dx
-        case 2: return {r: r,     c: c + 1};                                // Destra
-        case 3: return isRowOf5 ? {r: r + 1, c: c + 1} : {r: r + 1, c: c};     // Basso-Dx
-        case 4: return isRowOf5 ? {r: r + 1, c: c}     : {r: r + 1, c: c - 1}; // Basso-Sx
-        case 5: return {r: r,     c: c - 1};                                // Sinistra
+        case 0: return isRowOf5 ? {r: r - 1, c: c}     : {r: r - 1, c: c - 1}; 
+        case 1: return isRowOf5 ? {r: r - 1, c: c + 1} : {r: r - 1, c: c};     
+        case 2: return {r: r,     c: c + 1};                                
+        case 3: return isRowOf5 ? {r: r + 1, c: c + 1} : {r: r + 1, c: c};     
+        case 4: return isRowOf5 ? {r: r + 1, c: c}     : {r: r + 1, c: c - 1}; 
+        case 5: return {r: r,     c: c - 1};                                
         default: return null;
     }
 }
 
 let gameState = {
-    board: [], // Array di array a lunghezza variabile (6, 5, 6, 5, 6)
+    board: [], 
     currentPlayer: 'B',
     lastMoves: { B: null, N: null },
     resurrectionPending: false,
     selectedPiece: null,
     validTargets: [],
-    mustCapture: false
+    mustCapture: false,
+    mode: 'ai' // NUOVO STRATO LOGICO: 'ai' o 'pvp'
 };
 
 function initGame() {
@@ -41,10 +40,13 @@ function initGame() {
         gameState.board.push(Array(getColsForId(r)).fill(null));
     }
     
-    // Posizionamento iniziale bidimensionale esatto riga/colonna [riga][colonna]
+    // Configura la modalità leggendo dal menù HTML
+    const selectElem = document.getElementById('game-mode');
+    if (selectElem) gameState.mode = selectElem.value;
+    
     for (let c = 0; c < 6; c++) {
-        gameState.board[0][c] = 'N'; // 6 Rossi posizionati stabilmente sulla riga 0
-        gameState.board[4][c] = 'B'; // 6 Ori posizionati stabilmente sulla riga 4
+        gameState.board[c] = 'N'; 
+        gameState.board[c] = 'B'; 
     }
     
     gameState.currentPlayer = 'B';
@@ -216,6 +218,8 @@ function evaluateBoard(board) {
 }
 
 function makeCPUMove() {
+    if (gameState.mode === 'pvp') return; // SE IN BASE PVP, BLOCCA L'AUTOMAZIONE DELL'IA
+    
     let cpuScenarios = [];
     let hasCaptures = false;
     
@@ -358,11 +362,12 @@ function renderBoard() {
                 pieceDiv.className = `piece ${piece === 'B' ? 'white' : 'black'}`;
                 
                 if (gameState.currentPlayer === piece && !gameState.resurrectionPending) {
-                    if (gameState.mustCapture && piece === 'B') {
+                    if (gameState.mustCapture && gameState.currentPlayer === 'B') {
                         const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
-                        if (pMoves.some(m => m.isCapture)) {
-                            pieceDiv.classList.add('can-capture');
-                        }
+                        if (pMoves.some(m => m.isCapture)) pieceDiv.classList.add('can-capture');
+                    } else if (gameState.mustCapture && gameState.currentPlayer === 'N') {
+                        const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
+                        if (pMoves.some(m => m.isCapture)) pieceDiv.classList.add('can-capture');
                     } else {
                         pieceDiv.classList.add('active-turn');
                     }
@@ -383,9 +388,7 @@ function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
     function nextStep() {
         if (index < steps.length) {
             let m = steps[index];
-            if (m.isCapture) {
-                gameState.board[m.capturedR][m.capturedC] = null;
-            }
+            if (m.isCapture) gameState.board[m.capturedR][m.capturedC] = null;
             gameState.board[m.toR][m.toC] = 'N';
             gameState.board[m.fromR][m.fromC] = null;
             
@@ -395,9 +398,7 @@ function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
         } else {
             gameState.board = finalBoard;
             gameState.lastMoves.N = finalLastMove;
-            
             if (checkVictoryConditions()) return;
-            
             gameState.currentPlayer = 'B';
             checkGlobalCaptures();
             renderBoard();
@@ -408,20 +409,34 @@ function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
 }
 
 function handleCellClick(r, c) {
-    if (gameState.currentPlayer !== 'B') return;
+    if (gameState.currentPlayer === null) return;
+    const isPlayerOro = (gameState.currentPlayer === 'B');
+    const isPlayerRosso = (gameState.currentPlayer === 'N');
     
+    // GESTIONE RISURREZIONE (P1 Oro o P2 Rosso in PVP)
     if (gameState.resurrectionPending) {
         if (gameState.board[r][c] === null) {
-            gameState.board[r][c] = 'B';
+            gameState.board[r][c] = gameState.currentPlayer;
             gameState.resurrectionPending = false;
             if (checkVictoryConditions()) return;
-            executeTurnPassToCPU();
+            
+            // Cambio turno
+            if (gameState.mode === 'pvp') {
+                gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
+                checkGlobalCaptures();
+                renderBoard();
+                updateUI();
+            } else {
+                executeTurnPassToCPU();
+            }
         }
         return;
     }
     
-    if (gameState.board[r][c] === 'B') {
-        const moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
+    // SELEZIONE DELLA PROPRIA PEDINA
+    if (gameState.board[r][c] === gameState.currentPlayer) {
+        const lastRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
+        const moves = getPieceMoves(gameState.board, r, c, lastRef);
         if (gameState.mustCapture && !moves.some(m => m.isCapture)) return;
         
         gameState.selectedPiece = { r, c };
@@ -430,19 +445,22 @@ function handleCellClick(r, c) {
         return;
     }
     
+    // ESECUZIONE DELLA MOSSA SELEZIONATA
     const targetMove = gameState.validTargets.find(t => t.toR === r && t.toC === c);
-    if (targetMove) {
+    if (targetMove && gameState.selectedPiece) {
         const startR = gameState.selectedPiece.r;
-        if (targetMove.isCapture) {
-            gameState.board[targetMove.capturedR][targetMove.capturedC] = null;
-        }
+        if (targetMove.isCapture) gameState.board[targetMove.capturedR][targetMove.capturedC] = null;
         
-        gameState.board[r][c] = 'B';
+        gameState.board[r][c] = gameState.currentPlayer;
         gameState.board[targetMove.fromR][targetMove.fromC] = null;
-        gameState.lastMoves.B = targetMove;
         
+        if (isPlayerOro) gameState.lastMoves.B = targetMove;
+        else gameState.lastMoves.N = targetMove;
+        
+        // Controllo catture consecutive (Combo a Zigzag)
         if (targetMove.isCapture) {
-            const nextMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
+            const nextRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
+            const nextMoves = getPieceMoves(gameState.board, r, c, nextRef);
             if (nextMoves.some(m => m.isCapture)) {
                 gameState.selectedPiece = { r, c };
                 gameState.validTargets = nextMoves.filter(m => m.isCapture);
@@ -451,8 +469,9 @@ function handleCellClick(r, c) {
             }
         }
         
-        const isMeta = (r === 0 && startR !== 0);
-        if (isMeta && countLivePieces(gameState.board, 'B') < MAX_PIECES) {
+        // Verifica condizione di Risurrezione (Arrivo al fronte opposto)
+        const isMeta = (isPlayerOro && r === 0 && startR !== 0) || (isPlayerRosso && r === 4 && startR !== 4);
+        if (isMeta && countLivePieces(gameState.board, gameState.currentPlayer) < MAX_PIECES) {
             gameState.resurrectionPending = true;
             gameState.selectedPiece = null;
             gameState.validTargets = [];
@@ -462,7 +481,18 @@ function handleCellClick(r, c) {
         }
         
         if (checkVictoryConditions()) return;
-        executeTurnPassToCPU();
+        
+        // PASSAGGIO DEL TURNO
+        if (gameState.mode === 'pvp') {
+            gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
+            gameState.selectedPiece = null;
+            gameState.validTargets = [];
+            checkGlobalCaptures();
+            renderBoard();
+            updateUI();
+        } else {
+            executeTurnPassToCPU();
+        }
     }
 }
 
@@ -475,48 +505,44 @@ function executeTurnPassToCPU() {
     setTimeout(makeCPUMove, 600);
 }
 
-// 🛡️ AGGIORNATO: Controllo vittoria esteso con la regola dell'Invasione di Campo Totale
 function checkVictoryConditions() {
     const bCount = countLivePieces(gameState.board, 'B');
     const nCount = countLivePieces(gameState.board, 'N');
-    
     if (bCount === 0) { endGame('N'); return true; }
     if (nCount === 0) { endGame('B'); return true; }
     
-    // Condizione 1: Occupazione esatta della prima fila di fondo (6/6 pezzi)
     let bOnFrontRow = 0, nOnFrontRow = 0;
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[0][c] === 'B') bOnFrontRow++; // Umano riempie riga 0
-        if (gameState.board[4][c] === 'N') nOnFrontRow++; // PC riempie riga 4
+        if (gameState.board[c] === 'B') bOnFrontRow++; 
+        if (gameState.board[c] === 'N') nOnFrontRow++; 
     }
     if (bOnFrontRow === 6) { endGame('B'); return true; }
     if (nOnFrontRow === 6) { endGame('N'); return true; }
     
-    // Condizione 2: INVASIONE TOTALITARIA (Riempire ogni esagono rimasto libero del campo nemico)
-    // Campo PC: Righe 0 e 1 (Totale 11 esagoni)
-    let bTotalInvasionCount = 0;
+    let bTotalInvasionCount = 0, nTotalInvasionCount = 0;
     for (let r = 0; r <= 1; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (gameState.board[r][c] === 'B') bTotalInvasionCount++;
         }
     }
-    // Campo Umano: Righe 3 e 4 (Totale 11 esagoni)
-    let nTotalInvasionCount = 0;
     for (let r = 3; r <= 4; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (gameState.board[r][c] === 'N') nTotalInvasionCount++;
         }
     }
-    // Si vince se si occupano tutti gli 11 esagoni del campo nemico
     if (bTotalInvasionCount === 11) { endGame('B'); return true; }
     if (nTotalInvasionCount === 11) { endGame('N'); return true; }
-    
     return false;
 }
 
 function endGame(winner) {
-    document.getElementById('turn-indicator').innerText = 
-        winner === 'B' ? "TRIONFO! L'Umano domina la plancia" : "SCONFITTA! L'IA ha preso il controllo";
+    let msg = "";
+    if (gameState.mode === 'pvp') {
+        msg = winner === 'B' ? "TRIONFO! Il Giocatore 1 (Oro) vince!" : "TRIONFO! Il Giocatore 2 (Rossi) vince!";
+    } else {
+        msg = winner === 'B' ? "TRIONFO! L'Umano domina la plancia" : "SCONFITTA! L'IA ha preso il controllo";
+    }
+    document.getElementById('turn-indicator').innerText = msg;
     gameState.currentPlayer = null;
     renderBoard();
 }
@@ -527,8 +553,13 @@ function updateUI() {
     document.getElementById('score-cpu').innerText = countLivePieces(gameState.board, 'N');
     
     if (gameState.currentPlayer) {
-        document.getElementById('turn-indicator').innerText = 
-            gameState.currentPlayer === 'B' ? "Turno dell'Umano (Oro)" : "Calcolo IA (Rossi)...";
+        if (gameState.mode === 'pvp') {
+            document.getElementById('turn-indicator').innerText = 
+                gameState.currentPlayer === 'B' ? "Turno del Giocatore 1 (Oro)" : "Turno del Giocatore 2 (Rossi)";
+        } else {
+            document.getElementById('turn-indicator').innerText = 
+                gameState.currentPlayer === 'B' ? "Turno dell'Umano (Oro)" : "Calcolo IA (Rossi)...";
+        }
     }
 }
 

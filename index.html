@@ -19,8 +19,8 @@
         <div id="status-panel">
             <div id="turn-indicator">Inizializzazione...</div>
             <div id="scoreboard">
-                <span>Bianchi (Umano): <b id="score-human">6</b></span> | 
-                <span>Neri (PC): <b id="score-cpu">6</b></span>
+                <span>Oro (P1): <b id="score-human">6</b></span> | 
+                <span>Rossi (P2/IA): <b id="score-cpu">6</b></span>
             </div>
         </div>
 
@@ -29,6 +29,14 @@
         </div>
 
         <div id="controls">
+            <!-- Menù di Selezione Modalità Araldico -->
+            <div class="select-wrapper">
+                <label for="game-mode">MODALITÀ DI GIOCO</label>
+                <select id="game-mode" onchange="initGame()">
+                    <option value="ai">Umano contro IA</option>
+                    <option value="pvp">Umano contro Umano</option>
+                </select>
+            </div>
             <button id="btn-restart" onclick="initGame()">Ricomincia Partita</button>
         </div>
     </div>

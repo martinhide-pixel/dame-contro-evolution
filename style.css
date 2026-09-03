@@ -1,6 +1,6 @@
 /* ============================================================================
    DAME CONTRO EVOLUTION - STYLE.CSS DEFINITIVO
-   Effetto Pietra Foto Reale, Pedine Oro vs Rosso (Senza Aloni Esterni di Turno)
+   Effetto Pietra Reale, Pedine Oro vs Rosso e Selettore di Modalità Araldico
    ============================================================================ */
 
 :root {
@@ -78,7 +78,6 @@ header h1 {
     color: #a3b2cc;
 }
 
-/* Sfondo interno plancia in acciaio brunito e metallo spazzolato */
 #board-container {
     width: 100%;
     max-width: 440px;
@@ -112,7 +111,6 @@ header h1 {
     margin-top: 0;
 }
 
-/* LA CORNICE ACCIAIO 3D DEL TASSELLO */
 .hex-cell {
     width: var(--hex-w);
     height: var(--hex-h);
@@ -128,7 +126,6 @@ header h1 {
     filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.85));
 }
 
-/* CUORE IN PIETRA CON ANCORAGGIO FIXED ANTI-PIASTRELLATURA */
 .hex-cell::after {
     content: "";
     position: absolute;
@@ -141,7 +138,6 @@ header h1 {
     background-attachment: fixed !important;
 }
 
-/* MATERIALITÀ IN PIETRA STAMPA 3D A 15° */
 .hex-cell.color-1::after {
     background-image: 
         linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%),
@@ -177,7 +173,6 @@ header h1 {
     background-attachment: scroll !important;
 }
 
-/* PEDINE CIRCOLARI PERFETTE SFERICHE */
 .piece {
     width: 42px;
     height: 42px;
@@ -187,31 +182,30 @@ header h1 {
     z-index: 10; 
 }
 
-/* Pedina Umano in Oro Araldico Satinato */
 .piece.white {
     background: radial-gradient(circle at 35% 35%, #ffe082 0%, #ca9b30 65%, #6d4c0f 100%);
     border: 2px solid #dfb76c;
 }
 
-/* Pedina PC in Rosso Rubino Metallico */
 .piece.black {
     background: radial-gradient(circle at 35% 35%, #e53935 0%, #b71c1c 65%, #4a0000 100%);
     border: 2px solid #d32f2f;
 }
 
-/* 🔄 ALONE DIETRO RIMOSSO COMPLETAMENTE: Ora il turno standard modifica dolcemente la luminosità interna */
 .piece.active-turn {
     transform: translateZ(0);
     will-change: filter;
-    animation: pulseGlowNormal 1.4s infinite alternate ease-in-out;
+    animation: pulseGlow 1.4s infinite alternate ease-in-out;
 }
 
-@keyframes pulseGlowNormal {
-    0% { filter: brightness(1); }
-    100% { filter: brightness(1.22); }
+.piece.white.active-turn { filter: drop-shadow(0 0 2px #dfb76c); }
+.piece.black.active-turn { filter: drop-shadow(0 0 2px #dfb76c); }
+
+@keyframes pulseGlow {
+    0% { filter: brightness(1) drop-shadow(0 0 2px #dfb76c); }
+    100% { filter: brightness(1.2) drop-shadow(0 0 8px #dfb76c); }
 }
 
-/* 🟥 ALONE DIETRO RIMOSSO COMPLETAMENTE: Il segnale visivo obbligatorio pulsa solo di colore interno */
 .piece.can-capture {
     transform: translateZ(0);
     will-change: filter;
@@ -224,8 +218,44 @@ header h1 {
 }
 
 #controls {
-    margin-top: 20px;
+    margin-top: 15px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Grafica Araldica del Menù Opzioni */
+.select-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: rgba(12, 17, 34, 0.7);
+    border: 1px solid #8a6d3b;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+.select-wrapper label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: #dfb76c;
+    font-weight: bold;
+}
+
+select {
+    font-family: 'Cinzel', serif;
+    background: #111424;
+    border: 1px solid #dfb76c;
+    color: #fff;
+    padding: 6px 15px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 260px;
+    text-align: center;
+    cursor: pointer;
 }
 
 button {
