@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dame Contro Evolution</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cinzel:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>DAME CONTRO</h1>
+            <div class="subtitle">EVOLUTION</div>
+        </header>
+
+        <div id="status-panel">
+            <div id="turn-indicator">Inizializzazione...</div>
+            <div id="scoreboard">
+                <span>Oro (P1): <b id="score-human">6</b></span> | 
+                <span>Rossi (P2/IA): <b id="score-cpu">6</b></span>
+            </div>
+        </div>
+
+        <div id="board-container">
+            <div id="hex-board"></div>
+        </div>
+
+        <div id="controls">
+            <!-- Menù di Selezione Modalità Araldico -->
+            <div class="select-wrapper">
+                <label for="game-mode">MODALITÀ DI GIOCO</label>
+                <select id="game-mode" onchange="initGame()">
+                    <option value="ai">Umano contro IA</option>
+                    <option value="pvp">Umano contro Umano</option>
+                </select>
+            </div>
+            <button id="btn-restart" onclick="initGame()">Ricomincia Partita</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
