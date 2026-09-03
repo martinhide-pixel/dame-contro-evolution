@@ -21,7 +21,7 @@ jobs:
           npm install @capacitor/cli @capacitor/core @capacitor/ios
 
       - name: Capacitor Sync
-        run: npx cap sync ios
+        run: npx --package=@capacitor/cli cap sync ios
 
       - name: Build Xcode Project (Unsigned)
         run: |
