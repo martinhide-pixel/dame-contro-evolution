@@ -41,7 +41,7 @@ function initGame() {
         gameState.board.push(Array(getColsForId(r)).fill(null));
     }
     
-    // Posizionamento iniziale stabile bidimensionale [riga][colonna]
+    // Posizionamento iniziale bidimensionale esatto riga/colonna [riga][colonna]
     for (let c = 0; c < 6; c++) {
         gameState.board[0][c] = 'N'; // 6 Rossi posizionati stabilmente sulla riga 0
         gameState.board[4][c] = 'B'; // 6 Ori posizionati stabilmente sulla riga 4
@@ -191,22 +191,19 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
 // IA Cautelativa ed Euristica di Risurrezione Strategica
 // ============================================================================
 
-// AGGIORNATO: Matrice di valutazione riscritta per spingere l'IA a usare la Risurrezione
 function evaluateBoard(board) {
     let score = 0;
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (board[r][c] === 'N') {
-                score += 100; // Valore base pedina PC
-                
-                // STRATEGIA: Penalizza leggermente le pedine PC bloccate sulla riga di Meta (riga 4)
+                score += 100; 
                 if (r === 4) {
-                    score += 15; // Massimo avanzamento territoriale ma ridotto rispetto a prima
+                    score += 15; 
                 } else {
-                    score += (r * 25); // Premia fortemente la spinta territoriale attiva (es. riga 3)
+                    score += (r * 25); 
                 }
             } else if (board[r][c] === 'B') {
-                score -= 100; // Valore base pedina Umano
+                score -= 100; 
                 if (r === 0) {
                     score -= 15;
                 } else {
@@ -248,8 +245,6 @@ function makeCPUMove() {
                         
                         const isMeta = (m.toR === 4 && m.fromR !== 4);
                         if (isMeta && countLivePieces(nextBoard, 'N') < MAX_PIECES) {
-                            // STRATEGIA: Genera scenari di risurrezione simulando TUTTE le caselle vuote
-                            // L'IA valuterà matematicamente quale casella di rinascita disturba di più l'Umano
                             for (let br = 0; br < ROWS; br++) {
                                 for (let bc = 0; bc < getColsForId(br); bc++) {
                                     if (nextBoard[br][bc] === null) {
@@ -480,6 +475,7 @@ function executeTurnPassToCPU() {
     setTimeout(makeCPUMove, 600);
 }
 
+// 🛡️ AGGIORNATO: Controllo vittoria esteso con la regola dell'Invasione di Campo Totale
 function checkVictoryConditions() {
     const bCount = countLivePieces(gameState.board, 'B');
     const nCount = countLivePieces(gameState.board, 'N');
@@ -487,15 +483,42 @@ function checkVictoryConditions() {
     if (bCount === 0) { endGame('N'); return true; }
     if (nCount === 0) { endGame('B'); return true; }
     
-    let bOnFront = 0, nOnFront = 0;
+    // Condizione 1: Occupazione esatta della prima fila di fondo (6/6 pezzi)
+    let bOnFrontRow = 0, nOnFrontRow = 0;
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[4][c] === 'N') nOnFront++; 
-        if (gameState.board[0][c] === 'B') bOnFront++; 
+        if (gameState.board[0][c] === 'B') bOnFrontRow++; // Umano riempie riga 0
+        if (gameState.board[4][c] === 'N') nOnFrontRow++; // PC riempie riga 4
     }
-    if (bOnFront === 6) { endGame('B'); return true; }
-    if (nOnFront === 6) { endGame('N'); return true; }
+    if (bOnFrontRow === 6) { endGame('B'); return true; }
+    if (nOnFrontRow === 6) { endGame('N'); return true; }
+    
+    // Condizione 2: INVASIONE TOTALITARIA (Riempire ogni esagono rimasto libero del campo nemico)
+    // Campo PC: Righe 0 e 1 (Totale 11 esagoni)
+    let bTotalInvasionCount = 0;
+    for (let r = 0; r <= 1; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (gameState.board[r][c] === 'B') bTotalInvasionCount++;
+        }
+    }
+    // Campo Umano: Righe 3 e 4 (Totale 11 esagoni)
+    let nTotalInvasionCount = 0;
+    for (let r = 3; r <= 4; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (gameState.board[r][c] === 'N') nTotalInvasionCount++;
+        }
+    }
+    // Si vince se si occupano tutti gli 11 esagoni del campo nemico
+    if (bTotalInvasionCount === 11) { endGame('B'); return true; }
+    if (nTotalInvasionCount === 11) { endGame('N'); return true; }
     
     return false;
+}
+
+function endGame(winner) {
+    document.getElementById('turn-indicator').innerText = 
+        winner === 'B' ? "TRIONFO! L'Umano domina la plancia" : "SCONFITTA! L'IA ha preso il controllo";
+    gameState.currentPlayer = null;
+    renderBoard();
 }
 
 function updateUI() {
