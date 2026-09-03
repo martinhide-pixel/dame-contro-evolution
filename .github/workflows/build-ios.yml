@@ -1,0 +1,45 @@
+name: Build iOS App
+on:
+  push:
+    branches: [ main, master ] # Si attiva in automatico quando fai push da GitGui
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install @capacitor/cli @capacitor/core @capacitor/ios
+
+      - name: Capacitor Sync
+        run: npx cap sync ios
+
+      - name: Build Xcode Project (Unsigned)
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace \
+                     -scheme App \
+                     -configuration Release \
+                     -sdk iphoneos \
+                     CODE_SIGNING_ALLOWED=NO \
+                     clean build
+
+      - name: Create Payload and IPA
+        run: |
+          mkdir -p build/Payload
+          cp -R ios/App/build/Release-iphoneos/App.app build/Payload/
+          cd build && zip -r DameContro.ipa Payload
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iPhone-App-Package
+          path: build/DameContro.ipa
