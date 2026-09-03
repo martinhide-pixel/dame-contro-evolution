@@ -1,0 +1,5 @@
+node_modules/
+/ios/App/public/
+/ios/App/build/
+.DS_Store
+Thumbs.db
