@@ -27,13 +27,14 @@ jobs:
                      -scheme App \
                      -configuration Release \
                      -sdk iphoneos \
+                     -derivedDataPath ios/App/build \
                      CODE_SIGNING_ALLOWED=NO \
                      clean build
 
       - name: Create Payload and IPA
         run: |
           mkdir -p build/Payload
-          cp -R ios/App/build/Release-iphoneos/App.app build/Payload/
+          cp -R ios/App/build/Build/Products/Release-iphoneos/App.app build/Payload/
           cd build && zip -r DameContro.ipa Payload
 
       - name: Upload IPA Artifact
