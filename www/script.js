@@ -341,9 +341,9 @@ function renderBoard() {
     if (!boardDiv) return;
     boardDiv.innerHTML = '';
     
-    // Compila questi due array inserendo a mano i numeri delle pietre su VS Code!
-    const rowEvenPattern = []; 
-    const rowOddPattern  = [];    
+    // PATTERN REINSERITO: Riattiva l'effetto Pietra Reale e il guscio 3D araldico
+    const rowEvenPattern =; 
+    const rowOddPattern  =;    
     
     for (let r = 0; r < ROWS; r++) {
         const rowDiv = document.createElement('div');
@@ -518,12 +518,12 @@ function checkVictoryConditions() {
     
     let bTotalInvasionCount = 0, nTotalInvasionCount = 0;
     for (let r = 0; r <= 1; r++) {
-        for (let c = 0; c < getColsForId(r); c++) {
+        for (let c = 0; c < getColsForId(r); r++) {
             if (gameState.board[r][c] === 'B') bTotalInvasionCount++;
         }
     }
     for (let r = 3; r <= 4; r++) {
-        for (let c = 0; c < getColsForId(r); c++) {
+        for (let c = 0; c < getColsForId(r); r++) {
             if (gameState.board[r][c] === 'N') nTotalInvasionCount++;
         }
     }
