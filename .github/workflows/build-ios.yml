@@ -21,9 +21,12 @@ jobs:
       - name: Capacitor Sync
         run: npx cap sync ios
 
+      - name: Rename folder for GitHub
+        run: mv ios ios-native
+
       - name: Build Xcode Project (Unsigned)
         run: |
-          xcodebuild -workspace ios/App/App.xcworkspace \
+          xcodebuild -workspace ios-native/App/App.xcworkspace \
                      -scheme App \
                      -configuration Release \
                      -sdk iphoneos \
@@ -33,7 +36,7 @@ jobs:
       - name: Create Payload and IPA
         run: |
           mkdir -p build/Payload
-          cp -R ios/App/build/Release-iphoneos/App.app build/Payload/
+          cp -R ios-native/App/build/Release-iphoneos/App.app build/Payload/
           cd build && zip -r DameContro.ipa Payload
 
       - name: Upload IPA Artifact
