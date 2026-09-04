@@ -42,3 +42,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return config
     }
 }
+// Modifica per forzare il push
