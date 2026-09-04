@@ -1,6 +1,6 @@
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 4)
-// Geometria a Righe Alternate (6,5,6,5,6), Pattern Manuale a 3 Colori e Stato
+// Geometria a Righe Alternate (6,5,6,5,6), Inizializzazione Rigida e Stato
 // ============================================================================
 
 const ROWS = 5;
@@ -32,7 +32,7 @@ let gameState = {
     validTargets: [],
     mustCapture: false,
     mode: 'ai',
-    originalStartR: null // TRACCIA ORIGINE: Salva la posizione prima delle mangiate consecutive
+    originalStartR: null
 };
 
 function initGame() {
@@ -333,7 +333,7 @@ function makeCPUMove() {
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 4)
-// Renderizzatore Temporizzato, Gestione dei Salti ed Eventi di Gioco Mobile-First
+// Renderizzatore Temporizzato, Gestione dei Salti, Eventi Mobile e Regole di Vittoria
 // ============================================================================
 
 function renderBoard() {
@@ -341,9 +341,9 @@ function renderBoard() {
     if (!boardDiv) return;
     boardDiv.innerHTML = '';
     
-    // NOTA: Ricordati di riempire queste due righe a mano alla riga dell'errore su VS Code!
-    const rowEvenPattern =[1, 2, 3, 1, 2, 3]; 
-    const rowOddPattern  =[3, 1, 2, 3, 1];    
+    // Compila questi due array inserendo a mano i numeri delle pietre su VS Code!
+    const rowEvenPattern = []; 
+    const rowOddPattern  = [];    
     
     for (let r = 0; r < ROWS; r++) {
         const rowDiv = document.createElement('div');
@@ -373,13 +373,10 @@ function renderBoard() {
                 pieceDiv.className = `piece ${piece === 'B' ? 'white' : 'black'}`;
                 
                 if (gameState.currentPlayer === piece && !gameState.resurrectionPending) {
-                    if (gameState.mustCapture && gameState.currentPlayer === 'B') {
-                        const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
-                        if (pMoves.some(m => m.isCapture)) pieceDiv.classList.add('can-capture');
-                    } else if (gameState.mustCapture && gameState.currentPlayer === 'N') {
-                        const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
-                        if (pMoves.some(m => m.isCapture)) pieceDiv.classList.add('can-capture');
-                    } else {
+                    const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves[gameState.currentPlayer]);
+                    if (gameState.mustCapture && pMoves.some(m => m.isCapture)) {
+                        pieceDiv.classList.add('can-capture');
+                    } else if (!gameState.mustCapture) {
                         pieceDiv.classList.add('active-turn');
                     }
                 }
@@ -395,14 +392,12 @@ function renderBoard() {
 
 function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
     let index = 0;
-    
     function nextStep() {
         if (index < steps.length) {
             let m = steps[index];
             if (m.isCapture) gameState.board[m.capturedR][m.capturedC] = null;
             gameState.board[m.toR][m.toC] = 'N';
             gameState.board[m.fromR][m.fromC] = null;
-            
             renderBoard();
             index++;
             setTimeout(nextStep, 550);
@@ -422,14 +417,12 @@ function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
 function handleCellClick(r, c) {
     if (gameState.currentPlayer === null) return;
     const isPlayerOro = (gameState.currentPlayer === 'B');
-    const isPlayerRosso = (gameState.currentPlayer === 'N');
     
     if (gameState.resurrectionPending) {
         if (gameState.board[r][c] === null) {
             gameState.board[r][c] = gameState.currentPlayer;
             gameState.resurrectionPending = false;
             if (checkVictoryConditions()) return;
-            
             if (gameState.mode === 'pvp') {
                 gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
                 checkGlobalCaptures();
@@ -475,8 +468,7 @@ function handleCellClick(r, c) {
             }
         }
         
-        // CORRETTO: Il controllo "isMeta" scatta alla fine di TUTTO il movimento (anche dopo le mangiate multiple)
-        const isMeta = (isPlayerOro && r === 0 && startR !== 0) || (isPlayerRosso && r === 4 && startR !== 4);
+        const isMeta = (isPlayerOro && r === 0 && startR !== 0) || (!isPlayerOro && r === 4 && startR !== 4);
         if (isMeta && countLivePieces(gameState.board, gameState.currentPlayer) < MAX_PIECES) {
             gameState.resurrectionPending = true;
             gameState.selectedPiece = null;
@@ -518,8 +510,8 @@ function checkVictoryConditions() {
     
     let bOnFrontRow = 0, nOnFrontRow = 0;
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[c] === 'B') bOnFrontRow++; 
-        if (gameState.board[c] === 'N') nOnFrontRow++; 
+        if (gameState.board[0][c] === 'B') bOnFrontRow++; 
+        if (gameState.board[4][c] === 'N') nOnFrontRow++; 
     }
     if (bOnFrontRow === 6) { endGame('B'); return true; }
     if (nOnFrontRow === 6) { endGame('N'); return true; }
@@ -568,4 +560,4 @@ function updateUI() {
     }
 }
 
-window.onload = initGame;
+document.addEventListener('DOMContentLoaded', initGame);

@@ -1,0 +1,2697 @@
+Elenco del percorso delle cartelle per il volume OSDisk
+Numero di serie del volume: 00000076-9C27:0913
+C:.
+¦   .gitignore
+¦   albero.txt
+¦   capacitor.config.json
+¦   package-lock.json
+¦   package.json
+¦   
++---.github
+¦   +---workflows
+¦           build-ios.yml
+¦           
++---ios
+¦   ¦   .gitignore
+¦   ¦   debug.xcconfig
+¦   ¦   
+¦   +---App
+¦   ¦   +---App
+¦   ¦   ¦   ¦   AppDelegate.swift
+¦   ¦   ¦   ¦   capacitor.config.json
+¦   ¦   ¦   ¦   config.xml
+¦   ¦   ¦   ¦   Info.plist
+¦   ¦   ¦   ¦   SceneDelegate.swift
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---Assets.xcassets
+¦   ¦   ¦   ¦   ¦   Contents.json
+¦   ¦   ¦   ¦   ¦   
+¦   ¦   ¦   ¦   +---AppIcon.appiconset
+¦   ¦   ¦   ¦   ¦       AppIcon-512@2x.png
+¦   ¦   ¦   ¦   ¦       Contents.json
+¦   ¦   ¦   ¦   ¦       
+¦   ¦   ¦   ¦   +---Splash.imageset
+¦   ¦   ¦   ¦           Contents.json
+¦   ¦   ¦   ¦           splash-2732x2732-1.png
+¦   ¦   ¦   ¦           splash-2732x2732-2.png
+¦   ¦   ¦   ¦           splash-2732x2732.png
+¦   ¦   ¦   ¦           
+¦   ¦   ¦   +---Base.lproj
+¦   ¦   ¦   ¦       LaunchScreen.storyboard
+¦   ¦   ¦   ¦       Main.storyboard
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---public
+¦   ¦   ¦           cordova.js
+¦   ¦   ¦           cordova_plugins.js
+¦   ¦   ¦           damecontro.png
+¦   ¦   ¦           index.html
+¦   ¦   ¦           logo.png
+¦   ¦   ¦           script.js
+¦   ¦   ¦           style.css
+¦   ¦   ¦           
+¦   ¦   +---App.xcodeproj
+¦   ¦   ¦   ¦   project.pbxproj
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---project.xcworkspace
+¦   ¦   ¦       +---xcshareddata
+¦   ¦   ¦               IDEWorkspaceChecks.plist
+¦   ¦   ¦               
+¦   ¦   +---CapApp-SPM
+¦   ¦       ¦   .gitignore
+¦   ¦       ¦   Package.swift
+¦   ¦       ¦   README.md
+¦   ¦       ¦   
+¦   ¦       +---Sources
+¦   ¦           +---CapApp-SPM
+¦   ¦                   CapApp-SPM.swift
+¦   ¦                   
+¦   +---capacitor-cordova-ios-plugins
+¦       ¦   CordovaPluginsResources.podspec
+¦       ¦   
+¦       +---resources
+¦       ¦       .gitkeep
+¦       ¦       
+¦       +---sources
+¦               .gitkeep
+¦               
++---node_modules
+¦   ¦   .package-lock.json
+¦   ¦   
+¦   +---.bin
+¦   ¦       cap
+¦   ¦       cap.cmd
+¦   ¦       cap.ps1
+¦   ¦       capacitor
+¦   ¦       capacitor.cmd
+¦   ¦       capacitor.ps1
+¦   ¦       is-docker
+¦   ¦       is-docker.cmd
+¦   ¦       is-docker.ps1
+¦   ¦       native-run
+¦   ¦       native-run.cmd
+¦   ¦       native-run.ps1
+¦   ¦       node-which
+¦   ¦       node-which.cmd
+¦   ¦       node-which.ps1
+¦   ¦       rimraf
+¦   ¦       rimraf.cmd
+¦   ¦       rimraf.ps1
+¦   ¦       semver
+¦   ¦       semver.cmd
+¦   ¦       semver.ps1
+¦   ¦       tree-kill
+¦   ¦       tree-kill.cmd
+¦   ¦       tree-kill.ps1
+¦   ¦       uuid
+¦   ¦       uuid.cmd
+¦   ¦       uuid.ps1
+¦   ¦       
+¦   +---@capacitor
+¦   ¦   +---cli
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦   ¦       android-template.tar.gz
+¦   ¦   ¦   ¦       capacitor-cordova-android-plugins.tar.gz
+¦   ¦   ¦   ¦       capacitor-cordova-ios-plugins.tar.gz
+¦   ¦   ¦   ¦       ios-pods-template.tar.gz
+¦   ¦   ¦   ¦       ios-spm-template.tar.gz
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---bin
+¦   ¦   ¦   ¦       capacitor
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---dist
+¦   ¦   ¦       ¦   colors.js
+¦   ¦   ¦       ¦   common.js
+¦   ¦   ¦       ¦   config.js
+¦   ¦   ¦       ¦   cordova.js
+¦   ¦   ¦       ¦   declarations.d.ts
+¦   ¦   ¦       ¦   declarations.js
+¦   ¦   ¦       ¦   definitions.js
+¦   ¦   ¦       ¦   errors.js
+¦   ¦   ¦       ¦   framework-configs.js
+¦   ¦   ¦       ¦   index.js
+¦   ¦   ¦       ¦   ipc.js
+¦   ¦   ¦       ¦   log.js
+¦   ¦   ¦       ¦   plugin.js
+¦   ¦   ¦       ¦   sysconfig.js
+¦   ¦   ¦       ¦   telemetry.js
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---android
+¦   ¦   ¦       ¦       add.js
+¦   ¦   ¦       ¦       build.js
+¦   ¦   ¦       ¦       common.js
+¦   ¦   ¦       ¦       doctor.js
+¦   ¦   ¦       ¦       open.js
+¦   ¦   ¦       ¦       run.js
+¦   ¦   ¦       ¦       update.js
+¦   ¦   ¦       ¦       
+¦   ¦   ¦       +---ios
+¦   ¦   ¦       ¦       add.js
+¦   ¦   ¦       ¦       build.js
+¦   ¦   ¦       ¦       common.js
+¦   ¦   ¦       ¦       doctor.js
+¦   ¦   ¦       ¦       open.js
+¦   ¦   ¦       ¦       run.js
+¦   ¦   ¦       ¦       update.js
+¦   ¦   ¦       ¦       
+¦   ¦   ¦       +---tasks
+¦   ¦   ¦       ¦       add.js
+¦   ¦   ¦       ¦       build.js
+¦   ¦   ¦       ¦       config.js
+¦   ¦   ¦       ¦       copy.js
+¦   ¦   ¦       ¦       create.js
+¦   ¦   ¦       ¦       doctor.js
+¦   ¦   ¦       ¦       init.js
+¦   ¦   ¦       ¦       list.js
+¦   ¦   ¦       ¦       migrate-spm.js
+¦   ¦   ¦       ¦       migrate-uiscene.js
+¦   ¦   ¦       ¦       migrate.js
+¦   ¦   ¦       ¦       new-plugin.js
+¦   ¦   ¦       ¦       open.js
+¦   ¦   ¦       ¦       run.js
+¦   ¦   ¦       ¦       serve.js
+¦   ¦   ¦       ¦       sourcemaps.js
+¦   ¦   ¦       ¦       sync.js
+¦   ¦   ¦       ¦       telemetry.js
+¦   ¦   ¦       ¦       update.js
+¦   ¦   ¦       ¦       
+¦   ¦   ¦       +---util
+¦   ¦   ¦               cli.js
+¦   ¦   ¦               emoji.js
+¦   ¦   ¦               fn.js
+¦   ¦   ¦               fs.js
+¦   ¦   ¦               iosplugin.js
+¦   ¦   ¦               js.js
+¦   ¦   ¦               livereload.js
+¦   ¦   ¦               monorepotools.js
+¦   ¦   ¦               native-run.js
+¦   ¦   ¦               node.js
+¦   ¦   ¦               promise.js
+¦   ¦   ¦               spm.js
+¦   ¦   ¦               subprocess.js
+¦   ¦   ¦               template.js
+¦   ¦   ¦               term.js
+¦   ¦   ¦               uuid.js
+¦   ¦   ¦               xcode.js
+¦   ¦   ¦               xml.js
+¦   ¦   ¦               
+¦   ¦   +---core
+¦   ¦   ¦   ¦   cookies.md
+¦   ¦   ¦   ¦   cordova.js
+¦   ¦   ¦   ¦   http.md
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   system-bars.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dist
+¦   ¦   ¦   ¦       capacitor.js
+¦   ¦   ¦   ¦       capacitor.js.map
+¦   ¦   ¦   ¦       index.cjs.js
+¦   ¦   ¦   ¦       index.cjs.js.map
+¦   ¦   ¦   ¦       index.js
+¦   ¦   ¦   ¦       index.js.map
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---types
+¦   ¦   ¦           core-plugins.d.ts
+¦   ¦   ¦           definitions-internal.d.ts
+¦   ¦   ¦           definitions.d.ts
+¦   ¦   ¦           global.d.ts
+¦   ¦   ¦           index.d.ts
+¦   ¦   ¦           runtime.d.ts
+¦   ¦   ¦           util.d.ts
+¦   ¦   ¦           web-plugin.d.ts
+¦   ¦   ¦           
+¦   ¦   +---ios
+¦   ¦       ¦   Capacitor.podspec
+¦   ¦       ¦   CapacitorCordova.podspec
+¦   ¦       ¦   LICENSE
+¦   ¦       ¦   package.json
+¦   ¦       ¦   
+¦   ¦       +---Capacitor
+¦   ¦       ¦   +---Capacitor
+¦   ¦       ¦       ¦   AppUUID.swift
+¦   ¦       ¦       ¦   Array+Capacitor.swift
+¦   ¦       ¦       ¦   Capacitor.h
+¦   ¦       ¦       ¦   Capacitor.modulemap
+¦   ¦       ¦       ¦   CapacitorBridge.swift
+¦   ¦       ¦       ¦   CapacitorExtension.swift
+¦   ¦       ¦       ¦   CAPApplicationDelegateProxy.swift
+¦   ¦       ¦       ¦   CAPBridge.swift
+¦   ¦       ¦       ¦   CAPBridgeDelegate.swift
+¦   ¦       ¦       ¦   CAPBridgedJSTypes.h
+¦   ¦       ¦       ¦   CAPBridgedJSTypes.m
+¦   ¦       ¦       ¦   CAPBridgedPlugin+getMethod.swift
+¦   ¦       ¦       ¦   CAPBridgedPlugin.h
+¦   ¦       ¦       ¦   CAPBridgeProtocol.swift
+¦   ¦       ¦       ¦   CAPBridgeViewController+CDVScreenOrientationDelegate.h
+¦   ¦       ¦       ¦   CAPBridgeViewController+CDVScreenOrientationDelegate.m
+¦   ¦       ¦       ¦   CAPBridgeViewController.swift
+¦   ¦       ¦       ¦   CAPFile.swift
+¦   ¦       ¦       ¦   CAPInstanceConfiguration.h
+¦   ¦       ¦       ¦   CAPInstanceConfiguration.m
+¦   ¦       ¦       ¦   CAPInstanceConfiguration.swift
+¦   ¦       ¦       ¦   CAPInstanceDescriptor.h
+¦   ¦       ¦       ¦   CAPInstanceDescriptor.m
+¦   ¦       ¦       ¦   CAPInstanceDescriptor.swift
+¦   ¦       ¦       ¦   CAPInstancePlugin.swift
+¦   ¦       ¦       ¦   CAPLog.swift
+¦   ¦       ¦       ¦   CAPNotifications.swift
+¦   ¦       ¦       ¦   CAPPlugin+LoadInstance.swift
+¦   ¦       ¦       ¦   CAPPlugin.h
+¦   ¦       ¦       ¦   CAPPlugin.m
+¦   ¦       ¦       ¦   CAPPluginCall.h
+¦   ¦       ¦       ¦   CAPPluginCall.m
+¦   ¦       ¦       ¦   CAPPluginCall.swift
+¦   ¦       ¦       ¦   CAPPluginMethod.h
+¦   ¦       ¦       ¦   CAPPluginMethod.m
+¦   ¦       ¦       ¦   CAPPluginMethod.swift
+¦   ¦       ¦       ¦   CAPSceneDelegateProxy.swift
+¦   ¦       ¦       ¦   Data+Capacitor.swift
+¦   ¦       ¦       ¦   DocLinks.swift
+¦   ¦       ¦       ¦   Info.plist
+¦   ¦       ¦       ¦   JS.swift
+¦   ¦       ¦       ¦   JSExport.swift
+¦   ¦       ¦       ¦   JSTypes.swift
+¦   ¦       ¦       ¦   KeyPath.swift
+¦   ¦       ¦       ¦   KeyValueStore.swift
+¦   ¦       ¦       ¦   NotificationHandlerProtocol.swift
+¦   ¦       ¦       ¦   NotificationRouter.swift
+¦   ¦       ¦       ¦   PluginCallResult.swift
+¦   ¦       ¦       ¦   PluginConfig.swift
+¦   ¦       ¦       ¦   PrivacyInfo.xcprivacy
+¦   ¦       ¦       ¦   Router.swift
+¦   ¦       ¦       ¦   UIColor.swift
+¦   ¦       ¦       ¦   UIStatusBarManager+CAPHandleTapAction.m
+¦   ¦       ¦       ¦   WebViewAssetHandler.swift
+¦   ¦       ¦       ¦   WebViewDelegationHandler.swift
+¦   ¦       ¦       ¦   WKWebView+Capacitor.m
+¦   ¦       ¦       ¦   WKWebView+Capacitor.swift
+¦   ¦       ¦       ¦   
+¦   ¦       ¦       +---assets
+¦   ¦       ¦       ¦       native-bridge.js
+¦   ¦       ¦       ¦       
+¦   ¦       ¦       +---Codable
+¦   ¦       ¦       ¦       JSValueDecoder.swift
+¦   ¦       ¦       ¦       JSValueEncoder.swift
+¦   ¦       ¦       ¦       
+¦   ¦       ¦       +---Plugins
+¦   ¦       ¦               CapacitorCookieManager.swift
+¦   ¦       ¦               CapacitorCookies.swift
+¦   ¦       ¦               CapacitorHttp.swift
+¦   ¦       ¦               CapacitorUrlRequest.swift
+¦   ¦       ¦               Console.swift
+¦   ¦       ¦               HttpRequestHandler.swift
+¦   ¦       ¦               SystemBars.swift
+¦   ¦       ¦               WebView.swift
+¦   ¦       ¦               
+¦   ¦       +---CapacitorCordova
+¦   ¦       ¦   +---CapacitorCordova
+¦   ¦       ¦       ¦   CapacitorCordova.h
+¦   ¦       ¦       ¦   CapacitorCordova.modulemap
+¦   ¦       ¦       ¦   Info.plist
+¦   ¦       ¦       ¦   PrivacyInfo.xcprivacy
+¦   ¦       ¦       ¦   
+¦   ¦       ¦       +---Classes
+¦   ¦       ¦           +---Public
+¦   ¦       ¦                   AppDelegate.h
+¦   ¦       ¦                   AppDelegate.m
+¦   ¦       ¦                   CDV.h
+¦   ¦       ¦                   CDVAvailability.h
+¦   ¦       ¦                   CDVAvailabilityDeprecated.h
+¦   ¦       ¦                   CDVCommandDelegate.h
+¦   ¦       ¦                   CDVCommandDelegateImpl.h
+¦   ¦       ¦                   CDVCommandDelegateImpl.m
+¦   ¦       ¦                   CDVConfigParser.h
+¦   ¦       ¦                   CDVConfigParser.m
+¦   ¦       ¦                   CDVInvokedUrlCommand.h
+¦   ¦       ¦                   CDVInvokedUrlCommand.m
+¦   ¦       ¦                   CDVPlugin+Resources.h
+¦   ¦       ¦                   CDVPlugin+Resources.m
+¦   ¦       ¦                   CDVPlugin.h
+¦   ¦       ¦                   CDVPlugin.m
+¦   ¦       ¦                   CDVPluginManager.h
+¦   ¦       ¦                   CDVPluginManager.m
+¦   ¦       ¦                   CDVPluginResult.h
+¦   ¦       ¦                   CDVPluginResult.m
+¦   ¦       ¦                   CDVScreenOrientationDelegate.h
+¦   ¦       ¦                   CDVURLProtocol.h
+¦   ¦       ¦                   CDVURLProtocol.m
+¦   ¦       ¦                   CDVViewController.h
+¦   ¦       ¦                   CDVViewController.m
+¦   ¦       ¦                   CDVWebViewProcessPoolFactory.h
+¦   ¦       ¦                   CDVWebViewProcessPoolFactory.m
+¦   ¦       ¦                   NSDictionary+CordovaPreferences.h
+¦   ¦       ¦                   NSDictionary+CordovaPreferences.m
+¦   ¦       ¦                   
+¦   ¦       +---scripts
+¦   ¦               pods_helpers.rb
+¦   ¦               
+¦   +---@ionic
+¦   ¦   +---cli-framework-output
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dist
+¦   ¦   ¦           colors.d.ts
+¦   ¦   ¦           colors.js
+¦   ¦   ¦           index.d.ts
+¦   ¦   ¦           index.js
+¦   ¦   ¦           logger.d.ts
+¦   ¦   ¦           logger.js
+¦   ¦   ¦           output.d.ts
+¦   ¦   ¦           output.js
+¦   ¦   ¦           tasks.d.ts
+¦   ¦   ¦           tasks.js
+¦   ¦   ¦           utils.d.ts
+¦   ¦   ¦           utils.js
+¦   ¦   ¦           
+¦   ¦   +---utils-array
+¦   ¦   ¦   ¦   CHANGELOG.md
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dist
+¦   ¦   ¦           index.d.ts
+¦   ¦   ¦           index.js
+¦   ¦   ¦           
+¦   ¦   +---utils-fs
+¦   ¦   ¦   ¦   CHANGELOG.md
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dist
+¦   ¦   ¦   ¦       index.d.ts
+¦   ¦   ¦   ¦       index.js
+¦   ¦   ¦   ¦       safe.d.ts
+¦   ¦   ¦   ¦       safe.js
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---node_modules
+¦   ¦   ¦       +---fs-extra
+¦   ¦   ¦           ¦   CHANGELOG.md
+¦   ¦   ¦           ¦   LICENSE
+¦   ¦   ¦           ¦   package.json
+¦   ¦   ¦           ¦   README.md
+¦   ¦   ¦           ¦   
+¦   ¦   ¦           +---lib
+¦   ¦   ¦               ¦   index.js
+¦   ¦   ¦               ¦   
+¦   ¦   ¦               +---copy
+¦   ¦   ¦               ¦       copy.js
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---copy-sync
+¦   ¦   ¦               ¦       copy-sync.js
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---empty
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---ensure
+¦   ¦   ¦               ¦       file.js
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       link.js
+¦   ¦   ¦               ¦       symlink-paths.js
+¦   ¦   ¦               ¦       symlink-type.js
+¦   ¦   ¦               ¦       symlink.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---fs
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---json
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       jsonfile.js
+¦   ¦   ¦               ¦       output-json-sync.js
+¦   ¦   ¦               ¦       output-json.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---mkdirs
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       make-dir.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---move
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       move.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---move-sync
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       move-sync.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---output
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---path-exists
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---remove
+¦   ¦   ¦               ¦       index.js
+¦   ¦   ¦               ¦       rimraf.js
+¦   ¦   ¦               ¦       
+¦   ¦   ¦               +---util
+¦   ¦   ¦                       stat.js
+¦   ¦   ¦                       utimes.js
+¦   ¦   ¦                       
+¦   ¦   +---utils-object
+¦   ¦   ¦   ¦   CHANGELOG.md
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dist
+¦   ¦   ¦           index.d.ts
+¦   ¦   ¦           index.js
+¦   ¦   ¦           
+¦   ¦   +---utils-process
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dist
+¦   ¦   ¦           index.d.ts
+¦   ¦   ¦           index.js
+¦   ¦   ¦           
+¦   ¦   +---utils-stream
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dist
+¦   ¦   ¦           index.d.ts
+¦   ¦   ¦           index.js
+¦   ¦   ¦           
+¦   ¦   +---utils-subprocess
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dist
+¦   ¦   ¦           index.d.ts
+¦   ¦   ¦           index.js
+¦   ¦   ¦           
+¦   ¦   +---utils-terminal
+¦   ¦       ¦   LICENSE
+¦   ¦       ¦   package.json
+¦   ¦       ¦   README.md
+¦   ¦       ¦   
+¦   ¦       +---dist
+¦   ¦               ansi.d.ts
+¦   ¦               ansi.js
+¦   ¦               cursor.d.ts
+¦   ¦               cursor.js
+¦   ¦               format.d.ts
+¦   ¦               format.js
+¦   ¦               index.d.ts
+¦   ¦               index.js
+¦   ¦               info.d.ts
+¦   ¦               info.js
+¦   ¦               
+¦   +---@isaacs
+¦   ¦   +---fs-minipass
+¦   ¦       ¦   LICENSE
+¦   ¦       ¦   package.json
+¦   ¦       ¦   README.md
+¦   ¦       ¦   
+¦   ¦       +---dist
+¦   ¦           +---commonjs
+¦   ¦           ¦       index.d.ts
+¦   ¦           ¦       index.d.ts.map
+¦   ¦           ¦       index.js
+¦   ¦           ¦       index.js.map
+¦   ¦           ¦       package.json
+¦   ¦           ¦       
+¦   ¦           +---esm
+¦   ¦                   index.d.ts
+¦   ¦                   index.d.ts.map
+¦   ¦                   index.js
+¦   ¦                   index.js.map
+¦   ¦                   package.json
+¦   ¦                   
+¦   +---@types
+¦   ¦   +---fs-extra
+¦   ¦   ¦       index.d.ts
+¦   ¦   ¦       LICENSE
+¦   ¦   ¦       package.json
+¦   ¦   ¦       README.md
+¦   ¦   ¦       
+¦   ¦   +---node
+¦   ¦   ¦   ¦   assert.d.ts
+¦   ¦   ¦   ¦   async_hooks.d.ts
+¦   ¦   ¦   ¦   buffer.buffer.d.ts
+¦   ¦   ¦   ¦   buffer.d.ts
+¦   ¦   ¦   ¦   child_process.d.ts
+¦   ¦   ¦   ¦   cluster.d.ts
+¦   ¦   ¦   ¦   console.d.ts
+¦   ¦   ¦   ¦   constants.d.ts
+¦   ¦   ¦   ¦   crypto.d.ts
+¦   ¦   ¦   ¦   dgram.d.ts
+¦   ¦   ¦   ¦   diagnostics_channel.d.ts
+¦   ¦   ¦   ¦   dns.d.ts
+¦   ¦   ¦   ¦   domain.d.ts
+¦   ¦   ¦   ¦   events.d.ts
+¦   ¦   ¦   ¦   ffi.d.ts
+¦   ¦   ¦   ¦   fs.d.ts
+¦   ¦   ¦   ¦   globals.d.ts
+¦   ¦   ¦   ¦   globals.typedarray.d.ts
+¦   ¦   ¦   ¦   http.d.ts
+¦   ¦   ¦   ¦   http2.d.ts
+¦   ¦   ¦   ¦   https.d.ts
+¦   ¦   ¦   ¦   index.d.ts
+¦   ¦   ¦   ¦   inspector.d.ts
+¦   ¦   ¦   ¦   inspector.generated.d.ts
+¦   ¦   ¦   ¦   LICENSE
+¦   ¦   ¦   ¦   module.d.ts
+¦   ¦   ¦   ¦   net.d.ts
+¦   ¦   ¦   ¦   os.d.ts
+¦   ¦   ¦   ¦   package.json
+¦   ¦   ¦   ¦   path.d.ts
+¦   ¦   ¦   ¦   perf_hooks.d.ts
+¦   ¦   ¦   ¦   process.d.ts
+¦   ¦   ¦   ¦   punycode.d.ts
+¦   ¦   ¦   ¦   querystring.d.ts
+¦   ¦   ¦   ¦   quic.d.ts
+¦   ¦   ¦   ¦   readline.d.ts
+¦   ¦   ¦   ¦   README.md
+¦   ¦   ¦   ¦   repl.d.ts
+¦   ¦   ¦   ¦   sea.d.ts
+¦   ¦   ¦   ¦   sqlite.d.ts
+¦   ¦   ¦   ¦   stream.d.ts
+¦   ¦   ¦   ¦   string_decoder.d.ts
+¦   ¦   ¦   ¦   test.d.ts
+¦   ¦   ¦   ¦   timers.d.ts
+¦   ¦   ¦   ¦   tls.d.ts
+¦   ¦   ¦   ¦   trace_events.d.ts
+¦   ¦   ¦   ¦   tty.d.ts
+¦   ¦   ¦   ¦   url.d.ts
+¦   ¦   ¦   ¦   util.d.ts
+¦   ¦   ¦   ¦   v8.d.ts
+¦   ¦   ¦   ¦   vfs.d.ts
+¦   ¦   ¦   ¦   vm.d.ts
+¦   ¦   ¦   ¦   wasi.d.ts
+¦   ¦   ¦   ¦   worker_threads.d.ts
+¦   ¦   ¦   ¦   zlib.d.ts
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assert
+¦   ¦   ¦   ¦       strict.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---dns
+¦   ¦   ¦   ¦       promises.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---fs
+¦   ¦   ¦   ¦       promises.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---inspector
+¦   ¦   ¦   ¦       promises.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---path
+¦   ¦   ¦   ¦       posix.d.ts
+¦   ¦   ¦   ¦       win32.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---readline
+¦   ¦   ¦   ¦       promises.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---stream
+¦   ¦   ¦   ¦       consumers.d.ts
+¦   ¦   ¦   ¦       iter.d.ts
+¦   ¦   ¦   ¦       promises.d.ts
+¦   ¦   ¦   ¦       web.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---test
+¦   ¦   ¦   ¦       reporters.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---timers
+¦   ¦   ¦   ¦       promises.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---ts5.6
+¦   ¦   ¦   ¦   ¦   buffer.buffer.d.ts
+¦   ¦   ¦   ¦   ¦   globals.typedarray.d.ts
+¦   ¦   ¦   ¦   ¦   index.d.ts
+¦   ¦   ¦   ¦   ¦   
+¦   ¦   ¦   ¦   +---compatibility
+¦   ¦   ¦   ¦           float16array.d.ts
+¦   ¦   ¦   ¦           
+¦   ¦   ¦   +---ts5.7
+¦   ¦   ¦   ¦   ¦   index.d.ts
+¦   ¦   ¦   ¦   ¦   
+¦   ¦   ¦   ¦   +---compatibility
+¦   ¦   ¦   ¦           float16array.d.ts
+¦   ¦   ¦   ¦           
+¦   ¦   ¦   +---util
+¦   ¦   ¦   ¦       types.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---web-globals
+¦   ¦   ¦   ¦       abortcontroller.d.ts
+¦   ¦   ¦   ¦       blob.d.ts
+¦   ¦   ¦   ¦       console.d.ts
+¦   ¦   ¦   ¦       crypto.d.ts
+¦   ¦   ¦   ¦       domexception.d.ts
+¦   ¦   ¦   ¦       encoding.d.ts
+¦   ¦   ¦   ¦       events.d.ts
+¦   ¦   ¦   ¦       fetch.d.ts
+¦   ¦   ¦   ¦       importmeta.d.ts
+¦   ¦   ¦   ¦       messaging.d.ts
+¦   ¦   ¦   ¦       navigator.d.ts
+¦   ¦   ¦   ¦       performance.d.ts
+¦   ¦   ¦   ¦       storage.d.ts
+¦   ¦   ¦   ¦       streams.d.ts
+¦   ¦   ¦   ¦       timers.d.ts
+¦   ¦   ¦   ¦       url.d.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---zlib
+¦   ¦   ¦           iter.d.ts
+¦   ¦   ¦           
+¦   ¦   +---slice-ansi
+¦   ¦           index.d.ts
+¦   ¦           LICENSE
+¦   ¦           package.json
+¦   ¦           README.md
+¦   ¦           
+¦   +---@xmldom
+¦   ¦   +---xmldom
+¦   ¦       ¦   CHANGELOG.md
+¦   ¦       ¦   index.d.ts
+¦   ¦       ¦   LICENSE
+¦   ¦       ¦   package.json
+¦   ¦       ¦   readme.md
+¦   ¦       ¦   SECURITY.md
+¦   ¦       ¦   
+¦   ¦       +---lib
+¦   ¦               .eslintrc.yml
+¦   ¦               conventions.js
+¦   ¦               dom-parser.js
+¦   ¦               dom.js
+¦   ¦               entities.js
+¦   ¦               errors.js
+¦   ¦               grammar.js
+¦   ¦               index.js
+¦   ¦               sax.js
+¦   ¦               
+¦   +---ansi-regex
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---ansi-styles
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---astral-regex
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---at-least-node
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---balanced-match
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               
+¦   +---base64-js
+¦   ¦       base64js.min.js
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---big-integer
+¦   ¦       BigInteger.d.ts
+¦   ¦       BigInteger.js
+¦   ¦       BigInteger.min.js
+¦   ¦       bower.json
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       tsconfig.json
+¦   ¦       
+¦   +---bplist-creator
+¦   ¦   ¦   bplistCreator.js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---test
+¦   ¦           airplay.bplist
+¦   ¦           binaryData.bplist
+¦   ¦           creatorTest.js
+¦   ¦           integers.bplist
+¦   ¦           iTunes-small.bplist
+¦   ¦           sample1.bplist
+¦   ¦           sample2.bplist
+¦   ¦           uid.bplist
+¦   ¦           utf16.bplist
+¦   ¦           
+¦   +---bplist-parser
+¦   ¦       .editorconfig
+¦   ¦       .eslintignore
+¦   ¦       .eslintrc.js
+¦   ¦       bplistParser.d.ts
+¦   ¦       bplistParser.js
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---brace-expansion
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               
+¦   +---buffer-crc32
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---chownr
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               
+¦   +---color-convert
+¦   ¦       CHANGELOG.md
+¦   ¦       conversions.js
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       route.js
+¦   ¦       
+¦   +---color-name
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---commander
+¦   ¦   ¦   esm.mjs
+¦   ¦   ¦   index.js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package-support.json
+¦   ¦   ¦   package.json
+¦   ¦   ¦   Readme.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦   ¦       argument.js
+¦   ¦   ¦       command.js
+¦   ¦   ¦       error.js
+¦   ¦   ¦       help.js
+¦   ¦   ¦       option.js
+¦   ¦   ¦       suggestSimilar.js
+¦   ¦   ¦       
+¦   ¦   +---typings
+¦   ¦           esm.d.mts
+¦   ¦           index.d.ts
+¦   ¦           
+¦   +---cross-spawn
+¦   ¦   ¦   index.js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦       ¦   enoent.js
+¦   ¦       ¦   parse.js
+¦   ¦       ¦   
+¦   ¦       +---util
+¦   ¦               escape.js
+¦   ¦               readShebang.js
+¦   ¦               resolveCommand.js
+¦   ¦               
+¦   +---debug
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---src
+¦   ¦           browser.js
+¦   ¦           common.js
+¦   ¦           index.js
+¦   ¦           node.js
+¦   ¦           
+¦   +---define-lazy-prop
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---elementtree
+¦   ¦   ¦   .npmignore
+¦   ¦   ¦   .travis.yml
+¦   ¦   ¦   CHANGES.md
+¦   ¦   ¦   LICENSE.txt
+¦   ¦   ¦   Makefile
+¦   ¦   ¦   NOTICE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦   ¦   ¦   constants.js
+¦   ¦   ¦   ¦   elementpath.js
+¦   ¦   ¦   ¦   elementtree.js
+¦   ¦   ¦   ¦   errors.js
+¦   ¦   ¦   ¦   parser.js
+¦   ¦   ¦   ¦   sprintf.js
+¦   ¦   ¦   ¦   treebuilder.js
+¦   ¦   ¦   ¦   utils.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---parsers
+¦   ¦   ¦           index.js
+¦   ¦   ¦           sax.js
+¦   ¦   ¦           
+¦   ¦   +---tests
+¦   ¦       ¦   test-simple.js
+¦   ¦       ¦   
+¦   ¦       +---data
+¦   ¦               bom-xml.xml
+¦   ¦               xml1.xml
+¦   ¦               xml2.xml
+¦   ¦               
+¦   +---emoji-regex
+¦   ¦   ¦   index.d.ts
+¦   ¦   ¦   index.js
+¦   ¦   ¦   LICENSE-MIT.txt
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   text.js
+¦   ¦   ¦   
+¦   ¦   +---es2015
+¦   ¦           index.js
+¦   ¦           text.js
+¦   ¦           
+¦   +---env-paths
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---fd-slicer
+¦   ¦   ¦   .npmignore
+¦   ¦   ¦   .travis.yml
+¦   ¦   ¦   CHANGELOG.md
+¦   ¦   ¦   index.js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---test
+¦   ¦           test.js
+¦   ¦           
+¦   +---fs-extra
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦       ¦   esm.mjs
+¦   ¦       ¦   index.js
+¦   ¦       ¦   
+¦   ¦       +---copy
+¦   ¦       ¦       copy-sync.js
+¦   ¦       ¦       copy.js
+¦   ¦       ¦       index.js
+¦   ¦       ¦       
+¦   ¦       +---empty
+¦   ¦       ¦       index.js
+¦   ¦       ¦       
+¦   ¦       +---ensure
+¦   ¦       ¦       file.js
+¦   ¦       ¦       index.js
+¦   ¦       ¦       link.js
+¦   ¦       ¦       symlink-paths.js
+¦   ¦       ¦       symlink-type.js
+¦   ¦       ¦       symlink.js
+¦   ¦       ¦       
+¦   ¦       +---fs
+¦   ¦       ¦       index.js
+¦   ¦       ¦       
+¦   ¦       +---json
+¦   ¦       ¦       index.js
+¦   ¦       ¦       jsonfile.js
+¦   ¦       ¦       output-json-sync.js
+¦   ¦       ¦       output-json.js
+¦   ¦       ¦       
+¦   ¦       +---mkdirs
+¦   ¦       ¦       index.js
+¦   ¦       ¦       make-dir.js
+¦   ¦       ¦       utils.js
+¦   ¦       ¦       
+¦   ¦       +---move
+¦   ¦       ¦       index.js
+¦   ¦       ¦       move-sync.js
+¦   ¦       ¦       move.js
+¦   ¦       ¦       
+¦   ¦       +---output-file
+¦   ¦       ¦       index.js
+¦   ¦       ¦       
+¦   ¦       +---path-exists
+¦   ¦       ¦       index.js
+¦   ¦       ¦       
+¦   ¦       +---remove
+¦   ¦       ¦       index.js
+¦   ¦       ¦       
+¦   ¦       +---util
+¦   ¦               async.js
+¦   ¦               stat.js
+¦   ¦               utimes.js
+¦   ¦               
+¦   +---glob
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       glob.d.ts
+¦   ¦       ¦       glob.d.ts.map
+¦   ¦       ¦       glob.js
+¦   ¦       ¦       glob.js.map
+¦   ¦       ¦       has-magic.d.ts
+¦   ¦       ¦       has-magic.d.ts.map
+¦   ¦       ¦       has-magic.js
+¦   ¦       ¦       has-magic.js.map
+¦   ¦       ¦       ignore.d.ts
+¦   ¦       ¦       ignore.d.ts.map
+¦   ¦       ¦       ignore.js
+¦   ¦       ¦       ignore.js.map
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       index.min.js
+¦   ¦       ¦       index.min.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       pattern.d.ts
+¦   ¦       ¦       pattern.d.ts.map
+¦   ¦       ¦       pattern.js
+¦   ¦       ¦       pattern.js.map
+¦   ¦       ¦       processor.d.ts
+¦   ¦       ¦       processor.d.ts.map
+¦   ¦       ¦       processor.js
+¦   ¦       ¦       processor.js.map
+¦   ¦       ¦       walker.d.ts
+¦   ¦       ¦       walker.d.ts.map
+¦   ¦       ¦       walker.js
+¦   ¦       ¦       walker.js.map
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               glob.d.ts
+¦   ¦               glob.d.ts.map
+¦   ¦               glob.js
+¦   ¦               glob.js.map
+¦   ¦               has-magic.d.ts
+¦   ¦               has-magic.d.ts.map
+¦   ¦               has-magic.js
+¦   ¦               has-magic.js.map
+¦   ¦               ignore.d.ts
+¦   ¦               ignore.d.ts.map
+¦   ¦               ignore.js
+¦   ¦               ignore.js.map
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               index.min.js
+¦   ¦               index.min.js.map
+¦   ¦               package.json
+¦   ¦               pattern.d.ts
+¦   ¦               pattern.d.ts.map
+¦   ¦               pattern.js
+¦   ¦               pattern.js.map
+¦   ¦               processor.d.ts
+¦   ¦               processor.d.ts.map
+¦   ¦               processor.js
+¦   ¦               processor.js.map
+¦   ¦               walker.d.ts
+¦   ¦               walker.d.ts.map
+¦   ¦               walker.js
+¦   ¦               walker.js.map
+¦   ¦               
+¦   +---graceful-fs
+¦   ¦       clone.js
+¦   ¦       graceful-fs.js
+¦   ¦       legacy-streams.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       polyfills.js
+¦   ¦       README.md
+¦   ¦       
+¦   +---inherits
+¦   ¦       inherits.js
+¦   ¦       inherits_browser.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---ini
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦           ini.js
+¦   ¦           
+¦   +---is-docker
+¦   ¦       cli.js
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---is-fullwidth-code-point
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---is-wsl
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---isexe
+¦   ¦   ¦   .npmignore
+¦   ¦   ¦   index.js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   mode.js
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   windows.js
+¦   ¦   ¦   
+¦   ¦   +---test
+¦   ¦           basic.js
+¦   ¦           
+¦   +---jsonfile
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       utils.js
+¦   ¦       
+¦   +---kleur
+¦   ¦       colors.d.ts
+¦   ¦       colors.js
+¦   ¦       colors.mjs
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       index.mjs
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---lru-cache
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦   ¦   diagnostics-channel-cjs.cjs.map
+¦   ¦       ¦   ¦   diagnostics-channel-cjs.d.cts.map
+¦   ¦       ¦   ¦   diagnostics-channel.d.ts
+¦   ¦       ¦   ¦   diagnostics-channel.js
+¦   ¦       ¦   ¦   index.d.ts
+¦   ¦       ¦   ¦   index.d.ts.map
+¦   ¦       ¦   ¦   index.js
+¦   ¦       ¦   ¦   index.js.map
+¦   ¦       ¦   ¦   index.min.js
+¦   ¦       ¦   ¦   index.min.js.map
+¦   ¦       ¦   ¦   package.json
+¦   ¦       ¦   ¦   perf.d.ts
+¦   ¦       ¦   ¦   perf.d.ts.map
+¦   ¦       ¦   ¦   perf.js
+¦   ¦       ¦   ¦   perf.js.map
+¦   ¦       ¦   ¦   
+¦   ¦       ¦   +---browser
+¦   ¦       ¦   ¦       diagnostics-channel-browser.d.ts.map
+¦   ¦       ¦   ¦       diagnostics-channel-browser.js.map
+¦   ¦       ¦   ¦       diagnostics-channel.d.ts
+¦   ¦       ¦   ¦       diagnostics-channel.js
+¦   ¦       ¦   ¦       index.d.ts
+¦   ¦       ¦   ¦       index.d.ts.map
+¦   ¦       ¦   ¦       index.js
+¦   ¦       ¦   ¦       index.js.map
+¦   ¦       ¦   ¦       index.min.js
+¦   ¦       ¦   ¦       index.min.js.map
+¦   ¦       ¦   ¦       perf.d.ts
+¦   ¦       ¦   ¦       perf.d.ts.map
+¦   ¦       ¦   ¦       perf.js
+¦   ¦       ¦   ¦       perf.js.map
+¦   ¦       ¦   ¦       
+¦   ¦       ¦   +---node
+¦   ¦       ¦           diagnostics-channel-node.d.ts.map
+¦   ¦       ¦           diagnostics-channel-node.js.map
+¦   ¦       ¦           diagnostics-channel.d.ts
+¦   ¦       ¦           diagnostics-channel.js
+¦   ¦       ¦           index.d.ts
+¦   ¦       ¦           index.d.ts.map
+¦   ¦       ¦           index.js
+¦   ¦       ¦           index.js.map
+¦   ¦       ¦           index.min.js
+¦   ¦       ¦           index.min.js.map
+¦   ¦       ¦           perf.d.ts
+¦   ¦       ¦           perf.d.ts.map
+¦   ¦       ¦           perf.js
+¦   ¦       ¦           perf.js.map
+¦   ¦       ¦           
+¦   ¦       +---esm
+¦   ¦           ¦   diagnostics-channel-esm.d.mts.map
+¦   ¦           ¦   diagnostics-channel-esm.mjs.map
+¦   ¦           ¦   diagnostics-channel.d.ts
+¦   ¦           ¦   diagnostics-channel.js
+¦   ¦           ¦   index.d.ts
+¦   ¦           ¦   index.d.ts.map
+¦   ¦           ¦   index.js
+¦   ¦           ¦   index.js.map
+¦   ¦           ¦   index.min.js
+¦   ¦           ¦   index.min.js.map
+¦   ¦           ¦   package.json
+¦   ¦           ¦   perf.d.ts
+¦   ¦           ¦   perf.d.ts.map
+¦   ¦           ¦   perf.js
+¦   ¦           ¦   perf.js.map
+¦   ¦           ¦   
+¦   ¦           +---browser
+¦   ¦           ¦       diagnostics-channel-browser.d.ts.map
+¦   ¦           ¦       diagnostics-channel-browser.js.map
+¦   ¦           ¦       diagnostics-channel.d.ts
+¦   ¦           ¦       diagnostics-channel.js
+¦   ¦           ¦       index.d.ts
+¦   ¦           ¦       index.d.ts.map
+¦   ¦           ¦       index.js
+¦   ¦           ¦       index.js.map
+¦   ¦           ¦       index.min.js
+¦   ¦           ¦       index.min.js.map
+¦   ¦           ¦       perf.d.ts
+¦   ¦           ¦       perf.d.ts.map
+¦   ¦           ¦       perf.js
+¦   ¦           ¦       perf.js.map
+¦   ¦           ¦       
+¦   ¦           +---node
+¦   ¦                   diagnostics-channel-node.d.ts.map
+¦   ¦                   diagnostics-channel-node.js.map
+¦   ¦                   diagnostics-channel.d.ts
+¦   ¦                   diagnostics-channel.js
+¦   ¦                   index.d.ts
+¦   ¦                   index.d.ts.map
+¦   ¦                   index.js
+¦   ¦                   index.js.map
+¦   ¦                   index.min.js
+¦   ¦                   index.min.js.map
+¦   ¦                   perf.d.ts
+¦   ¦                   perf.d.ts.map
+¦   ¦                   perf.js
+¦   ¦                   perf.js.map
+¦   ¦                   
+¦   +---minimatch
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       assert-valid-pattern.d.ts
+¦   ¦       ¦       assert-valid-pattern.d.ts.map
+¦   ¦       ¦       assert-valid-pattern.js
+¦   ¦       ¦       assert-valid-pattern.js.map
+¦   ¦       ¦       ast.d.ts
+¦   ¦       ¦       ast.d.ts.map
+¦   ¦       ¦       ast.js
+¦   ¦       ¦       ast.js.map
+¦   ¦       ¦       brace-expressions.d.ts
+¦   ¦       ¦       brace-expressions.d.ts.map
+¦   ¦       ¦       brace-expressions.js
+¦   ¦       ¦       brace-expressions.js.map
+¦   ¦       ¦       escape.d.ts
+¦   ¦       ¦       escape.d.ts.map
+¦   ¦       ¦       escape.js
+¦   ¦       ¦       escape.js.map
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       unescape.d.ts
+¦   ¦       ¦       unescape.d.ts.map
+¦   ¦       ¦       unescape.js
+¦   ¦       ¦       unescape.js.map
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               assert-valid-pattern.d.ts
+¦   ¦               assert-valid-pattern.d.ts.map
+¦   ¦               assert-valid-pattern.js
+¦   ¦               assert-valid-pattern.js.map
+¦   ¦               ast.d.ts
+¦   ¦               ast.d.ts.map
+¦   ¦               ast.js
+¦   ¦               ast.js.map
+¦   ¦               brace-expressions.d.ts
+¦   ¦               brace-expressions.d.ts.map
+¦   ¦               brace-expressions.js
+¦   ¦               brace-expressions.js.map
+¦   ¦               escape.d.ts
+¦   ¦               escape.d.ts.map
+¦   ¦               escape.js
+¦   ¦               escape.js.map
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               unescape.d.ts
+¦   ¦               unescape.d.ts.map
+¦   ¦               unescape.js
+¦   ¦               unescape.js.map
+¦   ¦               
+¦   +---minipass
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               
+¦   +---minizlib
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       constants.d.ts
+¦   ¦       ¦       constants.d.ts.map
+¦   ¦       ¦       constants.js
+¦   ¦       ¦       constants.js.map
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               constants.d.ts
+¦   ¦               constants.d.ts.map
+¦   ¦               constants.js
+¦   ¦               constants.js.map
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               
+¦   +---ms
+¦   ¦       index.js
+¦   ¦       license.md
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---native-run
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---assets
+¦   ¦   ¦   +---android
+¦   ¦   ¦       +---skins
+¦   ¦   ¦           ¦   LICENSE
+¦   ¦   ¦           ¦   README.md
+¦   ¦   ¦           ¦   
+¦   ¦   ¦           +---nexus_5x
+¦   ¦   ¦           ¦       land_back.webp
+¦   ¦   ¦           ¦       land_fore.webp
+¦   ¦   ¦           ¦       land_shadow.webp
+¦   ¦   ¦           ¦       layout
+¦   ¦   ¦           ¦       port_back.webp
+¦   ¦   ¦           ¦       port_fore.webp
+¦   ¦   ¦           ¦       port_shadow.webp
+¦   ¦   ¦           ¦       
+¦   ¦   ¦           +---pixel
+¦   ¦   ¦           ¦       land_back.webp
+¦   ¦   ¦           ¦       land_fore.webp
+¦   ¦   ¦           ¦       land_shadow.webp
+¦   ¦   ¦           ¦       layout
+¦   ¦   ¦           ¦       port_back.webp
+¦   ¦   ¦           ¦       port_fore.webp
+¦   ¦   ¦           ¦       port_shadow.webp
+¦   ¦   ¦           ¦       
+¦   ¦   ¦           +---pixel_2
+¦   ¦   ¦           ¦       land_back.webp
+¦   ¦   ¦           ¦       land_fore.webp
+¦   ¦   ¦           ¦       land_shadow.webp
+¦   ¦   ¦           ¦       layout
+¦   ¦   ¦           ¦       port_back.webp
+¦   ¦   ¦           ¦       port_fore.webp
+¦   ¦   ¦           ¦       port_shadow.webp
+¦   ¦   ¦           ¦       
+¦   ¦   ¦           +---pixel_3
+¦   ¦   ¦                   layout
+¦   ¦   ¦                   port_back.webp
+¦   ¦   ¦                   round_corners.webp
+¦   ¦   ¦                   
+¦   ¦   +---bin
+¦   ¦   ¦       native-run
+¦   ¦   ¦       
+¦   ¦   +---dist
+¦   ¦       ¦   constants.js
+¦   ¦       ¦   errors.js
+¦   ¦       ¦   help.js
+¦   ¦       ¦   index.js
+¦   ¦       ¦   list.js
+¦   ¦       ¦   
+¦   ¦       +---android
+¦   ¦       ¦   ¦   help.js
+¦   ¦       ¦   ¦   index.js
+¦   ¦       ¦   ¦   list.js
+¦   ¦       ¦   ¦   run.js
+¦   ¦       ¦   ¦   sdk-info.js
+¦   ¦       ¦   ¦   
+¦   ¦       ¦   +---utils
+¦   ¦       ¦       ¦   adb.js
+¦   ¦       ¦       ¦   apk.js
+¦   ¦       ¦       ¦   avd.js
+¦   ¦       ¦       ¦   binary-xml-parser.js
+¦   ¦       ¦       ¦   emulator.js
+¦   ¦       ¦       ¦   list.js
+¦   ¦       ¦       ¦   run.js
+¦   ¦       ¦       ¦   
+¦   ¦       ¦       +---sdk
+¦   ¦       ¦               api.js
+¦   ¦       ¦               index.js
+¦   ¦       ¦               xml.js
+¦   ¦       ¦               
+¦   ¦       +---ios
+¦   ¦       ¦   ¦   help.js
+¦   ¦       ¦   ¦   index.js
+¦   ¦       ¦   ¦   list.js
+¦   ¦       ¦   ¦   run.js
+¦   ¦       ¦   ¦   
+¦   ¦       ¦   +---lib
+¦   ¦       ¦   ¦   ¦   index.js
+¦   ¦       ¦   ¦   ¦   lib-errors.js
+¦   ¦       ¦   ¦   ¦   manager.js
+¦   ¦       ¦   ¦   ¦   
+¦   ¦       ¦   ¦   +---client
+¦   ¦       ¦   ¦   ¦       afc.js
+¦   ¦       ¦   ¦   ¦       client.js
+¦   ¦       ¦   ¦   ¦       debugserver.js
+¦   ¦       ¦   ¦   ¦       index.js
+¦   ¦       ¦   ¦   ¦       installation_proxy.js
+¦   ¦       ¦   ¦   ¦       lockdownd.js
+¦   ¦       ¦   ¦   ¦       mobile_image_mounter.js
+¦   ¦       ¦   ¦   ¦       usbmuxd.js
+¦   ¦       ¦   ¦   ¦       
+¦   ¦       ¦   ¦   +---protocol
+¦   ¦       ¦   ¦           afc.js
+¦   ¦       ¦   ¦           gdb.js
+¦   ¦       ¦   ¦           index.js
+¦   ¦       ¦   ¦           lockdown.js
+¦   ¦       ¦   ¦           protocol.js
+¦   ¦       ¦   ¦           usbmux.js
+¦   ¦       ¦   ¦           
+¦   ¦       ¦   +---utils
+¦   ¦       ¦           app.js
+¦   ¦       ¦           device.js
+¦   ¦       ¦           simulator.js
+¦   ¦       ¦           xcode.js
+¦   ¦       ¦           
+¦   ¦       +---utils
+¦   ¦               cli.js
+¦   ¦               fn.js
+¦   ¦               fs.js
+¦   ¦               ini.js
+¦   ¦               json.js
+¦   ¦               list.js
+¦   ¦               log.js
+¦   ¦               object.js
+¦   ¦               process.js
+¦   ¦               unzip.js
+¦   ¦               
+¦   +---open
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       xdg-open
+¦   ¦       
+¦   +---package-json-from-dist
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               
+¦   +---path-key
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---path-scurry
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               
+¦   +---pend
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       test.js
+¦   ¦       
+¦   +---plist
+¦   ¦   ¦   .jshintrc
+¦   ¦   ¦   History.md
+¦   ¦   ¦   index.js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   Makefile
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---.github
+¦   ¦   ¦   +---workflows
+¦   ¦   ¦           ci.yml
+¦   ¦   ¦           
+¦   ¦   +---dist
+¦   ¦   ¦       plist-build.js
+¦   ¦   ¦       plist-parse.js
+¦   ¦   ¦       plist.js
+¦   ¦   ¦       
+¦   ¦   +---examples
+¦   ¦   ¦   +---browser
+¦   ¦   ¦           index.html
+¦   ¦   ¦           
+¦   ¦   +---lib
+¦   ¦           build.js
+¦   ¦           parse.js
+¦   ¦           
+¦   +---prompts
+¦   ¦   ¦   index.js
+¦   ¦   ¦   license
+¦   ¦   ¦   package.json
+¦   ¦   ¦   readme.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦   ¦   ¦   index.js
+¦   ¦   ¦   ¦   prompts.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dateparts
+¦   ¦   ¦   ¦       datepart.js
+¦   ¦   ¦   ¦       day.js
+¦   ¦   ¦   ¦       hours.js
+¦   ¦   ¦   ¦       index.js
+¦   ¦   ¦   ¦       meridiem.js
+¦   ¦   ¦   ¦       milliseconds.js
+¦   ¦   ¦   ¦       minutes.js
+¦   ¦   ¦   ¦       month.js
+¦   ¦   ¦   ¦       seconds.js
+¦   ¦   ¦   ¦       year.js
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---elements
+¦   ¦   ¦   ¦       autocomplete.js
+¦   ¦   ¦   ¦       autocompleteMultiselect.js
+¦   ¦   ¦   ¦       confirm.js
+¦   ¦   ¦   ¦       date.js
+¦   ¦   ¦   ¦       index.js
+¦   ¦   ¦   ¦       multiselect.js
+¦   ¦   ¦   ¦       number.js
+¦   ¦   ¦   ¦       prompt.js
+¦   ¦   ¦   ¦       select.js
+¦   ¦   ¦   ¦       text.js
+¦   ¦   ¦   ¦       toggle.js
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---util
+¦   ¦   ¦           action.js
+¦   ¦   ¦           clear.js
+¦   ¦   ¦           entriesToDisplay.js
+¦   ¦   ¦           figures.js
+¦   ¦   ¦           index.js
+¦   ¦   ¦           lines.js
+¦   ¦   ¦           strip.js
+¦   ¦   ¦           style.js
+¦   ¦   ¦           wrap.js
+¦   ¦   ¦           
+¦   ¦   +---lib
+¦   ¦   ¦   ¦   index.js
+¦   ¦   ¦   ¦   prompts.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---dateparts
+¦   ¦   ¦   ¦       datepart.js
+¦   ¦   ¦   ¦       day.js
+¦   ¦   ¦   ¦       hours.js
+¦   ¦   ¦   ¦       index.js
+¦   ¦   ¦   ¦       meridiem.js
+¦   ¦   ¦   ¦       milliseconds.js
+¦   ¦   ¦   ¦       minutes.js
+¦   ¦   ¦   ¦       month.js
+¦   ¦   ¦   ¦       seconds.js
+¦   ¦   ¦   ¦       year.js
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---elements
+¦   ¦   ¦   ¦       autocomplete.js
+¦   ¦   ¦   ¦       autocompleteMultiselect.js
+¦   ¦   ¦   ¦       confirm.js
+¦   ¦   ¦   ¦       date.js
+¦   ¦   ¦   ¦       index.js
+¦   ¦   ¦   ¦       multiselect.js
+¦   ¦   ¦   ¦       number.js
+¦   ¦   ¦   ¦       prompt.js
+¦   ¦   ¦   ¦       select.js
+¦   ¦   ¦   ¦       text.js
+¦   ¦   ¦   ¦       toggle.js
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---util
+¦   ¦   ¦           action.js
+¦   ¦   ¦           clear.js
+¦   ¦   ¦           entriesToDisplay.js
+¦   ¦   ¦           figures.js
+¦   ¦   ¦           index.js
+¦   ¦   ¦           lines.js
+¦   ¦   ¦           strip.js
+¦   ¦   ¦           style.js
+¦   ¦   ¦           wrap.js
+¦   ¦   ¦           
+¦   ¦   +---node_modules
+¦   ¦       +---kleur
+¦   ¦               index.js
+¦   ¦               kleur.d.ts
+¦   ¦               license
+¦   ¦               package.json
+¦   ¦               readme.md
+¦   ¦               
+¦   +---readable-stream
+¦   ¦   ¦   CONTRIBUTING.md
+¦   ¦   ¦   errors-browser.js
+¦   ¦   ¦   errors.js
+¦   ¦   ¦   experimentalWarning.js
+¦   ¦   ¦   GOVERNANCE.md
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   readable-browser.js
+¦   ¦   ¦   readable.js
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦       ¦   _stream_duplex.js
+¦   ¦       ¦   _stream_passthrough.js
+¦   ¦       ¦   _stream_readable.js
+¦   ¦       ¦   _stream_transform.js
+¦   ¦       ¦   _stream_writable.js
+¦   ¦       ¦   
+¦   ¦       +---internal
+¦   ¦           +---streams
+¦   ¦                   async_iterator.js
+¦   ¦                   buffer_list.js
+¦   ¦                   destroy.js
+¦   ¦                   end-of-stream.js
+¦   ¦                   from-browser.js
+¦   ¦                   from.js
+¦   ¦                   pipeline.js
+¦   ¦                   state.js
+¦   ¦                   stream-browser.js
+¦   ¦                   stream.js
+¦   ¦                   
+¦   +---rimraf
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       default-tmp.d.ts
+¦   ¦       ¦       default-tmp.d.ts.map
+¦   ¦       ¦       default-tmp.js
+¦   ¦       ¦       default-tmp.js.map
+¦   ¦       ¦       error.d.ts
+¦   ¦       ¦       error.d.ts.map
+¦   ¦       ¦       error.js
+¦   ¦       ¦       error.js.map
+¦   ¦       ¦       fix-eperm.d.ts
+¦   ¦       ¦       fix-eperm.d.ts.map
+¦   ¦       ¦       fix-eperm.js
+¦   ¦       ¦       fix-eperm.js.map
+¦   ¦       ¦       fs.d.ts
+¦   ¦       ¦       fs.d.ts.map
+¦   ¦       ¦       fs.js
+¦   ¦       ¦       fs.js.map
+¦   ¦       ¦       ignore-enoent.d.ts
+¦   ¦       ¦       ignore-enoent.d.ts.map
+¦   ¦       ¦       ignore-enoent.js
+¦   ¦       ¦       ignore-enoent.js.map
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       opt-arg.d.ts
+¦   ¦       ¦       opt-arg.d.ts.map
+¦   ¦       ¦       opt-arg.js
+¦   ¦       ¦       opt-arg.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       path-arg.d.ts
+¦   ¦       ¦       path-arg.d.ts.map
+¦   ¦       ¦       path-arg.js
+¦   ¦       ¦       path-arg.js.map
+¦   ¦       ¦       readdir-or-error.d.ts
+¦   ¦       ¦       readdir-or-error.d.ts.map
+¦   ¦       ¦       readdir-or-error.js
+¦   ¦       ¦       readdir-or-error.js.map
+¦   ¦       ¦       retry-busy.d.ts
+¦   ¦       ¦       retry-busy.d.ts.map
+¦   ¦       ¦       retry-busy.js
+¦   ¦       ¦       retry-busy.js.map
+¦   ¦       ¦       rimraf-manual.d.ts
+¦   ¦       ¦       rimraf-manual.d.ts.map
+¦   ¦       ¦       rimraf-manual.js
+¦   ¦       ¦       rimraf-manual.js.map
+¦   ¦       ¦       rimraf-move-remove.d.ts
+¦   ¦       ¦       rimraf-move-remove.d.ts.map
+¦   ¦       ¦       rimraf-move-remove.js
+¦   ¦       ¦       rimraf-move-remove.js.map
+¦   ¦       ¦       rimraf-native.d.ts
+¦   ¦       ¦       rimraf-native.d.ts.map
+¦   ¦       ¦       rimraf-native.js
+¦   ¦       ¦       rimraf-native.js.map
+¦   ¦       ¦       rimraf-posix.d.ts
+¦   ¦       ¦       rimraf-posix.d.ts.map
+¦   ¦       ¦       rimraf-posix.js
+¦   ¦       ¦       rimraf-posix.js.map
+¦   ¦       ¦       rimraf-windows.d.ts
+¦   ¦       ¦       rimraf-windows.d.ts.map
+¦   ¦       ¦       rimraf-windows.js
+¦   ¦       ¦       rimraf-windows.js.map
+¦   ¦       ¦       use-native.d.ts
+¦   ¦       ¦       use-native.d.ts.map
+¦   ¦       ¦       use-native.js
+¦   ¦       ¦       use-native.js.map
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               bin.d.mts
+¦   ¦               bin.d.mts.map
+¦   ¦               bin.mjs
+¦   ¦               bin.mjs.map
+¦   ¦               default-tmp.d.ts
+¦   ¦               default-tmp.d.ts.map
+¦   ¦               default-tmp.js
+¦   ¦               default-tmp.js.map
+¦   ¦               error.d.ts
+¦   ¦               error.d.ts.map
+¦   ¦               error.js
+¦   ¦               error.js.map
+¦   ¦               fix-eperm.d.ts
+¦   ¦               fix-eperm.d.ts.map
+¦   ¦               fix-eperm.js
+¦   ¦               fix-eperm.js.map
+¦   ¦               fs.d.ts
+¦   ¦               fs.d.ts.map
+¦   ¦               fs.js
+¦   ¦               fs.js.map
+¦   ¦               ignore-enoent.d.ts
+¦   ¦               ignore-enoent.d.ts.map
+¦   ¦               ignore-enoent.js
+¦   ¦               ignore-enoent.js.map
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               opt-arg.d.ts
+¦   ¦               opt-arg.d.ts.map
+¦   ¦               opt-arg.js
+¦   ¦               opt-arg.js.map
+¦   ¦               package.json
+¦   ¦               path-arg.d.ts
+¦   ¦               path-arg.d.ts.map
+¦   ¦               path-arg.js
+¦   ¦               path-arg.js.map
+¦   ¦               readdir-or-error.d.ts
+¦   ¦               readdir-or-error.d.ts.map
+¦   ¦               readdir-or-error.js
+¦   ¦               readdir-or-error.js.map
+¦   ¦               retry-busy.d.ts
+¦   ¦               retry-busy.d.ts.map
+¦   ¦               retry-busy.js
+¦   ¦               retry-busy.js.map
+¦   ¦               rimraf-manual.d.ts
+¦   ¦               rimraf-manual.d.ts.map
+¦   ¦               rimraf-manual.js
+¦   ¦               rimraf-manual.js.map
+¦   ¦               rimraf-move-remove.d.ts
+¦   ¦               rimraf-move-remove.d.ts.map
+¦   ¦               rimraf-move-remove.js
+¦   ¦               rimraf-move-remove.js.map
+¦   ¦               rimraf-native.d.ts
+¦   ¦               rimraf-native.d.ts.map
+¦   ¦               rimraf-native.js
+¦   ¦               rimraf-native.js.map
+¦   ¦               rimraf-posix.d.ts
+¦   ¦               rimraf-posix.d.ts.map
+¦   ¦               rimraf-posix.js
+¦   ¦               rimraf-posix.js.map
+¦   ¦               rimraf-windows.d.ts
+¦   ¦               rimraf-windows.d.ts.map
+¦   ¦               rimraf-windows.js
+¦   ¦               rimraf-windows.js.map
+¦   ¦               use-native.d.ts
+¦   ¦               use-native.d.ts.map
+¦   ¦               use-native.js
+¦   ¦               use-native.js.map
+¦   ¦               
+¦   +---safe-buffer
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---sax
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   LICENSE-W3C.html
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦           sax.js
+¦   ¦           
+¦   +---semver
+¦   ¦   ¦   index.js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   preload.js
+¦   ¦   ¦   range.bnf
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---bin
+¦   ¦   ¦       semver.js
+¦   ¦   ¦       
+¦   ¦   +---classes
+¦   ¦   ¦       comparator.js
+¦   ¦   ¦       index.js
+¦   ¦   ¦       range.js
+¦   ¦   ¦       semver.js
+¦   ¦   ¦       
+¦   ¦   +---functions
+¦   ¦   ¦       clean.js
+¦   ¦   ¦       cmp.js
+¦   ¦   ¦       coerce.js
+¦   ¦   ¦       compare-build.js
+¦   ¦   ¦       compare-loose.js
+¦   ¦   ¦       compare.js
+¦   ¦   ¦       diff.js
+¦   ¦   ¦       eq.js
+¦   ¦   ¦       gt.js
+¦   ¦   ¦       gte.js
+¦   ¦   ¦       inc.js
+¦   ¦   ¦       lt.js
+¦   ¦   ¦       lte.js
+¦   ¦   ¦       major.js
+¦   ¦   ¦       minor.js
+¦   ¦   ¦       neq.js
+¦   ¦   ¦       parse.js
+¦   ¦   ¦       patch.js
+¦   ¦   ¦       prerelease.js
+¦   ¦   ¦       rcompare.js
+¦   ¦   ¦       rsort.js
+¦   ¦   ¦       satisfies.js
+¦   ¦   ¦       sort.js
+¦   ¦   ¦       truncate.js
+¦   ¦   ¦       valid.js
+¦   ¦   ¦       
+¦   ¦   +---internal
+¦   ¦   ¦       constants.js
+¦   ¦   ¦       debug.js
+¦   ¦   ¦       identifiers.js
+¦   ¦   ¦       lrucache.js
+¦   ¦   ¦       parse-options.js
+¦   ¦   ¦       re.js
+¦   ¦   ¦       
+¦   ¦   +---ranges
+¦   ¦           gtr.js
+¦   ¦           intersects.js
+¦   ¦           ltr.js
+¦   ¦           max-satisfying.js
+¦   ¦           min-satisfying.js
+¦   ¦           min-version.js
+¦   ¦           outside.js
+¦   ¦           simplify.js
+¦   ¦           subset.js
+¦   ¦           to-comparators.js
+¦   ¦           valid.js
+¦   ¦           
+¦   +---shebang-command
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---shebang-regex
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---signal-exit
+¦   ¦       index.js
+¦   ¦       LICENSE.txt
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       signals.js
+¦   ¦       
+¦   +---simple-plist
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦   ¦       index.d.ts
+¦   ¦   ¦       index.js
+¦   ¦   ¦       parse.d.ts
+¦   ¦   ¦       parse.js
+¦   ¦   ¦       readFile.d.ts
+¦   ¦   ¦       readFile.js
+¦   ¦   ¦       readFileSync.d.ts
+¦   ¦   ¦       readFileSync.js
+¦   ¦   ¦       stringify.d.ts
+¦   ¦   ¦       stringify.js
+¦   ¦   ¦       types.d.ts
+¦   ¦   ¦       types.js
+¦   ¦   ¦       writeBinaryFile.d.ts
+¦   ¦   ¦       writeBinaryFile.js
+¦   ¦   ¦       writeBinaryFileSync.d.ts
+¦   ¦   ¦       writeBinaryFileSync.js
+¦   ¦   ¦       writeFile.d.ts
+¦   ¦   ¦       writeFile.js
+¦   ¦   ¦       writeFileSync.d.ts
+¦   ¦   ¦       writeFileSync.js
+¦   ¦   ¦       
+¦   ¦   +---node_modules
+¦   ¦       +---bplist-parser
+¦   ¦               .editorconfig
+¦   ¦               .eslintignore
+¦   ¦               .eslintrc.js
+¦   ¦               bplistParser.d.ts
+¦   ¦               bplistParser.js
+¦   ¦               package.json
+¦   ¦               README.md
+¦   ¦               
+¦   +---sisteransi
+¦   ¦   ¦   license
+¦   ¦   ¦   package.json
+¦   ¦   ¦   readme.md
+¦   ¦   ¦   
+¦   ¦   +---src
+¦   ¦           index.js
+¦   ¦           sisteransi.d.ts
+¦   ¦           
+¦   +---slice-ansi
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---split2
+¦   ¦       bench.js
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       test.js
+¦   ¦       
+¦   +---stream-buffers
+¦   ¦   ¦   .mailmap
+¦   ¦   ¦   .travis.yml
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   UNLICENSE
+¦   ¦   ¦   
+¦   ¦   +---coverage
+¦   ¦   ¦   ¦   coverage.json
+¦   ¦   ¦   ¦   lcov.info
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---lcov-report
+¦   ¦   ¦       ¦   base.css
+¦   ¦   ¦       ¦   index.html
+¦   ¦   ¦       ¦   prettify.css
+¦   ¦   ¦       ¦   prettify.js
+¦   ¦   ¦       ¦   sort-arrow-sprite.png
+¦   ¦   ¦       ¦   sorter.js
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---lib
+¦   ¦   ¦               constants.js.html
+¦   ¦   ¦               index.html
+¦   ¦   ¦               readable_streambuffer.js.html
+¦   ¦   ¦               streambuffer.js.html
+¦   ¦   ¦               writable_streambuffer.js.html
+¦   ¦   ¦               
+¦   ¦   +---lib
+¦   ¦           constants.js
+¦   ¦           readable_streambuffer.js
+¦   ¦           streambuffer.js
+¦   ¦           writable_streambuffer.js
+¦   ¦           
+¦   +---string-width
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---string_decoder
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦           string_decoder.js
+¦   ¦           
+¦   +---strip-ansi
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---tar
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       create.d.ts
+¦   ¦       ¦       create.d.ts.map
+¦   ¦       ¦       create.js
+¦   ¦       ¦       create.js.map
+¦   ¦       ¦       cwd-error.d.ts
+¦   ¦       ¦       cwd-error.d.ts.map
+¦   ¦       ¦       cwd-error.js
+¦   ¦       ¦       cwd-error.js.map
+¦   ¦       ¦       extract.d.ts
+¦   ¦       ¦       extract.d.ts.map
+¦   ¦       ¦       extract.js
+¦   ¦       ¦       extract.js.map
+¦   ¦       ¦       get-write-flag.d.ts
+¦   ¦       ¦       get-write-flag.d.ts.map
+¦   ¦       ¦       get-write-flag.js
+¦   ¦       ¦       get-write-flag.js.map
+¦   ¦       ¦       header.d.ts
+¦   ¦       ¦       header.d.ts.map
+¦   ¦       ¦       header.js
+¦   ¦       ¦       header.js.map
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       index.min.js
+¦   ¦       ¦       index.min.js.map
+¦   ¦       ¦       large-numbers.d.ts
+¦   ¦       ¦       large-numbers.d.ts.map
+¦   ¦       ¦       large-numbers.js
+¦   ¦       ¦       large-numbers.js.map
+¦   ¦       ¦       list.d.ts
+¦   ¦       ¦       list.d.ts.map
+¦   ¦       ¦       list.js
+¦   ¦       ¦       list.js.map
+¦   ¦       ¦       make-command.d.ts
+¦   ¦       ¦       make-command.d.ts.map
+¦   ¦       ¦       make-command.js
+¦   ¦       ¦       make-command.js.map
+¦   ¦       ¦       mkdir.d.ts
+¦   ¦       ¦       mkdir.d.ts.map
+¦   ¦       ¦       mkdir.js
+¦   ¦       ¦       mkdir.js.map
+¦   ¦       ¦       mode-fix.d.ts
+¦   ¦       ¦       mode-fix.d.ts.map
+¦   ¦       ¦       mode-fix.js
+¦   ¦       ¦       mode-fix.js.map
+¦   ¦       ¦       normalize-unicode.d.ts
+¦   ¦       ¦       normalize-unicode.d.ts.map
+¦   ¦       ¦       normalize-unicode.js
+¦   ¦       ¦       normalize-unicode.js.map
+¦   ¦       ¦       normalize-windows-path.d.ts
+¦   ¦       ¦       normalize-windows-path.d.ts.map
+¦   ¦       ¦       normalize-windows-path.js
+¦   ¦       ¦       normalize-windows-path.js.map
+¦   ¦       ¦       options.d.ts
+¦   ¦       ¦       options.d.ts.map
+¦   ¦       ¦       options.js
+¦   ¦       ¦       options.js.map
+¦   ¦       ¦       pack.d.ts
+¦   ¦       ¦       pack.d.ts.map
+¦   ¦       ¦       pack.js
+¦   ¦       ¦       pack.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       parse.d.ts
+¦   ¦       ¦       parse.d.ts.map
+¦   ¦       ¦       parse.js
+¦   ¦       ¦       parse.js.map
+¦   ¦       ¦       path-reservations.d.ts
+¦   ¦       ¦       path-reservations.d.ts.map
+¦   ¦       ¦       path-reservations.js
+¦   ¦       ¦       path-reservations.js.map
+¦   ¦       ¦       pax.d.ts
+¦   ¦       ¦       pax.d.ts.map
+¦   ¦       ¦       pax.js
+¦   ¦       ¦       pax.js.map
+¦   ¦       ¦       process-umask.d.ts
+¦   ¦       ¦       process-umask.d.ts.map
+¦   ¦       ¦       process-umask.js
+¦   ¦       ¦       process-umask.js.map
+¦   ¦       ¦       read-entry.d.ts
+¦   ¦       ¦       read-entry.d.ts.map
+¦   ¦       ¦       read-entry.js
+¦   ¦       ¦       read-entry.js.map
+¦   ¦       ¦       replace.d.ts
+¦   ¦       ¦       replace.d.ts.map
+¦   ¦       ¦       replace.js
+¦   ¦       ¦       replace.js.map
+¦   ¦       ¦       strip-absolute-path.d.ts
+¦   ¦       ¦       strip-absolute-path.d.ts.map
+¦   ¦       ¦       strip-absolute-path.js
+¦   ¦       ¦       strip-absolute-path.js.map
+¦   ¦       ¦       strip-trailing-slashes.d.ts
+¦   ¦       ¦       strip-trailing-slashes.d.ts.map
+¦   ¦       ¦       strip-trailing-slashes.js
+¦   ¦       ¦       strip-trailing-slashes.js.map
+¦   ¦       ¦       symlink-error.d.ts
+¦   ¦       ¦       symlink-error.d.ts.map
+¦   ¦       ¦       symlink-error.js
+¦   ¦       ¦       symlink-error.js.map
+¦   ¦       ¦       types.d.ts
+¦   ¦       ¦       types.d.ts.map
+¦   ¦       ¦       types.js
+¦   ¦       ¦       types.js.map
+¦   ¦       ¦       unpack.d.ts
+¦   ¦       ¦       unpack.d.ts.map
+¦   ¦       ¦       unpack.js
+¦   ¦       ¦       unpack.js.map
+¦   ¦       ¦       update.d.ts
+¦   ¦       ¦       update.d.ts.map
+¦   ¦       ¦       update.js
+¦   ¦       ¦       update.js.map
+¦   ¦       ¦       warn-method.d.ts
+¦   ¦       ¦       warn-method.d.ts.map
+¦   ¦       ¦       warn-method.js
+¦   ¦       ¦       warn-method.js.map
+¦   ¦       ¦       winchars.d.ts
+¦   ¦       ¦       winchars.d.ts.map
+¦   ¦       ¦       winchars.js
+¦   ¦       ¦       winchars.js.map
+¦   ¦       ¦       write-entry.d.ts
+¦   ¦       ¦       write-entry.d.ts.map
+¦   ¦       ¦       write-entry.js
+¦   ¦       ¦       write-entry.js.map
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               create.d.ts
+¦   ¦               create.d.ts.map
+¦   ¦               create.js
+¦   ¦               create.js.map
+¦   ¦               cwd-error.d.ts
+¦   ¦               cwd-error.d.ts.map
+¦   ¦               cwd-error.js
+¦   ¦               cwd-error.js.map
+¦   ¦               extract.d.ts
+¦   ¦               extract.d.ts.map
+¦   ¦               extract.js
+¦   ¦               extract.js.map
+¦   ¦               get-write-flag.d.ts
+¦   ¦               get-write-flag.d.ts.map
+¦   ¦               get-write-flag.js
+¦   ¦               get-write-flag.js.map
+¦   ¦               header.d.ts
+¦   ¦               header.d.ts.map
+¦   ¦               header.js
+¦   ¦               header.js.map
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               index.min.js
+¦   ¦               index.min.js.map
+¦   ¦               large-numbers.d.ts
+¦   ¦               large-numbers.d.ts.map
+¦   ¦               large-numbers.js
+¦   ¦               large-numbers.js.map
+¦   ¦               list.d.ts
+¦   ¦               list.d.ts.map
+¦   ¦               list.js
+¦   ¦               list.js.map
+¦   ¦               make-command.d.ts
+¦   ¦               make-command.d.ts.map
+¦   ¦               make-command.js
+¦   ¦               make-command.js.map
+¦   ¦               mkdir.d.ts
+¦   ¦               mkdir.d.ts.map
+¦   ¦               mkdir.js
+¦   ¦               mkdir.js.map
+¦   ¦               mode-fix.d.ts
+¦   ¦               mode-fix.d.ts.map
+¦   ¦               mode-fix.js
+¦   ¦               mode-fix.js.map
+¦   ¦               normalize-unicode.d.ts
+¦   ¦               normalize-unicode.d.ts.map
+¦   ¦               normalize-unicode.js
+¦   ¦               normalize-unicode.js.map
+¦   ¦               normalize-windows-path.d.ts
+¦   ¦               normalize-windows-path.d.ts.map
+¦   ¦               normalize-windows-path.js
+¦   ¦               normalize-windows-path.js.map
+¦   ¦               options.d.ts
+¦   ¦               options.d.ts.map
+¦   ¦               options.js
+¦   ¦               options.js.map
+¦   ¦               pack.d.ts
+¦   ¦               pack.d.ts.map
+¦   ¦               pack.js
+¦   ¦               pack.js.map
+¦   ¦               package.json
+¦   ¦               parse.d.ts
+¦   ¦               parse.d.ts.map
+¦   ¦               parse.js
+¦   ¦               parse.js.map
+¦   ¦               path-reservations.d.ts
+¦   ¦               path-reservations.d.ts.map
+¦   ¦               path-reservations.js
+¦   ¦               path-reservations.js.map
+¦   ¦               pax.d.ts
+¦   ¦               pax.d.ts.map
+¦   ¦               pax.js
+¦   ¦               pax.js.map
+¦   ¦               process-umask.d.ts
+¦   ¦               process-umask.d.ts.map
+¦   ¦               process-umask.js
+¦   ¦               process-umask.js.map
+¦   ¦               read-entry.d.ts
+¦   ¦               read-entry.d.ts.map
+¦   ¦               read-entry.js
+¦   ¦               read-entry.js.map
+¦   ¦               replace.d.ts
+¦   ¦               replace.d.ts.map
+¦   ¦               replace.js
+¦   ¦               replace.js.map
+¦   ¦               strip-absolute-path.d.ts
+¦   ¦               strip-absolute-path.d.ts.map
+¦   ¦               strip-absolute-path.js
+¦   ¦               strip-absolute-path.js.map
+¦   ¦               strip-trailing-slashes.d.ts
+¦   ¦               strip-trailing-slashes.d.ts.map
+¦   ¦               strip-trailing-slashes.js
+¦   ¦               strip-trailing-slashes.js.map
+¦   ¦               symlink-error.d.ts
+¦   ¦               symlink-error.d.ts.map
+¦   ¦               symlink-error.js
+¦   ¦               symlink-error.js.map
+¦   ¦               types.d.ts
+¦   ¦               types.d.ts.map
+¦   ¦               types.js
+¦   ¦               types.js.map
+¦   ¦               unpack.d.ts
+¦   ¦               unpack.d.ts.map
+¦   ¦               unpack.js
+¦   ¦               unpack.js.map
+¦   ¦               update.d.ts
+¦   ¦               update.d.ts.map
+¦   ¦               update.js
+¦   ¦               update.js.map
+¦   ¦               warn-method.d.ts
+¦   ¦               warn-method.d.ts.map
+¦   ¦               warn-method.js
+¦   ¦               warn-method.js.map
+¦   ¦               winchars.d.ts
+¦   ¦               winchars.d.ts.map
+¦   ¦               winchars.js
+¦   ¦               winchars.js.map
+¦   ¦               write-entry.d.ts
+¦   ¦               write-entry.d.ts.map
+¦   ¦               write-entry.js
+¦   ¦               write-entry.js.map
+¦   ¦               
+¦   +---through2
+¦   ¦       LICENSE.md
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       through2.js
+¦   ¦       
+¦   +---tree-kill
+¦   ¦       cli.js
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---tslib
+¦   ¦   ¦   CopyrightNotice.txt
+¦   ¦   ¦   LICENSE.txt
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   SECURITY.md
+¦   ¦   ¦   tslib.d.ts
+¦   ¦   ¦   tslib.es6.html
+¦   ¦   ¦   tslib.es6.js
+¦   ¦   ¦   tslib.es6.mjs
+¦   ¦   ¦   tslib.html
+¦   ¦   ¦   tslib.js
+¦   ¦   ¦   
+¦   ¦   +---modules
+¦   ¦           index.d.ts
+¦   ¦           index.js
+¦   ¦           package.json
+¦   ¦           
+¦   +---undici-types
+¦   ¦       agent.d.ts
+¦   ¦       api.d.ts
+¦   ¦       balanced-pool.d.ts
+¦   ¦       cache-interceptor.d.ts
+¦   ¦       cache.d.ts
+¦   ¦       client-stats.d.ts
+¦   ¦       client.d.ts
+¦   ¦       connector.d.ts
+¦   ¦       content-type.d.ts
+¦   ¦       cookies.d.ts
+¦   ¦       diagnostics-channel.d.ts
+¦   ¦       dispatcher.d.ts
+¦   ¦       dispatcher1-wrapper.d.ts
+¦   ¦       env-http-proxy-agent.d.ts
+¦   ¦       errors.d.ts
+¦   ¦       eventsource.d.ts
+¦   ¦       fetch.d.ts
+¦   ¦       formdata.d.ts
+¦   ¦       global-dispatcher.d.ts
+¦   ¦       global-origin.d.ts
+¦   ¦       h2c-client.d.ts
+¦   ¦       handlers.d.ts
+¦   ¦       header.d.ts
+¦   ¦       index.d.ts
+¦   ¦       interceptors.d.ts
+¦   ¦       LICENSE
+¦   ¦       mock-agent.d.ts
+¦   ¦       mock-call-history.d.ts
+¦   ¦       mock-client.d.ts
+¦   ¦       mock-errors.d.ts
+¦   ¦       mock-interceptor.d.ts
+¦   ¦       mock-pool.d.ts
+¦   ¦       package.json
+¦   ¦       patch.d.ts
+¦   ¦       pool-stats.d.ts
+¦   ¦       pool.d.ts
+¦   ¦       proxy-agent.d.ts
+¦   ¦       readable.d.ts
+¦   ¦       README.md
+¦   ¦       retry-agent.d.ts
+¦   ¦       retry-handler.d.ts
+¦   ¦       round-robin-pool.d.ts
+¦   ¦       snapshot-agent.d.ts
+¦   ¦       socks5-proxy-agent.d.ts
+¦   ¦       util.d.ts
+¦   ¦       utility.d.ts
+¦   ¦       webidl.d.ts
+¦   ¦       websocket.d.ts
+¦   ¦       
+¦   +---universalify
+¦   ¦       index.js
+¦   ¦       LICENSE
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---untildify
+¦   ¦       index.d.ts
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---util-deprecate
+¦   ¦       browser.js
+¦   ¦       History.md
+¦   ¦       LICENSE
+¦   ¦       node.js
+¦   ¦       package.json
+¦   ¦       README.md
+¦   ¦       
+¦   +---uuid
+¦   ¦   ¦   CHANGELOG.md
+¦   ¦   ¦   CONTRIBUTING.md
+¦   ¦   ¦   deprecate.js
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   v1.js
+¦   ¦   ¦   v3.js
+¦   ¦   ¦   v4.js
+¦   ¦   ¦   v5.js
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       ¦   bytesToUuid.js
+¦   ¦       ¦   index.js
+¦   ¦       ¦   md5-browser.js
+¦   ¦       ¦   md5.js
+¦   ¦       ¦   rng-browser.js
+¦   ¦       ¦   rng.js
+¦   ¦       ¦   sha1-browser.js
+¦   ¦       ¦   sha1.js
+¦   ¦       ¦   uuid-bin.js
+¦   ¦       ¦   v1.js
+¦   ¦       ¦   v3.js
+¦   ¦       ¦   v35.js
+¦   ¦       ¦   v4.js
+¦   ¦       ¦   v5.js
+¦   ¦       ¦   
+¦   ¦       +---bin
+¦   ¦       ¦       uuid
+¦   ¦       ¦       
+¦   ¦       +---esm-browser
+¦   ¦       ¦       bytesToUuid.js
+¦   ¦       ¦       index.js
+¦   ¦       ¦       md5.js
+¦   ¦       ¦       rng.js
+¦   ¦       ¦       sha1.js
+¦   ¦       ¦       v1.js
+¦   ¦       ¦       v3.js
+¦   ¦       ¦       v35.js
+¦   ¦       ¦       v4.js
+¦   ¦       ¦       v5.js
+¦   ¦       ¦       
+¦   ¦       +---esm-node
+¦   ¦       ¦       bytesToUuid.js
+¦   ¦       ¦       index.js
+¦   ¦       ¦       md5.js
+¦   ¦       ¦       rng.js
+¦   ¦       ¦       sha1.js
+¦   ¦       ¦       v1.js
+¦   ¦       ¦       v3.js
+¦   ¦       ¦       v35.js
+¦   ¦       ¦       v4.js
+¦   ¦       ¦       v5.js
+¦   ¦       ¦       
+¦   ¦       +---umd
+¦   ¦               uuid.min.js
+¦   ¦               uuidv1.min.js
+¦   ¦               uuidv3.min.js
+¦   ¦               uuidv4.min.js
+¦   ¦               uuidv5.min.js
+¦   ¦               
+¦   +---which
+¦   ¦   ¦   CHANGELOG.md
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   which.js
+¦   ¦   ¦   
+¦   ¦   +---bin
+¦   ¦           node-which
+¦   ¦           
+¦   +---wrap-ansi
+¦   ¦       index.js
+¦   ¦       license
+¦   ¦       package.json
+¦   ¦       readme.md
+¦   ¦       
+¦   +---xcode
+¦   ¦   ¦   AUTHORS
+¦   ¦   ¦   CONTRIBUTING.md
+¦   ¦   ¦   index.js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   Makefile
+¦   ¦   ¦   NOTICE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   RELEASENOTES.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦       ¦   parseJob.js
+¦   ¦       ¦   pbxFile.js
+¦   ¦       ¦   pbxProject.js
+¦   ¦       ¦   pbxWriter.js
+¦   ¦       ¦   
+¦   ¦       +---parser
+¦   ¦               pbxproj.js
+¦   ¦               pbxproj.pegjs
+¦   ¦               
+¦   +---xml2js
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---lib
+¦   ¦   ¦       bom.js
+¦   ¦   ¦       builder.js
+¦   ¦   ¦       defaults.js
+¦   ¦   ¦       parser.js
+¦   ¦   ¦       processors.js
+¦   ¦   ¦       xml2js.bc.js
+¦   ¦   ¦       xml2js.js
+¦   ¦   ¦       
+¦   ¦   +---node_modules
+¦   ¦       +---xmlbuilder
+¦   ¦           ¦   appveyor.yml
+¦   ¦           ¦   CHANGELOG.md
+¦   ¦           ¦   LICENSE
+¦   ¦           ¦   package.json
+¦   ¦           ¦   README.md
+¦   ¦           ¦   
+¦   ¦           +---lib
+¦   ¦           ¦       Derivation.js
+¦   ¦           ¦       DocumentPosition.js
+¦   ¦           ¦       index.js
+¦   ¦           ¦       NodeType.js
+¦   ¦           ¦       OperationType.js
+¦   ¦           ¦       Utility.js
+¦   ¦           ¦       WriterState.js
+¦   ¦           ¦       XMLAttribute.js
+¦   ¦           ¦       XMLCData.js
+¦   ¦           ¦       XMLCharacterData.js
+¦   ¦           ¦       XMLComment.js
+¦   ¦           ¦       XMLDeclaration.js
+¦   ¦           ¦       XMLDocType.js
+¦   ¦           ¦       XMLDocument.js
+¦   ¦           ¦       XMLDocumentCB.js
+¦   ¦           ¦       XMLDocumentFragment.js
+¦   ¦           ¦       XMLDOMConfiguration.js
+¦   ¦           ¦       XMLDOMErrorHandler.js
+¦   ¦           ¦       XMLDOMImplementation.js
+¦   ¦           ¦       XMLDOMStringList.js
+¦   ¦           ¦       XMLDTDAttList.js
+¦   ¦           ¦       XMLDTDElement.js
+¦   ¦           ¦       XMLDTDEntity.js
+¦   ¦           ¦       XMLDTDNotation.js
+¦   ¦           ¦       XMLDummy.js
+¦   ¦           ¦       XMLElement.js
+¦   ¦           ¦       XMLNamedNodeMap.js
+¦   ¦           ¦       XMLNode.js
+¦   ¦           ¦       XMLNodeFilter.js
+¦   ¦           ¦       XMLNodeList.js
+¦   ¦           ¦       XMLProcessingInstruction.js
+¦   ¦           ¦       XMLRaw.js
+¦   ¦           ¦       XMLStreamWriter.js
+¦   ¦           ¦       XMLStringifier.js
+¦   ¦           ¦       XMLStringWriter.js
+¦   ¦           ¦       XMLText.js
+¦   ¦           ¦       XMLTypeInfo.js
+¦   ¦           ¦       XMLUserDataHandler.js
+¦   ¦           ¦       XMLWriterBase.js
+¦   ¦           ¦       
+¦   ¦           +---typings
+¦   ¦                   index.d.ts
+¦   ¦                   
+¦   +---xmlbuilder
+¦   ¦   ¦   .nycrc
+¦   ¦   ¦   CHANGELOG.md
+¦   ¦   ¦   LICENSE
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---.vscode
+¦   ¦   ¦       launch.json
+¦   ¦   ¦       
+¦   ¦   +---lib
+¦   ¦   ¦       Derivation.js
+¦   ¦   ¦       DocumentPosition.js
+¦   ¦   ¦       index.js
+¦   ¦   ¦       NodeType.js
+¦   ¦   ¦       OperationType.js
+¦   ¦   ¦       Utility.js
+¦   ¦   ¦       WriterState.js
+¦   ¦   ¦       XMLAttribute.js
+¦   ¦   ¦       XMLCData.js
+¦   ¦   ¦       XMLCharacterData.js
+¦   ¦   ¦       XMLComment.js
+¦   ¦   ¦       XMLDeclaration.js
+¦   ¦   ¦       XMLDocType.js
+¦   ¦   ¦       XMLDocument.js
+¦   ¦   ¦       XMLDocumentCB.js
+¦   ¦   ¦       XMLDocumentFragment.js
+¦   ¦   ¦       XMLDOMConfiguration.js
+¦   ¦   ¦       XMLDOMErrorHandler.js
+¦   ¦   ¦       XMLDOMImplementation.js
+¦   ¦   ¦       XMLDOMStringList.js
+¦   ¦   ¦       XMLDTDAttList.js
+¦   ¦   ¦       XMLDTDElement.js
+¦   ¦   ¦       XMLDTDEntity.js
+¦   ¦   ¦       XMLDTDNotation.js
+¦   ¦   ¦       XMLDummy.js
+¦   ¦   ¦       XMLElement.js
+¦   ¦   ¦       XMLNamedNodeMap.js
+¦   ¦   ¦       XMLNode.js
+¦   ¦   ¦       XMLNodeFilter.js
+¦   ¦   ¦       XMLNodeList.js
+¦   ¦   ¦       XMLProcessingInstruction.js
+¦   ¦   ¦       XMLRaw.js
+¦   ¦   ¦       XMLStreamWriter.js
+¦   ¦   ¦       XMLStringifier.js
+¦   ¦   ¦       XMLStringWriter.js
+¦   ¦   ¦       XMLText.js
+¦   ¦   ¦       XMLTypeInfo.js
+¦   ¦   ¦       XMLUserDataHandler.js
+¦   ¦   ¦       XMLWriterBase.js
+¦   ¦   ¦       
+¦   ¦   +---perf
+¦   ¦   ¦   ¦   index.coffee
+¦   ¦   ¦   ¦   perf.list
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---basic
+¦   ¦   ¦           escaping.coffee
+¦   ¦   ¦           object.coffee
+¦   ¦   ¦           
+¦   ¦   +---typings
+¦   ¦           index.d.ts
+¦   ¦           
+¦   +---yallist
+¦   ¦   ¦   LICENSE.md
+¦   ¦   ¦   package.json
+¦   ¦   ¦   README.md
+¦   ¦   ¦   
+¦   ¦   +---dist
+¦   ¦       +---commonjs
+¦   ¦       ¦       index.d.ts
+¦   ¦       ¦       index.d.ts.map
+¦   ¦       ¦       index.js
+¦   ¦       ¦       index.js.map
+¦   ¦       ¦       package.json
+¦   ¦       ¦       
+¦   ¦       +---esm
+¦   ¦               index.d.ts
+¦   ¦               index.d.ts.map
+¦   ¦               index.js
+¦   ¦               index.js.map
+¦   ¦               package.json
+¦   ¦               
+¦   +---yauzl
+¦           index.js
+¦           LICENSE
+¦           package.json
+¦           README.md
+¦           
++---www
+        damecontro.png
+        index.html
+        logo.png
+        script.js
+        style.css
+        
