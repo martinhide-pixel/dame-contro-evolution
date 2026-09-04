@@ -52,7 +52,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '21'
       - name: Capacitor Sync Android
         run: npx cap sync android
       - name: Build Android App (Debug APK)
