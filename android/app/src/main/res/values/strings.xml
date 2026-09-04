@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">dame-contro-evolution</string>
+    <string name="title_activity_main">dame-contro-evolution</string>
+    <string name="package_name">com.maux72.damecontro</string>
+    <string name="custom_url_scheme">com.maux72.damecontro</string>
+</resources>

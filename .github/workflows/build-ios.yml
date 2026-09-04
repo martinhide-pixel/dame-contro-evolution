@@ -1,26 +1,22 @@
-name: Build iOS App
+name: Build iOS and Android Apps
 on:
   push:
     branches: [ main, master ]
 
 jobs:
-  build:
+  build-ios:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
       - name: Install Dependencies
         run: npm install
-
       - name: Capacitor Sync
         run: npx cap sync ios
-
       - name: Build Xcode Project (Unsigned)
         run: |
           xcodebuild -project ios/App/App.xcodeproj \
@@ -30,15 +26,40 @@ jobs:
                      -derivedDataPath ios/App/build \
                      CODE_SIGNING_ALLOWED=NO \
                      clean build
-
       - name: Create Payload and IPA
         run: |
           mkdir -p build/Payload
           cp -R ios/App/build/Build/Products/Release-iphoneos/App.app build/Payload/
           cd build && zip -r DameContro.ipa Payload
-
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: iPhone-App-Package
           path: build/DameContro.ipa
+
+  build-android:
+    runs-on: ubuntu-latest  # Android usa server Linux velocissimi
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Dependencies
+        run: npm install
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Capacitor Sync Android
+        run: npx cap sync android
+      - name: Build Android App (Debug APK)
+        run: |
+          cd android && ./gradlew assembleDebug
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-App-Package
+          path: android/app/build/outputs/apk/debug/app-debug.apk
