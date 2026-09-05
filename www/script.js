@@ -409,7 +409,7 @@ function calculateAndApplySlide(m, callback) {
     }
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 6 DI 6)
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 6 DI 6 CORRETTA)
 // Gestione Salti IA, Input Click Giocatore, Regole di Vittoria e Inizializzazione Dom
 // ============================================================================
 
@@ -535,6 +535,7 @@ function checkVictoryConditions() {
     if (bCount === 0) { endGame('N'); return true; }
     if (nCount === 0) { endGame('B'); return true; }
     
+    // CORREZIONE CRITICA MATRICIALE: Ispezione precisa cella per casella
     let bOnFrontRow = 0, nOnFrontRow = 0;
     for (let c = 0; c < 6; c++) {
         if (gameState.board[0][c] === 'N') nOnFrontRow++; 
