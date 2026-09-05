@@ -284,3 +284,48 @@ button:hover {
 @media (max-width: 370px) {
     #hex-board { transform: scale(0.72); }
 }
+/* ============================================================================
+   ANIMAZIONI E NOTIFICA CENTRALE DI TRIONFO CELEBRATIVA
+   ============================================================================ */
+.victory-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: linear-gradient(135deg, rgba(12, 17, 34, 0.95) 0%, rgba(5, 8, 18, 0.98) 100%);
+    border: 3px double #dfb76c;
+    border-radius: 12px;
+    padding: 25px 35px;
+    z-index: 999;
+    box-shadow: 0 0 50px rgba(223, 183, 108, 0.4), inset 0 0 20px rgba(0,0,0,0.8);
+    pointer-events: none;
+    width: 85%;
+    max-width: 380px;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.victory-overlay.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.victory-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #dfb76c;
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(223, 183, 108, 0.6);
+    margin-bottom: 10px;
+    animation: flashGold 1s infinite alternate ease-in-out;
+}
+
+.victory-sub {
+    font-size: 0.95rem;
+    color: #a3b2cc;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+@keyframes flashGold {
+    0% { filter: brightness(0.9); text-shadow: 0 0 5px rgba(223, 183, 108, 0.4); }
+    100% { filter: brightness(1.3); text-shadow: 0 0 20px rgba(223, 183, 108, 0.9); }
+}
