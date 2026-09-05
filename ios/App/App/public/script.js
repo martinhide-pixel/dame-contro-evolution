@@ -1,6 +1,6 @@
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 4)
-// Geometria a Righe Alternate (6,5,6,5,6), Pattern Manuale a 3 Colori e Stato
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 7)
+// Costanti, Struttura Geometrica Esagonale e Oggetto di Stato Globale
 // ============================================================================
 
 const ROWS = 5;
@@ -32,8 +32,12 @@ let gameState = {
     validTargets: [],
     mustCapture: false,
     mode: 'ai',
-    originalStartR: null // TRACCIA ORIGINE: Salva la posizione prima delle mangiate consecutive
+    originalStartR: null
 };
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 7)
+// Inizializzazione Rigida, Validazione Caselle e Verifica Catture Obbligatorie
+// ============================================================================
 
 function initGame() {
     gameState.board = [];
@@ -44,7 +48,10 @@ function initGame() {
     const selectElem = document.getElementById('game-mode');
     if (selectElem) gameState.mode = selectElem.value;
     
-    // Inizializzazione manuale coordinata per coordinata anti-allucinazione
+    const oldOverlay = document.getElementById('victory-popup');
+    if (oldOverlay) oldOverlay.remove();
+    
+    // Configurazione manuale rigida coordinata per coordinata anti-allucinazione
     gameState.board[0][0] = 'N';
     gameState.board[0][1] = 'N';
     gameState.board[0][2] = 'N';
@@ -101,8 +108,8 @@ function checkGlobalCaptures() {
     }
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 4)
-// Calcolo Mosse Mappato su Dimensioni Variabili e Generatore Scenari Combo
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 7)
+// Calcolatore Mosse Singole, Filtro Anti-Melina e Generatore Albero Scenari Combo
 // ============================================================================
 
 function getPieceMoves(board, r, c, playerLastMove) {
@@ -116,7 +123,7 @@ function getPieceMoves(board, r, c, playerLastMove) {
         const neighbor = getNeighborCoords(r, c, d);
         if (!neighbor || !isValidCoord(neighbor.r, neighbor.c)) continue;
         
-        const opponent = (player === 'B') ? 'N' : 'B';
+        const opponent = (player === 'B' ? 'N' : 'B');
         
         if (board[neighbor.r][neighbor.c] === opponent) {
             const landing = getNeighborCoords(neighbor.r, neighbor.c, d);
@@ -200,44 +207,69 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
     return results;
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 4)
-// IA Cautelativa ed Euristica di Risurrezione Strategica
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 7)
+// Algoritmo di Valutazione Euristica Potenziato per l'Invasione della CPU
 // ============================================================================
 
 function evaluateBoard(board) {
     let score = 0;
+    let nOnFrontRow = 0;
+    let bOnFrontRow = 0;
+    let nTotalInvasion = 0;
+    let bTotalInvasion = 0;
+
+    // Calcolo dello stato delle righe per l'euristica decisionale dell'IA
+    for (let c = 0; c < 6; c++) {
+        if (board[4][c] === 'N') nOnFrontRow++; // Rossi (IA) su riga 4 nemica
+        if (board[0][c] === 'B') bOnFrontRow++; // Oro (Umano) su riga 0 nemica
+    }
+    for (let r = 3; r <= 4; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (board[r][c] === 'N') nTotalInvasion++;
+        }
+    }
+    for (let r = 0; r <= 1; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (board[r][c] === 'B') bTotalInvasion++;
+        }
+    }
+
+    if (nOnFrontRow === 6 || nTotalInvasion === 11) return Infinity;
+    if (bOnFrontRow === 6 || bTotalInvasion === 11) return -Infinity;
+
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (board[r][c] === 'N') {
                 score += 100; 
-                if (r === 4) {
-                    score += 15; 
-                } else {
-                    score += (r * 25); 
-                }
+                score += (r * 25); 
             } else if (board[r][c] === 'B') {
-                score -= 100; 
-                if (r === 0) {
-                    score -= 15;
-                } else {
-                    score -= ((4 - r) * 25);
-                }
+                score -= 100;
+                score -= ((4 - r) * 25);
             }
         }
     }
+
+    score += (nOnFrontRow * 80); 
+    score += (nTotalInvasion * 40); 
+    score -= (bOnFrontRow * 85); 
+    score -= (bTotalInvasion * 45);
+
     return score;
 }
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 5 DI 7)
+// Algoritmo Decisionale Predittivo Minimax della CPU (Rossi)
+// ============================================================================
 
 function makeCPUMove() {
     if (gameState.mode === 'pvp') return; 
-    
     let cpuScenarios = [];
     let hasCaptures = false;
     
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (gameState.board[r][c] === 'N') {
-                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
+                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves['N']);
                 if (moves.some(m => m.isCapture)) hasCaptures = true;
             }
         }
@@ -246,12 +278,12 @@ function makeCPUMove() {
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (gameState.board[r][c] === 'N') {
-                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
+                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves['N']);
                 if (hasCaptures) moves = moves.filter(m => m.isCapture);
                 
                 for (let m of moves) {
                     if (m.isCapture) {
-                        let combos = getBoardsAfterFullCombo(gameState.board, r, c, 'N', gameState.lastMoves.N);
+                        let combos = getBoardsAfterFullCombo(gameState.board, r, c, 'N', gameState.lastMoves['N']);
                         cpuScenarios.push(...combos);
                     } else {
                         let nextBoard = gameState.board.map(row => [...row]);
@@ -322,18 +354,16 @@ function makeCPUMove() {
                 if (scr < worstHumanScore) worstHumanScore = scr;
             }
         }
-        
         if (worstHumanScore > bestScore || bestScenario === null) {
             bestScore = worstHumanScore;
             bestScenario = scenario;
         }
     }
-    
     executeAnimateCPUSteps(bestScenario.steps, bestScenario.board, bestScenario.lastMove);
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 4)
-// Renderizzatore Temporizzato, Gestione dei Salti ed Eventi di Gioco Mobile-First
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 6 DI 7 CORRETTA PER MOBILE)
+// Disegno Plancia, Pattern Pietra Rigido e Motore Slide Assoluto
 // ============================================================================
 
 function renderBoard() {
@@ -341,7 +371,7 @@ function renderBoard() {
     if (!boardDiv) return;
     boardDiv.innerHTML = '';
     
-    // NOTA: Ricordati di riempire queste due righe a mano alla riga dell'errore su VS Code!
+    // PATTERN COMPILATI: Riaccendono la pietra 3D e sbloccano la foto dama.png
     const rowEvenPattern =[1, 2, 3, 1, 2, 3]; 
     const rowOddPattern  =[3, 1, 2, 3, 1];    
     
@@ -349,16 +379,12 @@ function renderBoard() {
         const rowDiv = document.createElement('div');
         rowDiv.className = `hex-row ${r % 2 !== 0 ? 'odd' : 'even'}`;
         
-        const cols = getColsForId(r);
-        const currentPattern = (r % 2 === 0) ? rowEvenPattern : rowOddPattern;
-        
-        for (let c = 0; c < cols; c++) {
+        for (let c = 0; c < getColsForId(r); c++) {
             const cellDiv = document.createElement('div');
-            const colorIndex = currentPattern[c];
+            const colorIndex = (r % 2 === 0) ? rowEvenPattern[c] : rowOddPattern[c];
             
             cellDiv.className = `hex-cell color-${colorIndex}`;
-            cellDiv.dataset.row = r;
-            cellDiv.dataset.col = c;
+            cellDiv.id = `cell-${r}-${c}`;
             
             if (gameState.selectedPiece && gameState.selectedPiece.r === r && gameState.selectedPiece.c === c) {
                 cellDiv.classList.add('selectable');
@@ -371,17 +397,12 @@ function renderBoard() {
             if (piece) {
                 const pieceDiv = document.createElement('div');
                 pieceDiv.className = `piece ${piece === 'B' ? 'white' : 'black'}`;
+                pieceDiv.id = `piece-${r}-${c}`;
                 
                 if (gameState.currentPlayer === piece && !gameState.resurrectionPending) {
-                    if (gameState.mustCapture && gameState.currentPlayer === 'B') {
-                        const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.B);
-                        if (pMoves.some(m => m.isCapture)) pieceDiv.classList.add('can-capture');
-                    } else if (gameState.mustCapture && gameState.currentPlayer === 'N') {
-                        const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
-                        if (pMoves.some(m => m.isCapture)) pieceDiv.classList.add('can-capture');
-                    } else {
-                        pieceDiv.classList.add('active-turn');
-                    }
+                    const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves[gameState.currentPlayer]);
+                    if (gameState.mustCapture && pMoves.some(m => m.isCapture)) pieceDiv.classList.add('can-capture');
+                    else if (!gameState.mustCapture) pieceDiv.classList.add('active-turn');
                 }
                 cellDiv.appendChild(pieceDiv);
             }
@@ -393,22 +414,55 @@ function renderBoard() {
     }
 }
 
+function calculateAndApplySlide(m, callback) {
+    const fromCell = document.getElementById(`cell-${m.fromR}-${m.fromC}`);
+    const toCell = document.getElementById(`cell-${m.toR}-${m.toC}`);
+    const piece = document.getElementById(`piece-${m.fromR}-${m.fromC}`);
+    
+    if (fromCell && toCell && piece) {
+        const fromRect = fromCell.getBoundingClientRect();
+        const toRect = toCell.getBoundingClientRect();
+        const deltaX = toRect.left - fromRect.left;
+        const deltaY = toRect.top - fromRect.top;
+        const board = document.getElementById('hex-board');
+        const clone = piece.cloneNode(true);
+        
+        clone.classList.add('sliding');
+        clone.style.position = 'absolute';
+        clone.style.left = `${fromCell.offsetLeft + (fromCell.offsetWidth - 44)/2}px`;
+        clone.style.top = `${fromCell.offsetTop + (fromCell.offsetHeight - 44)/2}px`;
+        clone.style.zIndex = '99999';
+        
+        board.appendChild(clone);
+        piece.style.visibility = 'hidden';
+        
+        setTimeout(() => { clone.style.transform = `translate(${deltaX}px, ${deltaY}px)`; }, 10);
+        setTimeout(() => { clone.remove(); callback(); }, 460);
+    } else {
+        callback();
+    }
+}
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 7 DI 7)
+// Animazione Salti CPU, Input Tocchi, Calcolo Condizioni Vittoria e Banner
+// ============================================================================
+
 function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
     let index = 0;
-    
     function nextStep() {
         if (index < steps.length) {
             let m = steps[index];
-            if (m.isCapture) gameState.board[m.capturedR][m.capturedC] = null;
-            gameState.board[m.toR][m.toC] = 'N';
-            gameState.board[m.fromR][m.fromC] = null;
-            
-            renderBoard();
-            index++;
-            setTimeout(nextStep, 550);
+            calculateAndApplySlide(m, () => {
+                if (m.isCapture) gameState.board[m.capturedR][m.capturedC] = null;
+                gameState.board[m.toR][m.toC] = 'N';
+                gameState.board[m.fromR][m.fromC] = null;
+                renderBoard();
+                index++;
+                setTimeout(nextStep, 100);
+            });
         } else {
             gameState.board = finalBoard;
-            gameState.lastMoves.N = finalLastMove;
+            gameState.lastMoves['N'] = finalLastMove;
             if (checkVictoryConditions()) return;
             gameState.currentPlayer = 'B';
             checkGlobalCaptures();
@@ -422,82 +476,67 @@ function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
 function handleCellClick(r, c) {
     if (gameState.currentPlayer === null) return;
     const isPlayerOro = (gameState.currentPlayer === 'B');
-    const isPlayerRosso = (gameState.currentPlayer === 'N');
-    
     if (gameState.resurrectionPending) {
         if (gameState.board[r][c] === null) {
             gameState.board[r][c] = gameState.currentPlayer;
             gameState.resurrectionPending = false;
             if (checkVictoryConditions()) return;
-            
             if (gameState.mode === 'pvp') {
                 gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
                 checkGlobalCaptures();
                 renderBoard();
                 updateUI();
-            } else {
-                executeTurnPassToCPU();
-            }
+            } else { executeTurnPassToCPU(); }
         }
         return;
     }
-    
     if (gameState.board[r][c] === gameState.currentPlayer) {
-        const lastRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
+        const lastRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves['N'];
         const moves = getPieceMoves(gameState.board, r, c, lastRef);
         if (gameState.mustCapture && !moves.some(m => m.isCapture)) return;
-        
         gameState.selectedPiece = { r, c };
         gameState.validTargets = gameState.mustCapture ? moves.filter(m => m.isCapture) : moves;
         renderBoard();
         return;
     }
-    
     const targetMove = gameState.validTargets.find(t => t.toR === r && t.toC === c);
     if (targetMove && gameState.selectedPiece) {
         const startR = gameState.selectedPiece.r;
-        if (targetMove.isCapture) gameState.board[targetMove.capturedR][targetMove.capturedC] = null;
-        
-        gameState.board[r][c] = gameState.currentPlayer;
-        gameState.board[targetMove.fromR][targetMove.fromC] = null;
-        
-        if (isPlayerOro) gameState.lastMoves.B = targetMove;
-        else gameState.lastMoves.N = targetMove;
-        
-        if (targetMove.isCapture) {
-            const nextRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
-            const nextMoves = getPieceMoves(gameState.board, r, c, nextRef);
-            if (nextMoves.some(m => m.isCapture)) {
-                gameState.selectedPiece = { r, c };
-                gameState.validTargets = nextMoves.filter(m => m.isCapture);
+        calculateAndApplySlide(targetMove, () => {
+            if (targetMove.isCapture) gameState.board[targetMove.capturedR][targetMove.capturedC] = null;
+            gameState.board[r][c] = gameState.currentPlayer;
+            gameState.board[targetMove.fromR][targetMove.fromC] = null;
+            if (isPlayerOro) gameState.lastMoves.B = targetMove;
+            else gameState.lastMoves['N'] = targetMove;
+            if (targetMove.isCapture) {
+                const nextRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves['N'];
+                const nextMoves = getPieceMoves(gameState.board, r, c, nextRef);
+                if (nextMoves.some(m => m.isCapture)) {
+                    gameState.selectedPiece = { r, c };
+                    gameState.validTargets = nextMoves.filter(m => m.isCapture);
+                    renderBoard();
+                    return;
+                }
+            }
+            const isMeta = (isPlayerOro && r === 0 && startR !== 0) || (!isPlayerOro && r === 4 && startR !== 4);
+            if (isMeta && countLivePieces(gameState.board, gameState.currentPlayer) < MAX_PIECES) {
+                gameState.resurrectionPending = true;
+                gameState.selectedPiece = null;
+                gameState.validTargets = [];
                 renderBoard();
+                document.getElementById('turn-indicator').innerText = "RISURREZIONE! Scegli un esagono vuoto";
                 return;
             }
-        }
-        
-        // CORRETTO: Il controllo "isMeta" scatta alla fine di TUTTO il movimento (anche dopo le mangiate multiple)
-        const isMeta = (isPlayerOro && r === 0 && startR !== 0) || (isPlayerRosso && r === 4 && startR !== 4);
-        if (isMeta && countLivePieces(gameState.board, gameState.currentPlayer) < MAX_PIECES) {
-            gameState.resurrectionPending = true;
-            gameState.selectedPiece = null;
-            gameState.validTargets = [];
-            renderBoard();
-            document.getElementById('turn-indicator').innerText = "RISURREZIONE! Scegli un esagono vuoto";
-            return;
-        }
-        
-        if (checkVictoryConditions()) return;
-        
-        if (gameState.mode === 'pvp') {
-            gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
-            gameState.selectedPiece = null;
-            gameState.validTargets = [];
-            checkGlobalCaptures();
-            renderBoard();
-            updateUI();
-        } else {
-            executeTurnPassToCPU();
-        }
+            if (checkVictoryConditions()) return;
+            if (gameState.mode === 'pvp') {
+                gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
+                gameState.selectedPiece = null;
+                gameState.validTargets = [];
+                checkGlobalCaptures();
+                renderBoard();
+                updateUI();
+            } else { executeTurnPassToCPU(); }
+        });
     }
 }
 
@@ -507,7 +546,7 @@ function executeTurnPassToCPU() {
     gameState.currentPlayer = 'N';
     renderBoard();
     updateUI();
-    setTimeout(makeCPUMove, 600);
+    setTimeout(makeCPUMove, 300);
 }
 
 function checkVictoryConditions() {
@@ -516,13 +555,14 @@ function checkVictoryConditions() {
     if (bCount === 0) { endGame('N'); return true; }
     if (nCount === 0) { endGame('B'); return true; }
     
-    let bOnFrontRow = 0, nOnFrontRow = 0;
+    // FISSA DEFINITIVA: L'Umano (B) vince se occupa la riga 0. L'IA (N) vince se occupa la riga 4.
+    let bOnEnemyRow = 0, nOnEnemyRow = 0;
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[c] === 'B') bOnFrontRow++; 
-        if (gameState.board[c] === 'N') nOnFrontRow++; 
+        if (gameState.board[0][c] === 'B') bOnEnemyRow++; 
+        if (gameState.board[4][c] === 'N') nOnEnemyRow++; 
     }
-    if (bOnFrontRow === 6) { endGame('B'); return true; }
-    if (nOnFrontRow === 6) { endGame('N'); return true; }
+    if (bOnEnemyRow === 6) { endGame('B'); return true; }
+    if (nOnEnemyRow === 6) { endGame('N'); return true; }
     
     let bTotalInvasionCount = 0, nTotalInvasionCount = 0;
     for (let r = 0; r <= 1; r++) {
@@ -541,14 +581,37 @@ function checkVictoryConditions() {
 }
 
 function endGame(winner) {
-    let msg = "";
+    let titleMsg = "", subMsg = "";
     if (gameState.mode === 'pvp') {
-        msg = winner === 'B' ? "TRIONFO! Il Giocatore 1 (Oro) vince!" : "TRIONFO! Il Giocatore 2 (Rossi) vince!";
+        titleMsg = "TRIONFO!";
+        subMsg = winner === 'B' ? "Il Giocatore 1 (Oro) vince!" : "Il Giocatore 2 (Rossi) vince!";
     } else {
-        msg = winner === 'B' ? "TRIONFO! L'Umano domina la plancia" : "SCONFITTA! L'IA ha preso il controllo";
+        if (winner === 'B') {
+            titleMsg = "TRIONFO!";
+            subMsg = "L'Umano ha sottomesso l'IA";
+        } else {
+            titleMsg = "SCONFITTA!";
+            subMsg = "L'IA ha preso il controllo";
+        }
     }
-    document.getElementById('turn-indicator').innerText = msg;
+    document.getElementById('turn-indicator').innerText = titleMsg + " " + subMsg;
     gameState.currentPlayer = null;
+    const container = document.getElementById('board-container');
+    if (container) {
+        const overlay = document.createElement('div');
+        overlay.id = 'victory-popup';
+        overlay.className = 'victory-overlay';
+        const title = document.createElement('div');
+        title.className = 'victory-title';
+        title.innerText = titleMsg;
+        const sub = document.createElement('div');
+        sub.className = 'victory-sub';
+        sub.innerText = subMsg;
+        overlay.appendChild(title);
+        overlay.appendChild(sub);
+        container.appendChild(overlay);
+        setTimeout(() => overlay.classList.add('show'), 50);
+    }
     renderBoard();
 }
 
@@ -556,7 +619,6 @@ function updateUI() {
     if (gameState.resurrectionPending) return;
     document.getElementById('score-human').innerText = countLivePieces(gameState.board, 'B');
     document.getElementById('score-cpu').innerText = countLivePieces(gameState.board, 'N');
-    
     if (gameState.currentPlayer) {
         if (gameState.mode === 'pvp') {
             document.getElementById('turn-indicator').innerText = 
@@ -568,4 +630,4 @@ function updateUI() {
     }
 }
 
-window.onload = initGame;
+document.addEventListener('DOMContentLoaded', initGame);

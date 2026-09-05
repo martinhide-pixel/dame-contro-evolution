@@ -93,7 +93,7 @@ header h1 {
     align-items: center;
     overflow: hidden;
     position: relative;
-    transform-style: preserve-3d; /* Abilita lo spazio 3D per l'asse z */
+    transform-style: preserve-3d;
 }
 
 #hex-board {
@@ -183,28 +183,26 @@ header h1 {
     border-radius: 50%;
     box-shadow: 0 6px 10px rgba(0,0,0,0.8), inset 0 -4px 6px rgba(0,0,0,0.4);
     position: relative;
-    z-index: 100; /* Livello base elevato per stare sopra alle celle standard */
+    z-index: 100;
     transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-/* Dama Umano (Oro Reale Foto) */
+/* Dama Umano (URL Web Garantito per Smartphone) */
 .piece.white {
-    background-image: url('dama.png');
+    background-image: url('https://githubusercontent.com');
     border: 2px solid #dfb76c;
 }
 
-/* Dama IA (Conversione Cromatica Dinamica in Rosso Rubino Metallico) */
+/* Dama IA (URL Web Garantito con Conversione Dinamica in Rosso Rubino) */
 .piece.black {
-    background-image: url('dama.png');
+    background-image: url('https://githubusercontent.com');
     border: 2px solid #b71c1c;
-    /* Cambia i toni dell'oro della foto in rosso fuoco spettrale araldico */
     filter: sepia(1) saturate(6) hue-rotate(-55deg) brightness(0.8) contrast(1.2);
 }
 
-/* Forza la pedina SOPRA a qualsiasi guscio, drop-shadow o bordo durante lo scivolamento */
 .piece.sliding {
     z-index: 9999 !important;
 }

@@ -1,6 +1,6 @@
 /* ============================================================================
-   DAME CONTRO EVOLUTION - STYLE.CSS DEFINITIVO
-   Effetto Pietra Reale, Pedine Oro vs Rosso e Selettore di Modalità Araldico
+   DAME CONTRO EVOLUTION - STYLE.CSS INTEGRATO E COMPLETO
+   Effetto Pietra Reale, Nuove Dame Regali con Corona e Scivolamento Fluido Superior
    ============================================================================ */
 
 :root {
@@ -92,6 +92,8 @@ header h1 {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    position: relative;
+    transform-style: preserve-3d;
 }
 
 #hex-board {
@@ -124,6 +126,7 @@ header h1 {
     transition: filter 0.15s, transform 0.1s;
     background: linear-gradient(180deg, #9e9e9e 0%, #757575 15%, #424242 85%, #212121 100%);
     filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.85));
+    z-index: 1;
 }
 
 .hex-cell::after {
@@ -167,6 +170,7 @@ header h1 {
 
 .hex-cell.highlight-target {
     background: linear-gradient(180deg, #aeffae 0%, #2e7d32 100%) !important;
+    z-index: 3;
 }
 .hex-cell.highlight-target::after {
     background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%) !important;
@@ -174,47 +178,53 @@ header h1 {
 }
 
 .piece {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    box-shadow: 0 5px 8px rgba(0,0,0,0.7), inset 0 -4px 6px rgba(0,0,0,0.4);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.8), inset 0 -4px 6px rgba(0,0,0,0.4);
     position: relative;
-    z-index: 10; 
+    z-index: 100;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
+/* Dama Umano (URL Web Garantito per Smartphone) */
 .piece.white {
-    background: radial-gradient(circle at 35% 35%, #ffe082 0%, #ca9b30 65%, #6d4c0f 100%);
+    background-image: url('https://githubusercontent.com');
     border: 2px solid #dfb76c;
 }
 
+/* Dama IA (URL Web Garantito con Conversione Dinamica in Rosso Rubino) */
 .piece.black {
-    background: radial-gradient(circle at 35% 35%, #e53935 0%, #b71c1c 65%, #4a0000 100%);
-    border: 2px solid #d32f2f;
+    background-image: url('https://githubusercontent.com');
+    border: 2px solid #b71c1c;
+    filter: sepia(1) saturate(6) hue-rotate(-55deg) brightness(0.8) contrast(1.2);
+}
+
+.piece.sliding {
+    z-index: 9999 !important;
 }
 
 .piece.active-turn {
-    transform: translateZ(0);
     will-change: filter;
     animation: pulseGlow 1.4s infinite alternate ease-in-out;
 }
 
-.piece.white.active-turn { filter: drop-shadow(0 0 2px #dfb76c); }
-.piece.black.active-turn { filter: drop-shadow(0 0 2px #dfb76c); }
-
 @keyframes pulseGlow {
-    0% { filter: brightness(1) drop-shadow(0 0 2px #dfb76c); }
-    100% { filter: brightness(1.2) drop-shadow(0 0 8px #dfb76c); }
+    0% { box-shadow: 0 6px 10px rgba(0,0,0,0.8), 0 0 4px rgba(223, 183, 108, 0.4); }
+    100% { box-shadow: 0 6px 10px rgba(0,0,0,0.8), 0 0 12px rgba(223, 183, 108, 0.9); }
 }
 
 .piece.can-capture {
-    transform: translateZ(0);
     will-change: filter;
     animation: pulseGlowCapture 0.7s infinite alternate ease-in-out !important;
 }
 
 @keyframes pulseGlowCapture {
-    0% { filter: brightness(0.9) contrast(1.1); }
-    100% { filter: brightness(1.4) contrast(1.3) saturate(1.4); }
+    0% { box-shadow: 0 6px 10px rgba(0,0,0,0.8); filter: brightness(0.9) contrast(1.1); }
+    100% { box-shadow: 0 6px 10px rgba(0,0,0,0.8), 0 0 16px #e53935; filter: brightness(1.3) contrast(1.2); }
 }
 
 #controls {
@@ -225,7 +235,6 @@ header h1 {
     gap: 12px;
 }
 
-/* Grafica Araldica del Menù Opzioni */
 .select-wrapper {
     display: flex;
     flex-direction: column;
@@ -275,6 +284,49 @@ button {
 
 button:hover {
     background: linear-gradient(135deg, #a68348 0%, #6f552b 100%);
+}
+
+.victory-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: linear-gradient(135deg, rgba(12, 17, 34, 0.95) 0%, rgba(5, 8, 18, 0.98) 100%);
+    border: 3px double #dfb76c;
+    border-radius: 12px;
+    padding: 25px 35px;
+    z-index: 99999;
+    box-shadow: 0 0 50px rgba(223, 183, 108, 0.4), inset 0 0 20px rgba(0,0,0,0.8);
+    pointer-events: none;
+    width: 85%;
+    max-width: 380px;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.victory-overlay.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.victory-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #dfb76c;
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(223, 183, 108, 0.6);
+    margin-bottom: 10px;
+    animation: flashGold 1s infinite alternate ease-in-out;
+}
+
+.victory-sub {
+    font-size: 0.95rem;
+    color: #a3b2cc;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+@keyframes flashGold {
+    0% { filter: brightness(0.9); text-shadow: 0 0 5px rgba(223, 183, 108, 0.4); }
+    100% { filter: brightness(1.3); text-shadow: 0 0 20px rgba(223, 183, 108, 0.9); }
 }
 
 @media (max-width: 440px) {
