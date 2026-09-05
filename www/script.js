@@ -344,8 +344,8 @@ function renderBoard() {
     // Inserisci a mano i tuoi numeri della pietra dentro le parentesi quadre qui sotto!
     // Righe Pari (0, 2, 4): [1, 2, 3, 1, 2, 3]
     // Righe Dispari (1, 3): [3, 1, 2, 3, 1]
-    const rowEvenPattern = []; 
-    const rowOddPattern  = [];    
+    const rowEvenPattern = [1, 2, 3, 1, 2, 3]; 
+    const rowOddPattern  = [3, 1, 2, 3, 1];    
     
     for (let r = 0; r < ROWS; r++) {
         const rowDiv = document.createElement('div');
