@@ -47,7 +47,6 @@ function initGame() {
     const oldOverlay = document.getElementById('victory-popup');
     if (oldOverlay) oldOverlay.remove();
     
-    // Inizializzazione rigida e controllata anti-allucinazione matriciale
     gameState.board[0][0] = 'N';
     gameState.board[0][1] = 'N';
     gameState.board[0][2] = 'N';
@@ -329,8 +328,8 @@ function makeCPUMove() {
     executeAnimateCPUSteps(bestScenario.steps, bestScenario.board, bestScenario.lastMove);
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 4)
-// Renderizzatore, Animazione Salti, Intercettazione Click e Logiche di Trionfo
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 5)
+// Disegno Grafico della Plancia, Pattern Pietra Reale e Calcolo Geometrico Slide
 // ============================================================================
 
 function renderBoard() {
@@ -345,16 +344,12 @@ function renderBoard() {
         const rowDiv = document.createElement('div');
         rowDiv.className = `hex-row ${r % 2 !== 0 ? 'odd' : 'even'}`;
         
-        const cols = getColsForId(r);
-        const currentPattern = (r % 2 === 0) ? rowEvenPattern : rowOddPattern;
-        
-        for (let c = 0; c < cols; c++) {
+        for (let c = 0; c < getColsForId(r); c++) {
             const cellDiv = document.createElement('div');
-            const colorIndex = currentPattern[c];
+            const colorIndex = (r % 2 === 0) ? rowEvenPattern[c] : rowOddPattern[c];
             
             cellDiv.className = `hex-cell color-${colorIndex}`;
-            cellDiv.dataset.row = r;
-            cellDiv.dataset.col = c;
+            cellDiv.id = `cell-${r}-${c}`;
             
             if (gameState.selectedPiece && gameState.selectedPiece.r === r && gameState.selectedPiece.c === c) {
                 cellDiv.classList.add('selectable');
@@ -367,6 +362,7 @@ function renderBoard() {
             if (piece) {
                 const pieceDiv = document.createElement('div');
                 pieceDiv.className = `piece ${piece === 'B' ? 'white' : 'black'}`;
+                pieceDiv.id = `piece-${r}-${c}`;
                 
                 if (gameState.currentPlayer === piece && !gameState.resurrectionPending) {
                     const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves[gameState.currentPlayer]);
@@ -386,17 +382,42 @@ function renderBoard() {
     }
 }
 
+function calculateAndApplySlide(m, callback) {
+    const fromCell = document.getElementById(`cell-${m.fromR}-${m.fromC}`);
+    const toCell = document.getElementById(`cell-${m.toR}-${m.toC}`);
+    const piece = document.getElementById(`piece-${m.fromR}-${m.fromC}`);
+    
+    if (fromCell && toCell && piece) {
+        const fromRect = fromCell.getBoundingClientRect();
+        const toRect = toCell.getBoundingClientRect();
+        const deltaX = toRect.left - fromRect.left;
+        const deltaY = toRect.top - fromRect.top;
+        
+        piece.classList.add('sliding');
+        piece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        setTimeout(callback, 450); // Tempo sincronizzato al millesimo con il CSS
+    } else {
+        callback();
+    }
+}
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 5 DI 5)
+// Animazione Salti IA, Gestione Tocchi Giocatore, Regole di Vittoria e Banner
+// ============================================================================
+
 function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
     let index = 0;
     function nextStep() {
         if (index < steps.length) {
             let m = steps[index];
-            if (m.isCapture) gameState.board[m.capturedR][m.capturedC] = null;
-            gameState.board[m.toR][m.toC] = 'N';
-            gameState.board[m.fromR][m.fromC] = null;
-            renderBoard();
-            index++;
-            setTimeout(nextStep, 550);
+            calculateAndApplySlide(m, () => {
+                if (m.isCapture) gameState.board[m.capturedR][m.capturedC] = null;
+                gameState.board[m.toR][m.toC] = 'N';
+                gameState.board[m.fromR][m.fromC] = null;
+                renderBoard();
+                index++;
+                setTimeout(nextStep, 100);
+            });
         } else {
             gameState.board = finalBoard;
             gameState.lastMoves.N = finalLastMove;
@@ -445,47 +466,49 @@ function handleCellClick(r, c) {
     const targetMove = gameState.validTargets.find(t => t.toR === r && t.toC === c);
     if (targetMove && gameState.selectedPiece) {
         const startR = gameState.selectedPiece.r;
-        if (targetMove.isCapture) gameState.board[targetMove.capturedR][targetMove.capturedC] = null;
         
-        gameState.board[r][c] = gameState.currentPlayer;
-        gameState.board[targetMove.fromR][targetMove.fromC] = null;
-        
-        if (isPlayerOro) gameState.lastMoves.B = targetMove;
-        else gameState.lastMoves.N = targetMove;
-        
-        if (targetMove.isCapture) {
-            const nextRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
-            const nextMoves = getPieceMoves(gameState.board, r, c, nextRef);
-            if (nextMoves.some(m => m.isCapture)) {
-                gameState.selectedPiece = { r, c };
-                gameState.validTargets = nextMoves.filter(m => m.isCapture);
+        calculateAndApplySlide(targetMove, () => {
+            if (targetMove.isCapture) gameState.board[targetMove.capturedR][targetMove.capturedC] = null;
+            gameState.board[r][c] = gameState.currentPlayer;
+            gameState.board[targetMove.fromR][targetMove.fromC] = null;
+            
+            if (isPlayerOro) gameState.lastMoves.B = targetMove;
+            else gameState.lastMoves.N = targetMove;
+            
+            if (targetMove.isCapture) {
+                const nextRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
+                const nextMoves = getPieceMoves(gameState.board, r, c, nextRef);
+                if (nextMoves.some(m => m.isCapture)) {
+                    gameState.selectedPiece = { r, c };
+                    gameState.validTargets = nextMoves.filter(m => m.isCapture);
+                    renderBoard();
+                    return;
+                }
+            }
+            
+            const isMeta = (isPlayerOro && r === 0 && startR !== 0) || (!isPlayerOro && r === 4 && startR !== 4);
+            if (isMeta && countLivePieces(gameState.board, gameState.currentPlayer) < MAX_PIECES) {
+                gameState.resurrectionPending = true;
+                gameState.selectedPiece = null;
+                gameState.validTargets = [];
                 renderBoard();
+                document.getElementById('turn-indicator').innerText = "RISURREZIONE! Scegli un esagono vuoto";
                 return;
             }
-        }
-        
-        const isMeta = (isPlayerOro && r === 0 && startR !== 0) || (!isPlayerOro && r === 4 && startR !== 4);
-        if (isMeta && countLivePieces(gameState.board, gameState.currentPlayer) < MAX_PIECES) {
-            gameState.resurrectionPending = true;
-            gameState.selectedPiece = null;
-            gameState.validTargets = [];
-            renderBoard();
-            document.getElementById('turn-indicator').innerText = "RISURREZIONE! Scegli un esagono vuoto";
-            return;
-        }
-        
-        if (checkVictoryConditions()) return;
-        
-        if (gameState.mode === 'pvp') {
-            gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
-            gameState.selectedPiece = null;
-            gameState.validTargets = [];
-            checkGlobalCaptures();
-            renderBoard();
-            updateUI();
-        } else {
-            executeTurnPassToCPU();
-        }
+            
+            if (checkVictoryConditions()) return;
+            
+            if (gameState.mode === 'pvp') {
+                gameState.currentPlayer = isPlayerOro ? 'N' : 'B';
+                gameState.selectedPiece = null;
+                gameState.validTargets = [];
+                checkGlobalCaptures();
+                renderBoard();
+                updateUI();
+            } else {
+                executeTurnPassToCPU();
+            }
+        });
     }
 }
 
@@ -495,7 +518,7 @@ function executeTurnPassToCPU() {
     gameState.currentPlayer = 'N';
     renderBoard();
     updateUI();
-    setTimeout(makeCPUMove, 600);
+    setTimeout(makeCPUMove, 300);
 }
 
 function checkVictoryConditions() {
@@ -506,8 +529,8 @@ function checkVictoryConditions() {
     
     let bOnFrontRow = 0, nOnFrontRow = 0;
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[0][c] === 'B') bOnFrontRow++; 
-        if (gameState.board[4][c] === 'N') nOnFrontRow++; 
+        if (gameState.board[c] === 'N') nOnFrontRow++; 
+        if (gameState.board[c] === 'B') bOnFrontRow++; 
     }
     if (bOnFrontRow === 6) { endGame('B'); return true; }
     if (nOnFrontRow === 6) { endGame('N'); return true; }

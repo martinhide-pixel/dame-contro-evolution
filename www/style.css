@@ -1,331 +1,46 @@
 /* ============================================================================
-   DAME CONTRO EVOLUTION - STYLE.CSS DEFINITIVO
-   Effetto Pietra Reale, Pedine Oro vs Rosso e Selettore di Modalità Araldico
+   GESTIONE ANIMAZIONE DI SCIVOLAMENTO (SLIDE) E NUOVA ESTETICA DAME
    ============================================================================ */
-
-:root {
-    --hex-w: 64px;
-    --hex-h: 74px;
-    --row-offset: -18px;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-body {
-    background: 
-        linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.4) 100%),
-        radial-gradient(circle at 50% 30%, #1b264f 0%, #111625 60%, #080a10 100%);
-    color: #e0d4be;
-    font-family: 'Cinzel', serif;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-}
-
-#game-container {
-    width: 100%;
-    max-width: 500px;
-    padding: 15px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-header h1 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    letter-spacing: 3px;
-    color: #dfb76c;
-    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
-}
-
-.subtitle {
-    font-size: 1rem;
-    letter-spacing: 5px;
-    color: #8c9bb3;
-    margin-bottom: 15px;
-}
-
-#status-panel {
-    background: rgba(12, 17, 34, 0.85);
-    border: 2px solid #dfb76c;
-    border-radius: 8px;
-    padding: 10px 20px;
-    width: 100%;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 0 10px rgba(27, 38, 79, 0.5);
-}
-
-#turn-indicator {
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #fff;
-    text-shadow: 0 0 5px rgba(255,255,255,0.3);
-}
-
-#scoreboard {
-    font-size: 0.9rem;
-    color: #a3b2cc;
-}
-
-#board-container {
-    width: 100%;
-    max-width: 440px;
-    background: 
-        linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.5) 100%),
-        repeating-linear-gradient(45deg, #252830 0px, #2a2d36 2px, #1e2026 4px);
-    border: 5px ridge #dfb76c;
-    border-radius: 14px;
-    padding: 40px 10px;
-    box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 12px 30px rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-#hex-board {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: auto;
-}
-
-.hex-row {
-    display: flex;
-    justify-content: center;
-    margin-top: var(--row-offset);
-}
-
-.hex-row:first-child {
-    margin-top: 0;
-}
-
-.hex-cell {
-    width: var(--hex-w);
-    height: var(--hex-h);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    margin: 0 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    transition: filter 0.15s, transform 0.1s;
-    background: linear-gradient(180deg, #9e9e9e 0%, #757575 15%, #424242 85%, #212121 100%);
-    filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.85));
-}
-
-.hex-cell::after {
-    content: "";
-    position: absolute;
-    top: 3px; left: 3px;
-    width: calc(var(--hex-w) - 6px);
-    height: calc(var(--hex-h) - 6px);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    z-index: 2;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-    background-attachment: fixed !important;
-}
-
-.hex-cell.color-1::after {
-    background-image: 
-        linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%),
-        repeating-linear-gradient(15deg, #1c1d22 0px, #141518 2px, #23252a 4px);
-}
-
-.hex-cell.color-2::after {
-    background-image: 
-        linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.3) 100%),
-        repeating-linear-gradient(15deg, #5c626b 0px, #51565e 3px, #69707a 6px);
-}
-
-.hex-cell.color-3::after {
-    background-image: 
-        linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.15) 100%),
-        repeating-linear-gradient(15deg, #e1e5ed 0px, #d2d7e0 3px, #edf1f7 6px);
-}
-
-.hex-cell:hover {
-    filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.85)) brightness(1.15);
-}
-
-.hex-cell.selectable {
-    filter: drop-shadow(0px 2px 1px rgba(0, 0, 0, 0.9)) brightness(1.2);
-    transform: translateY(2px);
-}
-
-.hex-cell.highlight-target {
-    background: linear-gradient(180deg, #aeffae 0%, #2e7d32 100%) !important;
-}
-.hex-cell.highlight-target::after {
-    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%) !important;
-    background-attachment: scroll !important;
-}
-
 .piece {
     width: 42px;
     height: 42px;
     border-radius: 50%;
     box-shadow: 0 5px 8px rgba(0,0,0,0.7), inset 0 -4px 6px rgba(0,0,0,0.4);
     position: relative;
-    z-index: 10; 
+    z-index: 10;
+    /* Transizione fluida per lo scivolamento coordinata con i millisecondi JS */
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* Stile Dama Oro (Umano) - Richiamo corona geometrica interna */
 .piece.white {
     background: radial-gradient(circle at 35% 35%, #ffe082 0%, #ca9b30 65%, #6d4c0f 100%);
-    border: 2px solid #dfb76c;
+    border: 3px double #dfb76c;
+}
+.piece.white::before {
+    content: "👑";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1rem;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
 }
 
+/* Stile Dama Rossa (PC/P2) - Richiamo corona geometrica interna */
 .piece.black {
     background: radial-gradient(circle at 35% 35%, #e53935 0%, #b71c1c 65%, #4a0000 100%);
-    border: 2px solid #d32f2f;
+    border: 3px double #d32f2f;
 }
-
-.piece.active-turn {
-    transform: translateZ(0);
-    will-change: filter;
-    animation: pulseGlow 1.4s infinite alternate ease-in-out;
-}
-
-.piece.white.active-turn { filter: drop-shadow(0 0 2px #dfb76c); }
-.piece.black.active-turn { filter: drop-shadow(0 0 2px #dfb76c); }
-
-@keyframes pulseGlow {
-    0% { filter: brightness(1) drop-shadow(0 0 2px #dfb76c); }
-    100% { filter: brightness(1.2) drop-shadow(0 0 8px #dfb76c); }
-}
-
-.piece.can-capture {
-    transform: translateZ(0);
-    will-change: filter;
-    animation: pulseGlowCapture 0.7s infinite alternate ease-in-out !important;
-}
-
-@keyframes pulseGlowCapture {
-    0% { filter: brightness(0.9) contrast(1.1); }
-    100% { filter: brightness(1.4) contrast(1.3) saturate(1.4); }
-}
-
-#controls {
-    margin-top: 15px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* Grafica Araldica del Menù Opzioni */
-.select-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    background: rgba(12, 17, 34, 0.7);
-    border: 1px solid #8a6d3b;
-    border-radius: 6px;
-    padding: 8px;
-}
-
-.select-wrapper label {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: #dfb76c;
-    font-weight: bold;
-}
-
-select {
-    font-family: 'Cinzel', serif;
-    background: #111424;
-    border: 1px solid #dfb76c;
-    color: #fff;
-    padding: 6px 15px;
-    font-size: 0.9rem;
-    border-radius: 4px;
-    width: 100%;
-    max-width: 260px;
-    text-align: center;
-    cursor: pointer;
-}
-
-button {
-    font-family: 'Cinzel', serif;
-    background: linear-gradient(135deg, #8a6d3b 0%, #5a4522 100%);
-    border: 2px solid #dfb76c;
-    color: #fff;
-    padding: 12px 30px;
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    width: 100%;
-    transition: background 0.3s;
-}
-
-button:hover {
-    background: linear-gradient(135deg, #a68348 0%, #6f552b 100%);
-}
-
-@media (max-width: 440px) {
-    #board-container { padding: 25px 5px; }
-    #hex-board { transform: scale(0.82); transform-origin: center center; }
-}
-@media (max-width: 370px) {
-    #hex-board { transform: scale(0.72); }
-}
-/* ============================================================================
-   ANIMAZIONI E NOTIFICA CENTRALE DI TRIONFO CELEBRATIVA
-   ============================================================================ */
-.victory-overlay {
+.piece.black::before {
+    content: "👑";
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    background: linear-gradient(135deg, rgba(12, 17, 34, 0.95) 0%, rgba(5, 8, 18, 0.98) 100%);
-    border: 3px double #dfb76c;
-    border-radius: 12px;
-    padding: 25px 35px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1rem;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6)) sepia(1) saturate(5) hue-rotate(-50deg);
+}
+
+/* Durante l'animazione forziamo la pedina sopra le altre caselle */
+.piece.sliding {
     z-index: 999;
-    box-shadow: 0 0 50px rgba(223, 183, 108, 0.4), inset 0 0 20px rgba(0,0,0,0.8);
-    pointer-events: none;
-    width: 85%;
-    max-width: 380px;
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.victory-overlay.show {
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.victory-title {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: #dfb76c;
-    letter-spacing: 4px;
-    text-shadow: 0 0 10px rgba(223, 183, 108, 0.6);
-    margin-bottom: 10px;
-    animation: flashGold 1s infinite alternate ease-in-out;
-}
-
-.victory-sub {
-    font-size: 0.95rem;
-    color: #a3b2cc;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-@keyframes flashGold {
-    0% { filter: brightness(0.9); text-shadow: 0 0 5px rgba(223, 183, 108, 0.4); }
-    100% { filter: brightness(1.3); text-shadow: 0 0 20px rgba(223, 183, 108, 0.9); }
 }
