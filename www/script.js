@@ -1,5 +1,5 @@
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 6)
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 7)
 // Costanti, Struttura Geometrica Esagonale e Oggetto di Stato Globale
 // ============================================================================
 
@@ -35,8 +35,8 @@ let gameState = {
     originalStartR: null
 };
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 6)
-// Inizializzazione Controllata, Validazione Caselle e Verifica Catture
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 7)
+// Inizializzazione Rigida, Validazione Caselle e Verifica Catture Obbligatorie
 // ============================================================================
 
 function initGame() {
@@ -51,7 +51,7 @@ function initGame() {
     const oldOverlay = document.getElementById('victory-popup');
     if (oldOverlay) oldOverlay.remove();
     
-    // Configurazione manuale rigida coordinata per coordinata
+    // Configurazione manuale rigida coordinata per coordinata anti-allucinazione
     gameState.board[0][0] = 'N';
     gameState.board[0][1] = 'N';
     gameState.board[0][2] = 'N';
@@ -108,8 +108,8 @@ function checkGlobalCaptures() {
     }
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 6)
-// Calcolatore Mosse Singole, Filtro Anti-Melina e Simulatore Combo Multipla
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 7)
+// Calcolatore Mosse Singole, Filtro Anti-Melina e Generatore Albero Scenari Combo
 // ============================================================================
 
 function getPieceMoves(board, r, c, playerLastMove) {
@@ -207,27 +207,59 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
     return results;
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 6)
-// Cervello Decisionale Minimax e Valutazione Euristica dell'IA (Rossi)
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 7)
+// Algoritmo di Valutazione Euristica Potenziato per l'Invasione della CPU
 // ============================================================================
 
 function evaluateBoard(board) {
     let score = 0;
+    let nOnFrontRow = 0;
+    let bOnFrontRow = 0;
+    let nTotalInvasion = 0;
+    let bTotalInvasion = 0;
+
+    // Calcolo dello stato delle righe per l'euristica decisionale dell'IA
+    for (let c = 0; c < 6; c++) {
+        if (board[4][c] === 'N') nOnFrontRow++; // Rossi (IA) su riga 4 nemica
+        if (board[0][c] === 'B') bOnFrontRow++; // Oro (Umano) su riga 0 nemica
+    }
+    for (let r = 3; r <= 4; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (board[r][c] === 'N') nTotalInvasion++;
+        }
+    }
+    for (let r = 0; r <= 1; r++) {
+        for (let c = 0; c < getColsForId(r); c++) {
+            if (board[r][c] === 'B') bTotalInvasion++;
+        }
+    }
+
+    if (nOnFrontRow === 6 || nTotalInvasion === 11) return Infinity;
+    if (bOnFrontRow === 6 || bTotalInvasion === 11) return -Infinity;
+
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (board[r][c] === 'N') {
                 score += 100; 
-                if (r === 4) score += 15; 
-                else score += (r * 25); 
+                score += (r * 25); 
             } else if (board[r][c] === 'B') {
-                score -= 100; 
-                if (r === 0) score -= 15;
-                else score -= ((4 - r) * 25);
+                score -= 100;
+                score -= ((4 - r) * 25);
             }
         }
     }
+
+    score += (nOnFrontRow * 80); 
+    score += (nTotalInvasion * 40); 
+    score -= (bOnFrontRow * 85); 
+    score -= (bTotalInvasion * 45);
+
     return score;
 }
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 5 DI 7)
+// Algoritmo Decisionale Predittivo Minimax della CPU (Rossi)
+// ============================================================================
 
 function makeCPUMove() {
     if (gameState.mode === 'pvp') return; 
@@ -237,7 +269,7 @@ function makeCPUMove() {
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (gameState.board[r][c] === 'N') {
-                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
+                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves['N']);
                 if (moves.some(m => m.isCapture)) hasCaptures = true;
             }
         }
@@ -246,12 +278,12 @@ function makeCPUMove() {
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (gameState.board[r][c] === 'N') {
-                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves.N);
+                let moves = getPieceMoves(gameState.board, r, c, gameState.lastMoves['N']);
                 if (hasCaptures) moves = moves.filter(m => m.isCapture);
                 
                 for (let m of moves) {
                     if (m.isCapture) {
-                        let combos = getBoardsAfterFullCombo(gameState.board, r, c, 'N', gameState.lastMoves.N);
+                        let combos = getBoardsAfterFullCombo(gameState.board, r, c, 'N', gameState.lastMoves['N']);
                         cpuScenarios.push(...combos);
                     } else {
                         let nextBoard = gameState.board.map(row => [...row]);
@@ -330,8 +362,8 @@ function makeCPUMove() {
     executeAnimateCPUSteps(bestScenario.steps, bestScenario.board, bestScenario.lastMove);
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 5 DI 6)
-// Renderizzatore della Plancia e Motore di Scivolamento Assoluto (Slide Superior)
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 6 DI 7)
+// Disegno Grafico della Plancia, Pattern Pietra e Motore Slide Assoluto
 // ============================================================================
 
 function renderBoard() {
@@ -390,20 +422,13 @@ function calculateAndApplySlide(m, callback) {
         clone.style.zIndex = '99999';
         board.appendChild(clone);
         piece.style.visibility = 'hidden';
-        setTimeout(() => {
-            clone.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-        }, 10);
-        setTimeout(() => {
-            clone.remove();
-            callback();
-        }, 460);
-    } else {
-        callback();
-    }
+        setTimeout(() => { clone.style.transform = `translate(${deltaX}px, ${deltaY}px)`; }, 10);
+        setTimeout(() => { clone.remove(); callback(); }, 460);
+    } else { callback(); }
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 6 DI 6)
-// Salti Temporizzati IA, Click Giocatore, Regole di Vittoria Corrette Matriciali
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 7 DI 7)
+// Animazione Salti CPU, Input Tocchi, Calcolo Condizioni Vittoria e Banner
 // ============================================================================
 
 function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
@@ -421,7 +446,7 @@ function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
             });
         } else {
             gameState.board = finalBoard;
-            gameState.lastMoves.N = finalLastMove;
+            gameState.lastMoves['N'] = finalLastMove;
             if (checkVictoryConditions()) return;
             gameState.currentPlayer = 'B';
             checkGlobalCaptures();
@@ -450,7 +475,7 @@ function handleCellClick(r, c) {
         return;
     }
     if (gameState.board[r][c] === gameState.currentPlayer) {
-        const lastRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
+        const lastRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves['N'];
         const moves = getPieceMoves(gameState.board, r, c, lastRef);
         if (gameState.mustCapture && !moves.some(m => m.isCapture)) return;
         gameState.selectedPiece = { r, c };
@@ -466,9 +491,9 @@ function handleCellClick(r, c) {
             gameState.board[r][c] = gameState.currentPlayer;
             gameState.board[targetMove.fromR][targetMove.fromC] = null;
             if (isPlayerOro) gameState.lastMoves.B = targetMove;
-            else gameState.lastMoves.N = targetMove;
+            else gameState.lastMoves['N'] = targetMove;
             if (targetMove.isCapture) {
-                const nextRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves.N;
+                const nextRef = isPlayerOro ? gameState.lastMoves.B : gameState.lastMoves['N'];
                 const nextMoves = getPieceMoves(gameState.board, r, c, nextRef);
                 if (nextMoves.some(m => m.isCapture)) {
                     gameState.selectedPiece = { r, c };
@@ -514,14 +539,14 @@ function checkVictoryConditions() {
     if (bCount === 0) { endGame('N'); return true; }
     if (nCount === 0) { endGame('B'); return true; }
     
-    // FISSA DEFINITIVA: Ispezione esatta riga per riga per prevenire interruzioni
-    let bOnFrontRow = 0, nOnFrontRow = 0;
+    // FISSA DEFINITIVA: L'Umano (B) vince se occupa la riga 0. L'IA (N) vince se occupa la riga 4.
+    let bOnEnemyRow = 0, nOnEnemyRow = 0;
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[0][c] === 'N') nOnFrontRow++; 
-        if (gameState.board[4][c] === 'B') bOnFrontRow++; 
+        if (gameState.board[0][c] === 'B') bOnEnemyRow++; 
+        if (gameState.board[4][c] === 'N') nOnEnemyRow++; 
     }
-    if (bOnFrontRow === 6) { endGame('B'); return true; }
-    if (nOnFrontRow === 6) { endGame('N'); return true; }
+    if (bOnEnemyRow === 6) { endGame('B'); return true; }
+    if (nOnEnemyRow === 6) { endGame('N'); return true; }
     
     let bTotalInvasionCount = 0, nTotalInvasionCount = 0;
     for (let r = 0; r <= 1; r++) {
