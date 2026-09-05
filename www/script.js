@@ -1,6 +1,6 @@
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 4)
-// Geometria a Righe Alternate (6,5,6,5,6), Inizializzazione Rigida e Stato
+// Costanti, Struttura Geometrica Esagonale, Stato Iniziale e Setup Globale
 // ============================================================================
 
 const ROWS = 5;
@@ -44,7 +44,10 @@ function initGame() {
     const selectElem = document.getElementById('game-mode');
     if (selectElem) gameState.mode = selectElem.value;
     
-    // Inizializzazione manuale coordinata per coordinata anti-allucinazione
+    const oldOverlay = document.getElementById('victory-popup');
+    if (oldOverlay) oldOverlay.remove();
+    
+    // Inizializzazione rigida e controllata anti-allucinazione matriciale
     gameState.board[0][0] = 'N';
     gameState.board[0][1] = 'N';
     gameState.board[0][2] = 'N';
@@ -102,7 +105,7 @@ function checkGlobalCaptures() {
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 4)
-// Calcolo Mosse Mappato su Dimensioni Variabili e Generatore Scenari Combo
+// Motore di Calcolo delle Mosse Legali, Filtro Anti-Melina e Simulatore Combo
 // ============================================================================
 
 function getPieceMoves(board, r, c, playerLastMove) {
@@ -201,7 +204,7 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 4)
-// IA Cautelativa ed Euristica di Risurrezione Strategica
+// Intelligenza Artificiale Cautelativa (Algoritmo Minimax Predittivo a 2 Turni)
 // ============================================================================
 
 function evaluateBoard(board) {
@@ -210,18 +213,12 @@ function evaluateBoard(board) {
         for (let c = 0; c < getColsForId(r); c++) {
             if (board[r][c] === 'N') {
                 score += 100; 
-                if (r === 4) {
-                    score += 15; 
-                } else {
-                    score += (r * 25); 
-                }
+                if (r === 4) score += 15; 
+                else score += (r * 25); 
             } else if (board[r][c] === 'B') {
                 score -= 100; 
-                if (r === 0) {
-                    score -= 15;
-                } else {
-                    score -= ((4 - r) * 25);
-                }
+                if (r === 0) score -= 15;
+                else score -= ((4 - r) * 25);
             }
         }
     }
@@ -333,7 +330,7 @@ function makeCPUMove() {
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 4)
-// Renderizzatore Temporizzato, Gestione dei Salti, Eventi Mobile e Regole di Vittoria
+// Renderizzatore, Animazione Salti, Intercettazione Click e Logiche di Trionfo
 // ============================================================================
 
 function renderBoard() {
@@ -341,11 +338,8 @@ function renderBoard() {
     if (!boardDiv) return;
     boardDiv.innerHTML = '';
     
-    // Inserisci a mano i tuoi numeri della pietra dentro le parentesi quadre qui sotto!
-    // Righe Pari (0, 2, 4): [1, 2, 3, 1, 2, 3]
-    // Righe Dispari (1, 3): [3, 1, 2, 3, 1]
-    const rowEvenPattern = [1, 2, 3, 1, 2, 3]; 
-    const rowOddPattern  = [3, 1, 2, 3, 1];    
+    const rowEvenPattern =; 
+    const rowOddPattern  =;    
     
     for (let r = 0; r < ROWS; r++) {
         const rowDiv = document.createElement('div');
@@ -535,14 +529,43 @@ function checkVictoryConditions() {
 }
 
 function endGame(winner) {
-    let msg = "";
+    let titleMsg = "", subMsg = "";
     if (gameState.mode === 'pvp') {
-        msg = winner === 'B' ? "TRIONFO! Il Giocatore 1 (Oro) vince!" : "TRIONFO! Il Giocatore 2 (Rossi) vince!";
+        titleMsg = "TRIONFO!";
+        subMsg = winner === 'B' ? "Il Giocatore 1 (Oro) vince!" : "Il Giocatore 2 (Rossi) vince!";
     } else {
-        msg = winner === 'B' ? "TRIONFO! L'Umano domina la plancia" : "SCONFITTA! L'IA ha preso il controllo";
+        if (winner === 'B') {
+            titleMsg = "TRIONFO!";
+            subMsg = "L'Umano ha sottomesso l'IA";
+        } else {
+            titleMsg = "SCONFITTA!";
+            subMsg = "L'IA ha preso il controllo";
+        }
     }
-    document.getElementById('turn-indicator').innerText = msg;
+    
+    document.getElementById('turn-indicator').innerText = titleMsg + " " + subMsg;
     gameState.currentPlayer = null;
+    
+    const container = document.getElementById('board-container');
+    if (container) {
+        const overlay = document.createElement('div');
+        overlay.id = 'victory-popup';
+        overlay.className = 'victory-overlay';
+        
+        const title = document.createElement('div');
+        title.className = 'victory-title';
+        title.innerText = titleMsg;
+        
+        const sub = document.createElement('div');
+        sub.className = 'victory-sub';
+        sub.innerText = subMsg;
+        
+        overlay.appendChild(title);
+        overlay.appendChild(sub);
+        container.appendChild(overlay);
+        
+        setTimeout(() => overlay.classList.add('show'), 50);
+    }
     renderBoard();
 }
 
