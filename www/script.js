@@ -338,8 +338,8 @@ function renderBoard() {
     if (!boardDiv) return;
     boardDiv.innerHTML = '';
     
-    const rowEvenPattern =; 
-    const rowOddPattern  =;    
+    const rowEvenPattern =[1, 2, 3, 1, 2, 3]; 
+    const rowOddPattern  =[3, 1, 2, 3, 1];    
     
     for (let r = 0; r < ROWS; r++) {
         const rowDiv = document.createElement('div');
