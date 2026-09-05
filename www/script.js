@@ -1,5 +1,5 @@
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 4)
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 1 DI 5)
 // Costanti, Struttura Geometrica Esagonale, Stato Iniziale e Setup Globale
 // ============================================================================
 
@@ -47,6 +47,7 @@ function initGame() {
     const oldOverlay = document.getElementById('victory-popup');
     if (oldOverlay) oldOverlay.remove();
     
+    // Inizializzazione rigida coordinata per coordinata anti-allucinazione
     gameState.board[0][0] = 'N';
     gameState.board[0][1] = 'N';
     gameState.board[0][2] = 'N';
@@ -77,6 +78,10 @@ function isValidCoord(r, c) {
     if (r < 0 || r >= ROWS) return false;
     return c >= 0 && c < getColsForId(r);
 }
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 5)
+// Funzioni di Analisi Stato, Catture Obbligatorie e Calcolo Mosse Pezzo
+// ============================================================================
 
 function countLivePieces(board, player) {
     let count = 0;
@@ -102,10 +107,6 @@ function checkGlobalCaptures() {
         }
     }
 }
-// ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 2 DI 4)
-// Motore di Calcolo delle Mosse Legali, Filtro Anti-Melina e Simulatore Combo
-// ============================================================================
 
 function getPieceMoves(board, r, c, playerLastMove) {
     const player = board[r][c];
@@ -118,7 +119,7 @@ function getPieceMoves(board, r, c, playerLastMove) {
         const neighbor = getNeighborCoords(r, c, d);
         if (!neighbor || !isValidCoord(neighbor.r, neighbor.c)) continue;
         
-        const opponent = (player === 'B') ? 'N' : 'B';
+        const opponent = (player === 'B' ? 'N' : 'B');
         
         if (board[neighbor.r][neighbor.c] === opponent) {
             const landing = getNeighborCoords(neighbor.r, neighbor.c, d);
@@ -149,6 +150,10 @@ function getPieceMoves(board, r, c, playerLastMove) {
     }
     return captures.length > 0 ? captures : normals;
 }
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 5)
+// Generatore Scenari Combo Multiple Ricorsivo ed Euristica dell'IA
+// ============================================================================
 
 function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveRef) {
     let results = [];
@@ -201,10 +206,6 @@ function getBoardsAfterFullCombo(initialBoard, startR, startC, player, lastMoveR
     simulate(initialBoard.map(row => [...row]), startR, startC, []);
     return results;
 }
-// ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 3 DI 4)
-// Intelligenza Artificiale Cautelativa (Algoritmo Minimax Predittivo a 2 Turni)
-// ============================================================================
 
 function evaluateBoard(board) {
     let score = 0;
@@ -223,6 +224,10 @@ function evaluateBoard(board) {
     }
     return score;
 }
+// ============================================================================
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 5)
+// Algoritmo Decisionale Predittivo Minimax della CPU (Rossi)
+// ============================================================================
 
 function makeCPUMove() {
     if (gameState.mode === 'pvp') return; 
@@ -328,8 +333,8 @@ function makeCPUMove() {
     executeAnimateCPUSteps(bestScenario.steps, bestScenario.board, bestScenario.lastMove);
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 4 DI 5)
-// Disegno Grafico della Plancia, Pattern Pietra Reale e Calcolo Geometrico Slide
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 5 DI 6)
+// Disegno Grafico della Plancia, Pattern Pietra Reale e Calcolo Slide Superior
 // ============================================================================
 
 function renderBoard() {
@@ -395,14 +400,17 @@ function calculateAndApplySlide(m, callback) {
         
         piece.classList.add('sliding');
         piece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-        setTimeout(callback, 450); // Tempo sincronizzato al millesimo con il CSS
+        setTimeout(() => {
+            piece.classList.remove('sliding');
+            callback();
+        }, 450);
     } else {
         callback();
     }
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 5 DI 5)
-// Animazione Salti IA, Gestione Tocchi Giocatore, Regole di Vittoria e Banner
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 6 DI 6)
+// Gestione Salti IA, Input Click Giocatore, Regole di Vittoria e Inizializzazione Dom
 // ============================================================================
 
 function executeAnimateCPUSteps(steps, finalBoard, finalLastMove) {
@@ -529,8 +537,8 @@ function checkVictoryConditions() {
     
     let bOnFrontRow = 0, nOnFrontRow = 0;
     for (let c = 0; c < 6; c++) {
-        if (gameState.board[c] === 'N') nOnFrontRow++; 
-        if (gameState.board[c] === 'B') bOnFrontRow++; 
+        if (gameState.board[0][c] === 'N') nOnFrontRow++; 
+        if (gameState.board[4][c] === 'B') bOnFrontRow++; 
     }
     if (bOnFrontRow === 6) { endGame('B'); return true; }
     if (nOnFrontRow === 6) { endGame('N'); return true; }
