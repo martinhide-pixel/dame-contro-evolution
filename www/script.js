@@ -372,8 +372,8 @@ function renderBoard() {
     boardDiv.innerHTML = '';
     
     // PATTERN COMPILATI: Riaccendono la pietra 3D e sbloccano la foto dama.png
-    const rowEvenPattern =; 
-    const rowOddPattern  =;    
+    const rowEvenPattern =[1, 2, 3, 1, 2, 3]; 
+    const rowOddPattern  =[3, 1, 2, 3, 1];    
     
     for (let r = 0; r < ROWS; r++) {
         const rowDiv = document.createElement('div');
