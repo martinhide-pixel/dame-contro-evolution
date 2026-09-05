@@ -535,7 +535,7 @@ function checkVictoryConditions() {
     if (bCount === 0) { endGame('N'); return true; }
     if (nCount === 0) { endGame('B'); return true; }
     
-    // CORREZIONE CRITICA MATRICIALE: Ispezione precisa cella per casella
+    // FISSA: Controllo accurato riga 0 (Invasione CPU) e riga 4 (Invasione Umano)
     let bOnFrontRow = 0, nOnFrontRow = 0;
     for (let c = 0; c < 6; c++) {
         if (gameState.board[0][c] === 'N') nOnFrontRow++; 
