@@ -362,34 +362,43 @@ function makeCPUMove() {
     executeAnimateCPUSteps(bestScenario.steps, bestScenario.board, bestScenario.lastMove);
 }
 // ============================================================================
-// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 6 DI 7)
-// Disegno Grafico della Plancia, Pattern Pietra e Motore Slide Assoluto
+// DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 6 DI 7 CORRETTA PER MOBILE)
+// Disegno Plancia, Pattern Pietra Rigido e Motore Slide Assoluto
 // ============================================================================
 
 function renderBoard() {
     const boardDiv = document.getElementById('hex-board');
     if (!boardDiv) return;
     boardDiv.innerHTML = '';
-    const rowEvenPattern =[1, 2, 3, 1, 2, 3]; 
-    const rowOddPattern  =[3, 1, 2, 3, 1];    
+    
+    // PATTERN COMPILATI: Riaccendono la pietra 3D e sbloccano la foto dama.png
+    const rowEvenPattern =; 
+    const rowOddPattern  =;    
+    
     for (let r = 0; r < ROWS; r++) {
         const rowDiv = document.createElement('div');
         rowDiv.className = `hex-row ${r % 2 !== 0 ? 'odd' : 'even'}`;
+        
         for (let c = 0; c < getColsForId(r); c++) {
             const cellDiv = document.createElement('div');
-            cellDiv.className = `hex-cell color-${(r % 2 === 0) ? rowEvenPattern[c] : rowOddPattern[c]}`;
+            const colorIndex = (r % 2 === 0) ? rowEvenPattern[c] : rowOddPattern[c];
+            
+            cellDiv.className = `hex-cell color-${colorIndex}`;
             cellDiv.id = `cell-${r}-${c}`;
+            
             if (gameState.selectedPiece && gameState.selectedPiece.r === r && gameState.selectedPiece.c === c) {
                 cellDiv.classList.add('selectable');
             }
             if (gameState.validTargets.some(t => t.toR === r && t.toC === c)) {
                 cellDiv.classList.add('highlight-target');
             }
+            
             const piece = gameState.board[r][c];
             if (piece) {
                 const pieceDiv = document.createElement('div');
                 pieceDiv.className = `piece ${piece === 'B' ? 'white' : 'black'}`;
                 pieceDiv.id = `piece-${r}-${c}`;
+                
                 if (gameState.currentPlayer === piece && !gameState.resurrectionPending) {
                     const pMoves = getPieceMoves(gameState.board, r, c, gameState.lastMoves[gameState.currentPlayer]);
                     if (gameState.mustCapture && pMoves.some(m => m.isCapture)) pieceDiv.classList.add('can-capture');
@@ -397,6 +406,7 @@ function renderBoard() {
                 }
                 cellDiv.appendChild(pieceDiv);
             }
+            
             cellDiv.addEventListener('click', () => handleCellClick(r, c));
             rowDiv.appendChild(cellDiv);
         }
@@ -408,6 +418,7 @@ function calculateAndApplySlide(m, callback) {
     const fromCell = document.getElementById(`cell-${m.fromR}-${m.fromC}`);
     const toCell = document.getElementById(`cell-${m.toR}-${m.toC}`);
     const piece = document.getElementById(`piece-${m.fromR}-${m.fromC}`);
+    
     if (fromCell && toCell && piece) {
         const fromRect = fromCell.getBoundingClientRect();
         const toRect = toCell.getBoundingClientRect();
@@ -415,16 +426,21 @@ function calculateAndApplySlide(m, callback) {
         const deltaY = toRect.top - fromRect.top;
         const board = document.getElementById('hex-board');
         const clone = piece.cloneNode(true);
+        
         clone.classList.add('sliding');
         clone.style.position = 'absolute';
         clone.style.left = `${fromCell.offsetLeft + (fromCell.offsetWidth - 44)/2}px`;
         clone.style.top = `${fromCell.offsetTop + (fromCell.offsetHeight - 44)/2}px`;
         clone.style.zIndex = '99999';
+        
         board.appendChild(clone);
         piece.style.visibility = 'hidden';
+        
         setTimeout(() => { clone.style.transform = `translate(${deltaX}px, ${deltaY}px)`; }, 10);
         setTimeout(() => { clone.remove(); callback(); }, 460);
-    } else { callback(); }
+    } else {
+        callback();
+    }
 }
 // ============================================================================
 // DAME CONTRO EVOLUTION - SCRIPT.JS (PARTE 7 DI 7)
